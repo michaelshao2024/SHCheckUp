@@ -3,185 +3,51 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create hospitals
-  const hospital1 = await prisma.hospital.create({
-    data: {
-      name: 'Huashan Hospital',
-      nameCn: '复旦大学附属华山医院',
-      address: "12 Wulumuqi Middle Road, Jing'an District, Shanghai",
-      phone: '+86-21-52889999',
-      description: "One of Shanghai's top general hospitals, known for international patient services with English-speaking staff.",
-      imageUrl: '/images/huashan.jpg',
-    },
-  });
+  await prisma.inquiry.deleteMany();
+  await prisma.review.deleteMany();
+  await prisma.checkupPackage.deleteMany();
+  await prisma.hospital.deleteMany();
 
-  const hospital2 = await prisma.hospital.create({
-    data: {
-      name: 'Ruijin Hospital',
-      nameCn: '上海交通大学医学院附属瑞金医院',
-      address: '197 Ruijin Er Road, Huangpu District, Shanghai',
-      phone: '+86-21-64370045',
-      description: 'A premier teaching hospital offering comprehensive health checkup packages for expatriates.',
-      imageUrl: '/images/ruijin.jpg',
-    },
-  });
+  const h1 = await prisma.hospital.create({ data: { name: 'Huashan Hospital International Medical Center', nameCn: '复旦大学附属华山医院国际医疗中心', address: "12 Wulumuqi Middle Road, Jing'an District, Shanghai", phone: '+86-21-52889999', email: 'international@huashan-hospital.com', website: 'https://www.huashan-hospital.com', description: "One of Shanghai's premier public hospitals with a dedicated International Medical Center. Offers comprehensive health checkups with English-speaking staff.", imageUrl: '/images/huashan.jpg', isActive: true } });
+  const h2 = await prisma.hospital.create({ data: { name: 'Ruijin Hospital', nameCn: '上海交通大学医学院附属瑞金医院', address: '197 Ruijin Er Road, Huangpu District, Shanghai', phone: '+86-21-64370045', email: 'service@ruijin-hospital.com', website: 'https://www.ruijin.com.cn', description: 'Premier teaching hospital known for comprehensive health screening for expatriates with VIP services.', imageUrl: '/images/ruijin.jpg', isActive: true } });
+  const h3 = await prisma.hospital.create({ data: { name: 'Shanghai East International Medical Center', nameCn: '上海东方国际医院', address: '551 South Pudong Road, Pudong, Shanghai', phone: '+86-21-58799999', email: 'info@eastinternational.com', website: 'https://www.seimc.com.cn', description: 'Dedicated international clinic in Pudong with multilingual staff. Tailored checkups for foreigners.', imageUrl: '/images/east-medical.jpg', isActive: true } });
+  const h4 = await prisma.hospital.create({ data: { name: 'ParkwayHealth Shanghai', nameCn: '百汇医疗上海', address: "Suite 101-105, 1376 Nanjing West Road, Jing'an, Shanghai", phone: '+86-21-6445-5999', email: 'appointment@parkwayhealth.cn', website: 'https://www.parkwayhealth.cn', description: 'International network with western-trained doctors. Fully English-speaking across multiple Shanghai clinics.', imageUrl: '/images/parkway.jpg', isActive: true } });
+  const h5 = await prisma.hospital.create({ data: { name: 'Jiahui Health', nameCn: '嘉会医疗', address: '689 Guiping Road, Xuhui District, Shanghai', phone: '+86-21-5339-5555', email: 'contact@jiahui.com', website: 'https://www.jiahui.com', description: 'JCI-accredited international hospital in Xuhui. Full-service with dedicated health checkup center.', imageUrl: '/images/jiahui.jpg', isActive: true } });
+  const h6 = await prisma.hospital.create({ data: { name: 'United Family Hospital Shanghai', nameCn: '上海和睦家医院', address: '1139 Xianxia Road, Changning District, Shanghai', phone: '+86-21-2216-3900', email: 'shanghai@ufh.com.cn', website: 'https://shanghai.ufh.com.cn', description: 'Part of United Family Healthcare network. Full-service hospital with wellness and checkup programs in English.', imageUrl: '/images/ufh.jpg', isActive: true } });
+  const h7 = await prisma.hospital.create({ data: { name: 'Shanghai General Hospital', nameCn: '上海市第一人民医院', address: '100 Haining Road, Hongkou District, Shanghai', phone: '+86-21-63240090', email: 'intl@shgh.cn', website: 'https://www.shgh.cn', description: "One of Shanghai's oldest public hospitals with an International Health Clinic. Affordable checkups with English translation.", imageUrl: '/images/shgeneral.jpg', isActive: true } });
 
-  const hospital3 = await prisma.hospital.create({
-    data: {
-      name: 'Shanghai East International Medical Center',
-      nameCn: '上海东方国际医院',
-      address: '551 South Pudong Road, Pudong, Shanghai',
-      phone: '+86-21-58799999',
-      description: 'Dedicated international clinic with multilingual staff and tailored health checkups for foreigners.',
-      imageUrl: '/images/east-medical.jpg',
-    },
-  });
+  await prisma.checkupPackage.createMany({ data: [
+    { hospitalId: h1.id, name: 'Basic Health Checkup', price: 280, currency: 'USD', duration: '2 hours', items: ['Blood pressure', 'Blood test (CBC, glucose, lipids)', 'Urinalysis', 'BMI', 'Doctor consultation', 'Health report'], includesTranslator: false, description: 'Essential health screening for quick health overview.', tags: ['basic', 'essential'], avgRating: 4.2, reviewCount: 0 },
+    { hospitalId: h1.id, name: 'Comprehensive Health Checkup', price: 580, currency: 'USD', duration: '4 hours', items: ['Blood test (comprehensive panel)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Vision test', 'Hearing test', 'Liver & kidney function', 'Doctor consultation'], includesTranslator: true, description: 'Thorough health assessment covering major organ systems.', tags: ['comprehensive', 'popular'], avgRating: 4.5, reviewCount: 0 },
+    { hospitalId: h1.id, name: 'Premium Executive Checkup', price: 1200, currency: 'USD', duration: '6 hours', items: ['All comprehensive items', 'CT Scan (chest low-dose)', 'Stress test ECG', 'Echocardiogram', 'Tumor markers', 'Thyroid function', 'Bone density scan', 'Nutrition consultation', 'Executive report'], includesTranslator: true, description: 'Executive-level health assessment with advanced imaging.', tags: ['premium', 'executive'], avgRating: 4.8, reviewCount: 0 },
+    { hospitalId: h2.id, name: 'Standard Health Check', price: 320, currency: 'USD', duration: '3 hours', items: ['Blood pressure', 'Blood test (basic)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Doctor consultation'], includesTranslator: false, description: 'Standard health screening, cost-effective basic assessment.', tags: ['basic', 'standard'], avgRating: 4.0, reviewCount: 0 },
+    { hospitalId: h2.id, name: 'Comprehensive Health Screen', price: 650, currency: 'USD', duration: '5 hours', items: ['Blood test (comprehensive)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Thyroid ultrasound', 'Stress test', 'Pulmonary function', 'Doctor consultation'], includesTranslator: true, description: 'In-depth screening with thyroid and pulmonary assessments.', tags: ['comprehensive'], avgRating: 4.3, reviewCount: 0 },
+    { hospitalId: h2.id, name: 'VIP Executive Health Program', price: 1500, currency: 'USD', duration: 'Full day', items: ['All comprehensive items', 'CT Scan (chest & abdomen)', 'Cardiac stress echo', 'Carotid Doppler', 'Tumor markers (full panel)', 'Hormone panel', 'Vitamin screening', 'Food allergy test', 'Genetic screening consultation'], includesTranslator: true, description: 'Top-tier VIP program with genetic screening consultation.', tags: ['premium', 'vip', 'executive'], avgRating: 4.7, reviewCount: 0 },
+    { hospitalId: h3.id, name: 'Expat Basic Checkup', price: 250, currency: 'USD', duration: '2 hours', items: ['Blood pressure', 'Blood test (basic)', 'Urinalysis', 'BMI', 'Doctor consultation (English)'], includesTranslator: false, description: 'Entry-level checkup for new expats.', tags: ['basic', 'entry-level'], avgRating: 4.1, reviewCount: 0 },
+    { hospitalId: h3.id, name: 'Expat Comprehensive Checkup', price: 550, currency: 'USD', duration: '4 hours', items: ['Blood test (full panel)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Thyroid panel', 'Vitamin screening', 'Doctor consultation (English)'], includesTranslator: true, description: 'Comprehensive checkup tailored for expat health needs.', tags: ['comprehensive', 'expat'], avgRating: 4.6, reviewCount: 0 },
+    { hospitalId: h3.id, name: 'Expat Deluxe Wellness', price: 1100, currency: 'USD', duration: 'Full day', items: ['All comprehensive items', 'CT Scan (low-dose chest)', 'Cardiac stress test', 'MRI (brain screening)', 'Nutrition consultation', 'Personal health report', 'Dietary plan'], includesTranslator: true, description: 'Deluxe program with brain MRI and personalized dietary plan.', tags: ['premium', 'deluxe'], avgRating: 4.9, reviewCount: 0 },
+    { hospitalId: h4.id, name: 'Wellness Starter', price: 350, currency: 'USD', duration: '2.5 hours', items: ['Physician consultation', 'Blood analysis (40+ biomarkers)', 'Urinalysis', 'ECG', 'Body composition', 'Health risk assessment'], includesTranslator: false, description: 'Physician-led wellness screening with comprehensive blood analysis.', tags: ['basic', 'wellness'], avgRating: 4.3, reviewCount: 0 },
+    { hospitalId: h4.id, name: 'Executive Health Assessment', price: 880, currency: 'USD', duration: '5 hours', items: ['Physician consultation', 'Advanced blood panel (80+ biomarkers)', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Stress ECG', 'Spirometry', 'Vision & hearing', 'Nutrition consultation', 'Executive report'], includesTranslator: false, description: 'Executive health assessment by western-trained physicians.', tags: ['comprehensive', 'executive'], avgRating: 4.6, reviewCount: 0 },
+    { hospitalId: h5.id, name: 'Jiahui Basic Screen', price: 300, currency: 'USD', duration: '2 hours', items: ['Health questionnaire', 'Vital signs', 'Blood test', 'Urinalysis', 'ECG', 'Physician review'], includesTranslator: false, description: 'JCI-standard basic health screening.', tags: ['basic'], avgRating: 4.4, reviewCount: 0 },
+    { hospitalId: h5.id, name: 'Jiahui Complete Wellness', price: 720, currency: 'USD', duration: '5 hours', items: ['Physician consultation', 'Advanced blood panel', 'ECG', 'Chest X-ray', 'Abdomen ultrasound', 'Thyroid ultrasound', 'Bone density scan', 'Stress test', 'Nutrition consultation', 'Wellness report'], includesTranslator: true, description: 'Complete wellness in JCI-accredited facility.', tags: ['comprehensive', 'wellness'], avgRating: 4.7, reviewCount: 0 },
+    { hospitalId: h6.id, name: 'UFH Health Check', price: 380, currency: 'USD', duration: '3 hours', items: ['Physician exam', 'Blood work (comprehensive)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Hearing & vision screening'], includesTranslator: false, description: 'Quality health check from United Family Healthcare.', tags: ['basic', 'standard'], avgRating: 4.5, reviewCount: 0 },
+    { hospitalId: h6.id, name: 'UFH Premier Wellness', price: 950, currency: 'USD', duration: '6 hours', items: ['Extended physician consultation', 'Advanced blood panel', 'ECG & Stress ECG', 'Chest CT (low-dose)', 'Abdominal ultrasound', 'Cardiac ultrasound', 'Bone density scan', 'Cancer markers', 'Wellness action plan'], includesTranslator: true, description: 'Premier program with cancer screening and lifestyle coaching.', tags: ['premium', 'wellness'], avgRating: 4.8, reviewCount: 0 },
+    { hospitalId: h7.id, name: 'Essential Health Check', price: 180, currency: 'USD', duration: '2 hours', items: ['Blood pressure', 'Blood test (basic)', 'Urinalysis', 'ECG', 'Doctor consultation'], includesTranslator: false, description: 'Budget-friendly essential health check.', tags: ['basic', 'budget'], avgRating: 3.9, reviewCount: 0 },
+    { hospitalId: h7.id, name: 'Standard Plus Checkup', price: 380, currency: 'USD', duration: '4 hours', items: ['Comprehensive blood test', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Liver function', 'Kidney function', 'Thyroid function', 'Doctor consultation'], includesTranslator: true, description: 'Affordable comprehensive checkup with translator assistance.', tags: ['comprehensive', 'value'], avgRating: 4.1, reviewCount: 0 },
+  ]});
 
-  // Create packages for Huashan
-  await prisma.checkupPackage.createMany({
-    data: [
-      {
-        hospitalId: hospital1.id,
-        name: 'Basic Health Checkup',
-        price: 280,
-        duration: '2 hours',
-        items: ['Blood pressure', 'Blood test (basic)', 'Urinalysis', 'BMI measurement', 'Doctor consultation'],
-        includesTranslator: false,
-        tags: ['basic'],
-        avgRating: 4.2,
-        reviewCount: 0,
-      },
-      {
-        hospitalId: hospital1.id,
-        name: 'Comprehensive Health Checkup',
-        price: 580,
-        duration: '4 hours',
-        items: ['Blood test (comprehensive)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Vision test', 'Hearing test', 'Doctor consultation'],
-        includesTranslator: true,
-        tags: ['comprehensive'],
-        avgRating: 4.5,
-        reviewCount: 0,
-      },
-      {
-        hospitalId: hospital1.id,
-        name: 'Premium Executive Checkup',
-        price: 1200,
-        duration: '6 hours',
-        items: ['All comprehensive items', 'CT Scan (chest)', 'Stress test ECG', 'Echocardiogram', 'Tumor markers', 'Thyroid function', 'Bone density scan', 'Nutrition consultation'],
-        includesTranslator: true,
-        tags: ['premium'],
-        avgRating: 4.8,
-        reviewCount: 0,
-      },
-    ],
-  });
+  try {
+    const { meilisearch, PACKAGES_INDEX, HOSPITALS_INDEX, ensureIndexes } = await import('../src/lib/meilisearch');
+    await ensureIndexes();
+    const hospitals = await prisma.hospital.findMany({ where: { isActive: true } });
+    await meilisearch.index(HOSPITALS_INDEX).addDocuments(hospitals.map(h => ({ id: h.id, name: h.name, description: h.description, address: h.address, isActive: h.isActive })));
+    const packages = await prisma.checkupPackage.findMany({ where: { isActive: true }, include: { hospital: true } });
+    await meilisearch.index(PACKAGES_INDEX).addDocuments(packages.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, description: p.description, items: p.items as string[], tags: p.tags, includesTranslator: p.includesTranslator, avgRating: Number(p.avgRating), isActive: p.isActive })));
+  } catch { console.log('Meilisearch indexing skipped (not available)'); }
 
-  // Create packages for Ruijin
-  await prisma.checkupPackage.createMany({
-    data: [
-      {
-        hospitalId: hospital2.id,
-        name: 'Standard Health Check',
-        price: 320,
-        duration: '3 hours',
-        items: ['Blood pressure', 'Blood test (basic)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Doctor consultation'],
-        includesTranslator: false,
-        tags: ['basic'],
-        avgRating: 4.0,
-        reviewCount: 0,
-      },
-      {
-        hospitalId: hospital2.id,
-        name: 'Comprehensive Health Screen',
-        price: 650,
-        duration: '5 hours',
-        items: ['Blood test (comprehensive)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Thyroid ultrasound', 'Stress test', 'Ophthalmology check', 'Doctor consultation'],
-        includesTranslator: true,
-        tags: ['comprehensive'],
-        avgRating: 4.3,
-        reviewCount: 0,
-      },
-    ],
-  });
-
-  // Create packages for East International
-  await prisma.checkupPackage.createMany({
-    data: [
-      {
-        hospitalId: hospital3.id,
-        name: 'Expat Basic Checkup',
-        price: 250,
-        duration: '2 hours',
-        items: ['Blood pressure', 'Blood test (basic)', 'Urinalysis', 'BMI', 'Doctor consultation (English)'],
-        includesTranslator: false,
-        tags: ['basic'],
-        avgRating: 4.1,
-        reviewCount: 0,
-      },
-      {
-        hospitalId: hospital3.id,
-        name: 'Expat Comprehensive Checkup',
-        price: 550,
-        duration: '4 hours',
-        items: ['Blood test (full panel)', 'Urinalysis', 'ECG', 'Chest X-ray', 'Abdominal ultrasound', 'Thyroid panel', 'Vitamin deficiency screening', 'Doctor consultation (English)'],
-        includesTranslator: true,
-        tags: ['comprehensive'],
-        avgRating: 4.6,
-        reviewCount: 0,
-      },
-      {
-        hospitalId: hospital3.id,
-        name: 'Expat Deluxe Wellness',
-        price: 1100,
-        duration: 'Full day',
-        items: ['All comprehensive items', 'CT Scan (low-dose chest)', 'Cardiac stress test', 'MRI (brain screening)', 'Nutrition consultation', 'Personal health report', 'Follow-up consultation'],
-        includesTranslator: true,
-        tags: ['premium'],
-        avgRating: 4.9,
-        reviewCount: 0,
-      },
-    ],
-  });
-
-  // Index data in Meilisearch
-  const { meilisearch, PACKAGES_INDEX, HOSPITALS_INDEX, ensureIndexes } = await import('../src/lib/meilisearch');
-  await ensureIndexes();
-
-  const hospitals = await prisma.hospital.findMany({ where: { isActive: true } });
-  await meilisearch.index(HOSPITALS_INDEX).addDocuments(
-    hospitals.map(h => ({ id: h.id, name: h.name, description: h.description, address: h.address, isActive: h.isActive }))
-  );
-
-  const packages = await prisma.checkupPackage.findMany({
-    where: { isActive: true },
-    include: { hospital: true },
-  });
-  await meilisearch.index(PACKAGES_INDEX).addDocuments(
-    packages.map(p => ({
-      id: p.id,
-      hospitalId: p.hospitalId,
-      hospitalName: p.hospital.name,
-      name: p.name,
-      price: Number(p.price),
-      currency: p.currency,
-      duration: p.duration,
-      description: p.description,
-      items: p.items as string[],
-      tags: p.tags,
-      includesTranslator: p.includesTranslator,
-      avgRating: Number(p.avgRating),
-      isActive: p.isActive,
-    }))
-  );
-
-  console.log('Seed data created successfully');
+  console.log('✅ Seed data created successfully');
+  console.log(`   - ${await prisma.hospital.count()} hospitals`);
+  console.log(`   - ${await prisma.checkupPackage.count()} checkup packages`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((e) => { console.error(e); process.exit(1); }).finally(async () => { await prisma.$disconnect(); });
