@@ -3,24 +3,39 @@ import { notFound } from 'next/navigation';
 import { PackageCard } from '@/components/package-card';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 interface Props { params: { id: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const hospital = await prisma.hospital.findUnique({ where: { id: params.id } });
-  if (!hospital) return { title: 'Hospital Not Found' };
-  return { title: hospital.name };
+  try {
+    if (!prisma) return { title: 'Hospital' };
+    const hospital = await prisma.hospital.findUnique({ where: { id: params.id } });
+    if (!hospital) return { title: 'Hospital Not Found' };
+    return { title: hospital.name };
+  } catch {
+    return { title: 'Hospital' };
+  }
 }
 
 export default async function HospitalDetailPage({ params }: Props) {
-  const hospital = await prisma.hospital.findUnique({
-    where: { id: params.id },
-    include: {
-      packages: {
-        where: { isActive: true },
-        orderBy: { price: 'asc' },
+  let hospital;
+  try {
+    if (!prisma) { hospital = null; }
+    else {
+    hospital = await prisma.hospital.findUnique({
+      where: { id: params.id },
+      include: {
+        packages: {
+          where: { isActive: true },
+          orderBy: { price: 'asc' },
+        },
       },
-    },
-  });
+    });
+    }
+  } catch {
+    hospital = null;
+  }
 
   if (!hospital) notFound();
 

@@ -2,22 +2,37 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 interface Props { params: { id: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const pkg = await prisma.checkupPackage.findUnique({
-    where: { id: params.id },
-    include: { hospital: true },
-  });
-  if (!pkg) return { title: 'Package Not Found' };
-  return { title: `${pkg.name} - ${pkg.hospital.name}` };
+  try {
+    if (!prisma) return { title: 'Checkup Package' };
+    const pkg = await prisma.checkupPackage.findUnique({
+      where: { id: params.id },
+      include: { hospital: true },
+    });
+    if (!pkg) return { title: 'Package Not Found' };
+    return { title: `${pkg.name} - ${pkg.hospital.name}` };
+  } catch {
+    return { title: 'Checkup Package' };
+  }
 }
 
 export default async function PackageDetailPage({ params }: Props) {
-  const pkg = await prisma.checkupPackage.findUnique({
-    where: { id: params.id },
-    include: { hospital: true },
-  });
+  let pkg;
+  try {
+    if (!prisma) { pkg = null; }
+    else {
+    pkg = await prisma.checkupPackage.findUnique({
+      where: { id: params.id },
+      include: { hospital: true },
+    });
+    }
+  } catch {
+    pkg = null;
+  }
 
   if (!pkg) notFound();
 
