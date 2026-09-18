@@ -22,7 +22,6 @@ model Hospital {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   packages     CheckupPackage[]
-  reviews      Review[]
   inquiries    Inquiry[]
 
   @@map("hospitals")

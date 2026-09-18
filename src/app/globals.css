@@ -18,6 +18,51 @@
   }
 }
 
+@layer utilities {
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+  }
+  .bg-primary {
+    background-color: hsl(var(--primary));
+  }
+  .text-primary-foreground {
+    color: hsl(var(--primary-foreground));
+  }
+  .bg-muted {
+    background-color: hsl(var(--muted));
+  }
+  .bg-accent {
+    background-color: hsl(var(--accent));
+  }
+  .text-primary {
+    color: hsl(var(--primary));
+  }
+  .hover\:border-primary:hover {
+    border-color: hsl(var(--primary));
+  }
+  .hover\:bg-muted:hover {
+    background-color: hsl(var(--muted));
+  }
+  .hover\:bg-primary\/90:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+  .ring-primary {
+    --tw-ring-color: hsl(var(--primary));
+  }
+  .focus\:ring-primary:focus {
+    --tw-ring-color: hsl(var(--primary));
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
