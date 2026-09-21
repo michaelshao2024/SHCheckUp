@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
 import { meilisearch, HOSPITALS_INDEX } from '@/lib/meilisearch';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
+  // Try Meilisearch first
   try {
-    const result = await meilisearch.index(HOSPITALS_INDEX).search('', {
-      limit: 50,
-      filter: ['isActive = true'],
-      attributesToRetrieve: ['id', 'name', 'description', 'address'],
-    });
+    const result = await meilisearch.index(HOSPITALS_INDEX).search('', { limit: 50, filter: ['isActive = true'], attributesToRetrieve: ['id', 'name', 'description', 'address'] });
+    return NextResponse.json(result.hits);
+  } catch { /* fallback */ }
 
-    return NextResponse.json({ hospitals: result.hits });
-  } catch (error) {
-    console.error('Hospitals fetch error:', error);
-    return NextResponse.json(
-      { error: 'Unable to load hospitals' },
-      { status: 503 }
-    );
+  // Prisma fallback
+  try {
+    if (!prisma) return NextResponse.json([]);
+    const hospitals = await prisma.hospital.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } });
+    return NextResponse.json(hospitals);
+  } catch {
+    return NextResponse.json([]);
   }
 }

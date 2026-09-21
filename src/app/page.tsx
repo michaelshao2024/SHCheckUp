@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchBar } from '@/components/search-bar';
 import { HospitalCard } from '@/components/hospital-card';
 import { PackageCard } from '@/components/package-card';
+import Link from 'next/link';
 
 interface SearchResult {
   hospitals: Array<{ id: string; name: string; description: string; address: string }>;
@@ -17,6 +18,13 @@ export default function HomePage() {
   const [results, setResults] = useState<SearchResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn: string | null; description: string; address: string }>>([]);
+
+  useEffect(() => {
+    fetch('/api/hospitals').then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setInitialHospitals(data);
+    }).catch(() => {});
+  }, []);
 
   const handleSearch = async (query: string) => {
     setLoading(true);
@@ -89,8 +97,24 @@ export default function HomePage() {
         )}
 
         {!loading && !hasSearched && (
-          <div className="text-center py-12 text-muted-foreground">
-            <p>Search above to find checkup packages and hospitals.</p>
+          <div>
+            {/* Initial Hospital Listing */}
+            {initialHospitals.length > 0 && (
+              <div className="mb-12">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold">Shanghai Hospitals</h2>
+                  <Link href="/compare" className="text-sm text-primary hover:underline">Compare Packages →</Link>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {initialHospitals.map((h) => (
+                    <HospitalCard key={h.id} id={h.id} name={h.name} description={h.description} address={h.address} />
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="text-center py-8 text-muted-foreground">
+              <p>Search above to find checkup packages and hospitals.</p>
+            </div>
           </div>
         )}
       </section>
