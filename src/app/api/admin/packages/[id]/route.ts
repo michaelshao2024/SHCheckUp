@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth';
 
 interface Props { params: { id: string } }
 
@@ -7,6 +8,10 @@ export async function PUT(request: NextRequest, { params }: Props) {
   try {
     if (!prisma) {
       return NextResponse.json({ error: 'Database not available' }, { status: 503 });
+    }
+    const admin = await requireAdmin();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
     }
     const body = await request.json();
     const { hospitalId, name, price, currency, duration, items, description, tags, includesTranslator, isActive } = body;
@@ -52,6 +57,10 @@ export async function DELETE(_request: NextRequest, { params }: Props) {
   try {
     if (!prisma) {
       return NextResponse.json({ error: 'Database not available' }, { status: 503 });
+    }
+    const admin = await requireAdmin();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
     }
     const existing = await prisma.checkupPackage.findUnique({ where: { id: params.id } });
     if (!existing) {

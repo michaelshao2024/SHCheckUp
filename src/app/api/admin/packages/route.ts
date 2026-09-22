@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth';
 
 export async function GET() {
   try {
@@ -24,6 +25,10 @@ export async function POST(request: NextRequest) {
   try {
     if (!prisma) {
       return NextResponse.json({ error: 'Database not available' }, { status: 503 });
+    }
+    const admin = await requireAdmin();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
     }
     const body = await request.json();
     const { hospitalId, name, price, currency, duration, items, description, tags, includesTranslator } = body;

@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   if (!prisma) {
     return NextResponse.json({ success: 0, failed: 0, errors: ['Database not available'] }, { status: 503 });
+  }
+  const admin = await requireAdmin();
+  if (!admin) {
+    return NextResponse.json({ success: 0, failed: 0, errors: ['Unauthorized: admin access required'] }, { status: 401 });
   }
 
   try {
