@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { getSessionUser } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -36,6 +37,7 @@ export default async function PackageDetailPage({ params }: Props) {
 
   if (!pkg) notFound();
 
+  const user = await getSessionUser();
   const items = pkg.items as string[] | null;
 
   return (
@@ -95,11 +97,13 @@ export default async function PackageDetailPage({ params }: Props) {
         </div>
       )}
 
-      {/* Sign in prompt for details */}
-      <div className="bg-muted p-6 rounded-lg text-center">
-        <p className="text-muted-foreground mb-2">Sign in to see provider contact details and submit inquiries.</p>
-        <a href="/login" className="text-primary hover:underline font-medium">Sign In with Google →</a>
-      </div>
+      {/* Sign in prompt for details — hidden when already signed in */}
+      {!user && (
+        <div className="bg-muted p-6 rounded-lg text-center">
+          <p className="text-muted-foreground mb-2">Sign in to see provider contact details and submit inquiries.</p>
+          <a href="/login" className="text-primary hover:underline font-medium">Sign In →</a>
+        </div>
+      )}
     </div>
   );
 }
