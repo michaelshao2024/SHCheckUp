@@ -26,7 +26,12 @@ export default function ComparePage() {
           fetch('/api/admin/packages').then(r => r.json()).catch(() => []),
         ]);
         setHospitals(Array.isArray(hRes) ? hRes : []);
-        setPackages(Array.isArray(pRes) ? pRes : []);
+        // Admin API serializes Prisma Decimal fields (price, avgRating) as strings — normalize to numbers
+        setPackages(
+          Array.isArray(pRes)
+            ? pRes.map((p: any) => ({ ...p, price: Number(p.price), avgRating: Number(p.avgRating) }))
+            : []
+        );
       } catch { /* ignore */ }
       setLoading(false);
     }
