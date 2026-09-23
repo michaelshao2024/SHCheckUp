@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { getSessionUser } from '@/lib/auth';
 import { notFound } from 'next/navigation';
+import { EscortServiceButton } from '@/components/escort-service-button';
+import { HospitalImage } from '@/components/hospital-image';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -96,6 +98,30 @@ export default async function PackageDetailPage({ params }: Props) {
           <p className="text-xs text-muted-foreground mt-1">English-speaking staff or translator arranged for this package.</p>
         </div>
       )}
+
+      {/* Hospital / Provider information */}
+      <div className="border border-border rounded-lg p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-3">About the Provider</h2>
+        {pkg.hospital.imageUrl && <HospitalImage src={pkg.hospital.imageUrl} alt={pkg.hospital.name} />}
+        <p className="font-medium">{pkg.hospital.name}</p>
+        {pkg.hospital.nameCn && <p className="text-sm text-muted-foreground">{pkg.hospital.nameCn}</p>}
+        <p className="text-sm text-muted-foreground mt-2">📍 {pkg.hospital.address}</p>
+        <p className="text-sm text-muted-foreground mt-3">{pkg.hospital.description}</p>
+        {user && (
+          <div className="mt-4 pt-4 border-t border-border space-y-1 text-sm">
+            {pkg.hospital.phone && <p>Phone: {pkg.hospital.phone}</p>}
+            {pkg.hospital.email && <p>Email: {pkg.hospital.email}</p>}
+            {pkg.hospital.website && (
+              <p>Website: <a href={pkg.hospital.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{pkg.hospital.website}</a></p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Medical escort service CTA */}
+      <div className="mb-6">
+        <EscortServiceButton packageId={pkg.id} packageName={pkg.name} hospitalName={pkg.hospital.name} />
+      </div>
 
       {/* Sign in prompt for details — hidden when already signed in */}
       {!user && (

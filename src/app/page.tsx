@@ -60,6 +60,37 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Medical Escort Service intro */}
+      <section className="bg-muted/50 py-14">
+        <div className="max-w-5xl mx-auto px-4 text-center">
+          <h2 className="text-2xl font-bold mb-3">Medical Escort Service</h2>
+          <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Coming to Shanghai for a health checkup? Our bilingual escorts accompany you through the whole visit —
+            so language and hospital procedures are never a barrier.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+            <div className="bg-white rounded-lg border border-border p-5">
+              <p className="text-2xl mb-2">🗣️</p>
+              <p className="font-medium mb-1">English-speaking escort</p>
+              <p className="text-sm text-muted-foreground">A dedicated companion translates and communicates with medical staff on your behalf.</p>
+            </div>
+            <div className="bg-white rounded-lg border border-border p-5">
+              <p className="text-2xl mb-2">📋</p>
+              <p className="font-medium mb-1">Appointments handled</p>
+              <p className="text-sm text-muted-foreground">We book your checkup, prepare paperwork, and guide you through registration on the day.</p>
+            </div>
+            <div className="bg-white rounded-lg border border-border p-5">
+              <p className="text-2xl mb-2">🏥</p>
+              <p className="font-medium mb-1">Door-to-door guidance</p>
+              <p className="text-sm text-muted-foreground">Hospital navigation, queue handling, and post-checkup report collection explained in English.</p>
+            </div>
+          </div>
+          <p className="text-sm text-muted-foreground mt-8">
+            Interested? Open any checkup package and click <span className="font-medium text-foreground">“Book Medical Escort Service”</span> — we will get in touch by email.
+          </p>
+        </div>
+      </section>
+
       {/* Results */}
       <section className="max-w-7xl mx-auto px-4 py-8">
         {loading && <p className="text-center text-muted-foreground">Searching...</p>}

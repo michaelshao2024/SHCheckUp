@@ -125,7 +125,7 @@ model Review {
 
 model Inquiry {
   id            String   @id @default(cuid())
-  userId        String   @map("user_id")
+  userId        String?  @map("user_id")
   hospitalId    String?  @map("hospital_id")
   packageId     String?  @map("package_id")
   name          String

@@ -67,7 +67,9 @@ export default function ComparePage() {
                 <label key={p.id} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${selected.includes(p.id) ? 'border-primary bg-primary/5' : 'border-border hover:bg-muted'}`}>
                   <input type="checkbox" checked={selected.includes(p.id)} onChange={() => toggleSelect(p.id)} disabled={!selected.includes(p.id) && selected.length >= 4} className="w-4 h-4 accent-primary" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{p.name}</p>
+                    <p className="text-sm font-medium">
+                      <Link href={`/packages/${p.id}`} className="hover:text-primary hover:underline">{p.name}</Link>
+                    </p>
                     <p className="text-xs text-muted-foreground">{p.hospitalName} — ${p.price} {p.currency}</p>
                   </div>
                 </label>
@@ -88,7 +90,9 @@ export default function ComparePage() {
                     <th className="p-3 text-left font-medium w-48">Feature</th>
                     {compareList.map(p => (
                       <th key={p.id} className="p-3 text-left font-medium min-w-48">
-                        <p className="text-base">{p.name}</p>
+                        <p className="text-base">
+                          <Link href={`/packages/${p.id}`} className="hover:text-primary hover:underline">{p.name}</Link>
+                        </p>
                         <p className="text-xs text-muted-foreground font-normal mt-1">{p.hospitalName}</p>
                       </th>
                     ))}
