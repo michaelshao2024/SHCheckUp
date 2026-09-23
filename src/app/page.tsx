@@ -219,7 +219,7 @@ export default function HomePage() {
       {/* Patient reviews */}
       <section id="testimonials" className="scroll-mt-16 py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-2 text-center">What our patients say</h2>
+          <h2 className="text-2xl font-bold mb-2 text-center">What our customers say</h2>
           <p className="text-muted-foreground text-center mb-10">
             Feedback from visitors who used the medical escort service.
           </p>
