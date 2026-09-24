@@ -19,6 +19,7 @@ interface PackageFormData {
   itemInput: string;
   items: string[];
   description: string;
+  source: string;
   tagInput: string;
   tags: string[];
   includesTranslator: boolean;
@@ -35,11 +36,12 @@ function AdminPackageFormPage() {
     hospitalId: '',
     name: '',
     price: '',
-    currency: 'USD',
+    currency: 'CNY',
     duration: '',
     itemInput: '',
     items: [],
     description: '',
+    source: '',
     tagInput: '',
     tags: [],
     includesTranslator: false,
@@ -85,11 +87,12 @@ function AdminPackageFormPage() {
         hospitalId: pkg.hospitalId || '',
         name: pkg.name || '',
         price: String(pkg.price) || '',
-        currency: pkg.currency || 'USD',
+        currency: pkg.currency || 'CNY',
         duration: pkg.duration || '',
         itemInput: '',
         items: Array.isArray(pkg.items) ? pkg.items : [],
         description: pkg.description || '',
+        source: pkg.source || '',
         tagInput: '',
         tags: Array.isArray(pkg.tags) ? pkg.tags : [],
         includesTranslator: pkg.includesTranslator || false,
@@ -164,6 +167,7 @@ function AdminPackageFormPage() {
         duration: form.duration || null,
         items: form.items,
         description: form.description || null,
+        source: form.source || null,
         tags: form.tags,
         includesTranslator: form.includesTranslator,
       };
@@ -187,11 +191,12 @@ function AdminPackageFormPage() {
           ...prev,
           name: '',
           price: '',
-          currency: 'USD',
+          currency: 'CNY',
           duration: '',
           itemInput: '',
           items: [],
           description: '',
+          source: '',
           tagInput: '',
           tags: [],
           includesTranslator: false,
@@ -302,9 +307,9 @@ function AdminPackageFormPage() {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white"
               >
+                <option value="CNY">CNY (¥)</option>
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
-                <option value="CNY">CNY (¥)</option>
                 <option value="GBP">GBP (£)</option>
               </select>
             </div>
@@ -373,6 +378,20 @@ function AdminPackageFormPage() {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-y"
               placeholder="Describe what this package includes..."
+            />
+          </div>
+
+          {/* Source */}
+          <div>
+            <label htmlFor="source" className="block text-sm font-medium mb-1">Source URL</label>
+            <input
+              id="source"
+              name="source"
+              type="url"
+              value={form.source}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="https://... (where this package info comes from)"
             />
           </div>
 

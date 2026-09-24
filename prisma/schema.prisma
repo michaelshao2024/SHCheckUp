@@ -31,11 +31,12 @@ model CheckupPackage {
   id            String   @id @default(cuid())
   hospitalId    String   @map("hospital_id")
   name          String   // e.g. "Executive Health Checkup - Premium"
-  price         Decimal  @db.Decimal(10, 2) // in USD
-  currency      String   @default("USD")
+  price         Decimal  @db.Decimal(10, 2) // in CNY
+  currency      String   @default("CNY")
   duration      String?  // e.g. "3 hours", "Full day"
   items         Json?    // Array of checkup items, e.g. ["Blood test", "ECG", "CT Scan"]
   includesTranslator Boolean @default(false) @map("includes_translator")
+  source        String?  // URL of the package's original listing / source page
   description   String?  @db.Text
   tags          String[] // e.g. ["basic", "comprehensive", "premium"]
   isActive      Boolean  @default(true) @map("is_active")

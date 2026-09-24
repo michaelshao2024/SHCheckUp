@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       duration: string;
       items: string;
       description: string;
+      source: string;
       tags: string;
       includesTranslator: string;
     }> };
@@ -86,10 +87,11 @@ export async function POST(request: NextRequest) {
             hospitalId: hospital.id,
             name: row.name.trim(),
             price: price,
-            currency: row.currency?.trim() || 'USD',
+            currency: row.currency?.trim() || 'CNY',
             duration: row.duration?.trim() || null,
             items: itemsList,
             description: row.description?.trim() || null,
+            source: row.source?.trim() || null,
             tags: tagsList,
             includesTranslator,
             isActive: true,

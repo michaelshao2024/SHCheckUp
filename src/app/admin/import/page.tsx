@@ -11,6 +11,7 @@ interface ImportRow {
   duration: string;
   items: string;
   description: string;
+  source: string;
   tags: string;
   includesTranslator: string;
 }
@@ -28,6 +29,7 @@ export default function AdminImportPage() {
     duration: 'duration',
     items: 'items',
     description: 'description',
+    source: 'source',
     tags: 'tags',
     includesTranslator: 'includesTranslator',
   });
@@ -58,7 +60,7 @@ export default function AdminImportPage() {
       // Auto-detect column mapping
       const headerLower = headers.map(h => h.toLowerCase().replace(/[\s\-_]/g, ''));
       const autoMap: Record<string, string> = {};
-      const fieldKeys = ['hospitalName', 'name', 'price', 'currency', 'duration', 'items', 'description', 'tags', 'includesTranslator'];
+      const fieldKeys = ['hospitalName', 'name', 'price', 'currency', 'duration', 'items', 'description', 'source', 'tags', 'includesTranslator'];
       const fieldPatterns: Record<string, string[]> = {
         hospitalName: ['hospitalname', 'hospital', 'hospital_name', '医院'],
         name: ['name', 'packagename', 'package_name', '套餐名称', '套餐名'],
@@ -67,6 +69,7 @@ export default function AdminImportPage() {
         duration: ['duration', 'time', '时长', '时间'],
         items: ['items', '检查项目', '项目'],
         description: ['description', 'desc', '描述', '说明'],
+        source: ['source', 'sourceurl', 'source_url', '出处', '来源', '来源链接'],
         tags: ['tags', 'tag', '标签', '分类'],
         includesTranslator: ['includestranslator', 'translator', '翻译', 'translation'],
       };
@@ -90,10 +93,11 @@ export default function AdminImportPage() {
           hospitalName: obj[autoMap.hospitalName || headers[0]] || '',
           name: obj[autoMap.name || headers[1]] || '',
           price: obj[autoMap.price || ''] || '',
-          currency: obj[autoMap.currency || ''] || 'USD',
+          currency: obj[autoMap.currency || ''] || 'CNY',
           duration: obj[autoMap.duration || ''] || '',
           items: obj[autoMap.items || ''] || '',
           description: obj[autoMap.description || ''] || '',
+          source: obj[autoMap.source || ''] || '',
           tags: obj[autoMap.tags || ''] || '',
           includesTranslator: obj[autoMap.includesTranslator || ''] || 'false',
         };

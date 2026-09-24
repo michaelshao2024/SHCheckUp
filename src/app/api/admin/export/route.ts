@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 const PACKAGE_HEADERS = [
   'hospitalName', 'name', 'price', 'currency', 'duration',
-  'items', 'description', 'tags', 'includesTranslator',
+  'items', 'description', 'source', 'tags', 'includesTranslator',
 ] as const;
 
 const HOSPITAL_HEADERS = [
@@ -57,6 +57,7 @@ export async function GET(request: NextRequest) {
         duration: p.duration ?? '',
         items: Array.isArray(p.items) ? (p.items as unknown[]).join('; ') : '',
         description: p.description ?? '',
+        source: p.source ?? '',
         tags: p.tags.join(', '),
         includesTranslator: p.includesTranslator ? 'true' : 'false',
       }));

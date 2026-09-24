@@ -70,7 +70,7 @@ export default function ComparePage() {
                     <p className="text-sm font-medium">
                       <Link href={`/packages/${p.id}`} className="hover:text-primary hover:underline">{p.name}</Link>
                     </p>
-                    <p className="text-xs text-muted-foreground">{p.hospitalName} — ${p.price} {p.currency}</p>
+                    <p className="text-xs text-muted-foreground">{p.hospitalName} — ¥{p.price} {p.currency}</p>
                   </div>
                 </label>
               ))}
@@ -102,7 +102,7 @@ export default function ComparePage() {
                   <tr className="border-t border-border">
                     <td className="p-3 font-medium">Price</td>
                     {compareList.map(p => (
-                      <td key={p.id} className="p-3"><span className="text-lg font-bold text-primary">${p.price.toLocaleString()}</span> {p.currency}</td>
+                      <td key={p.id} className="p-3"><span className="text-lg font-bold text-primary">¥{p.price.toLocaleString()}</span> {p.currency}</td>
                     ))}
                   </tr>
                   <tr className="border-t border-border">

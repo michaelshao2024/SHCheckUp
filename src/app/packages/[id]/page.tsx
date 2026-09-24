@@ -66,7 +66,7 @@ export default async function PackageDetailPage({ params }: Props) {
           <p className="text-muted-foreground">{pkg.hospital.name}</p>
         </div>
         <div className="sm:text-right">
-          <p className="text-2xl sm:text-3xl font-bold text-primary">${Number(pkg.price).toLocaleString()}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-primary">¥{Number(pkg.price).toLocaleString()}</p>
           {pkg.duration && <p className="text-sm text-muted-foreground">{pkg.duration}</p>}
         </div>
       </div>
@@ -87,6 +87,16 @@ export default async function PackageDetailPage({ params }: Props) {
 
       {/* Description */}
       {pkg.description && <p className="text-muted-foreground mb-6">{pkg.description}</p>}
+
+      {/* Source link */}
+      {pkg.source && (
+        <p className="text-sm mb-6">
+          Source:{' '}
+          <a href={pkg.source} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
+            {pkg.source}
+          </a>
+        </p>
+      )}
 
       {/* Checkup Items */}
       {items && items.length > 0 && (

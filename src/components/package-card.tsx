@@ -13,7 +13,7 @@ export function PackageCard({ id, name, price, duration, hospitalName, avgRating
     <a href={`/packages/${id}`} className="block p-6 rounded-lg border border-border hover:border-primary transition-colors">
       <div className="flex justify-between items-start mb-2">
         <h3 className="text-lg font-semibold">{name}</h3>
-        <span className="text-lg font-bold text-primary">${price}</span>
+        <span className="text-lg font-bold text-primary">¥{price.toLocaleString()}</span>
       </div>
       <p className="text-sm text-muted-foreground mb-1">{hospitalName}</p>
       <div className="flex items-center gap-2 mb-3">
