@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
+import { revalidatePublicContent } from '@/lib/revalidate';
 
 export async function GET() {
   try {
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
         includesTranslator: includesTranslator || false,
       },
     });
+    revalidatePublicContent();
     return NextResponse.json(pkg, { status: 201 });
   } catch (error) {
     console.error('Admin packages POST error:', error);

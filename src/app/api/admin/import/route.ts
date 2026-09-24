@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
+import { revalidatePublicContent } from '@/lib/revalidate';
 
 export async function POST(request: NextRequest) {
   if (!prisma) {
@@ -102,6 +103,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    if (success > 0) {
+      revalidatePublicContent();
+    }
     return NextResponse.json({
       success,
       failed,

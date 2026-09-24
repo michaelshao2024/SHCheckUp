@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
+import { revalidatePublicContent } from '@/lib/revalidate';
 
 interface Props { params: { id: string } }
 
@@ -43,6 +44,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
         ...(isActive !== undefined && { isActive }),
       },
     });
+    revalidatePublicContent();
     return NextResponse.json(pkg);
   } catch (error) {
     console.error('Admin packages PUT error:', error);
@@ -67,6 +69,7 @@ export async function DELETE(_request: NextRequest, { params }: Props) {
       return NextResponse.json({ error: 'Package not found' }, { status: 404 });
     }
     await prisma.checkupPackage.delete({ where: { id: params.id } });
+    revalidatePublicContent();
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin packages DELETE error:', error);

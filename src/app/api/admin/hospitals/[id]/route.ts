@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
+import { revalidatePublicContent } from '@/lib/revalidate';
 
 interface Props { params: { id: string } }
 
@@ -34,6 +35,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
         ...(isActive !== undefined && { isActive }),
       },
     });
+    revalidatePublicContent();
     return NextResponse.json(hospital);
   } catch (error: any) {
     console.error('Admin hospitals PUT error:', error);
@@ -64,6 +66,7 @@ export async function DELETE(_request: NextRequest, { params }: Props) {
       return NextResponse.json({ error: 'Hospital not found' }, { status: 404 });
     }
     await prisma.hospital.delete({ where: { id: params.id } });
+    revalidatePublicContent();
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Admin hospitals DELETE error:', error);

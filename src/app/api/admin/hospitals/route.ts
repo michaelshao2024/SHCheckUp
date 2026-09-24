@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
+import { revalidatePublicContent } from '@/lib/revalidate';
 
 export async function GET() {
   try {
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
     const hospital = await prisma.hospital.create({
       data: { name, nameCn, address, phone, email, website, description },
     });
+    revalidatePublicContent();
     return NextResponse.json(hospital, { status: 201 });
   } catch (error: any) {
     console.error('Admin hospitals POST error:', error);
