@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { rows } = body as { rows: Array<{
+    const { rows, mode } = body as { rows: Array<{
       hospitalName: string;
       name: string;
       price: string;
@@ -25,10 +25,19 @@ export async function POST(request: NextRequest) {
       source: string;
       tags: string;
       includesTranslator: string;
-    }> };
+    }>; mode?: 'append' | 'replace' };
 
     if (!rows || !Array.isArray(rows) || rows.length === 0) {
       return NextResponse.json({ success: 0, failed: 0, errors: ['No data rows provided'] });
+    }
+
+    // Replace mode: the uploaded file is authoritative — wipe all existing
+    // packages before inserting the new rows. (Reviews cascade-delete with
+    // their package; inquiries keep their record but lose the package link.)
+    let replacedCount = 0;
+    if (mode === 'replace') {
+      const deleted = await prisma.checkupPackage.deleteMany({});
+      replacedCount = deleted.count;
     }
 
     let success = 0;
@@ -113,6 +122,7 @@ export async function POST(request: NextRequest) {
       failed,
       errors: errors.slice(0, 100), // Limit error messages
       total: rows.length,
+      ...(mode === 'replace' && { replaced: replacedCount }),
     });
   } catch (err) {
     return NextResponse.json({

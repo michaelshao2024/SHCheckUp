@@ -20,7 +20,8 @@ export default function AdminImportPage() {
   const [file, setFile] = useState<File | null>(null);
   const [rows, setRows] = useState<ImportRow[]>([]);
   const [importing, setImporting] = useState(false);
-  const [result, setResult] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+  const [result, setResult] = useState<{ success: number; failed: number; errors: string[]; replaced?: number } | null>(null);
+  const [replaceMode, setReplaceMode] = useState(true);
   const [columnMap, setColumnMap] = useState<Record<string, string>>({
     hospitalName: 'hospitalName',
     name: 'name',
@@ -118,7 +119,7 @@ export default function AdminImportPage() {
       const res = await fetch('/api/admin/import', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rows, columnMap }),
+        body: JSON.stringify({ rows, columnMap, mode: replaceMode ? 'replace' : 'append' }),
       });
       const data = await res.json();
       setResult(data);
@@ -172,9 +173,9 @@ export default function AdminImportPage() {
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li>First row must be column headers</li>
             <li>Required columns: <code className="bg-background px-1 rounded">hospitalName</code>, <code className="bg-background px-1 rounded">name</code>, <code className="bg-background px-1 rounded">price</code></li>
-            <li>Optional: <code className="bg-background px-1 rounded">currency</code>, <code className="bg-background px-1 rounded">duration</code>, <code className="bg-background px-1 rounded">items</code> (comma separated), <code className="bg-background px-1 rounded">description</code>, <code className="bg-background px-1 rounded">tags</code> (comma separated), <code className="bg-background px-1 rounded">includesTranslator</code> (true/false)</li>
+            <li>Optional: <code className="bg-background px-1 rounded">currency</code> (default CNY), <code className="bg-background px-1 rounded">duration</code>, <code className="bg-background px-1 rounded">items</code> (comma separated), <code className="bg-background px-1 rounded">description</code>, <code className="bg-background px-1 rounded">source</code> (URL), <code className="bg-background px-1 rounded">tags</code> (comma separated), <code className="bg-background px-1 rounded">includesTranslator</code> (true/false)</li>
             <li>If hospital doesn&apos;t exist, it will be automatically created</li>
-            <li>Duplicates will be skipped</li>
+            <li>Replace mode (default): all existing packages are wiped first, the uploaded file becomes the authoritative data</li>
           </ul>
         </div>
       </div>
@@ -213,6 +214,19 @@ export default function AdminImportPage() {
           </div>
           {rows.length > 50 && <p className="text-xs text-muted-foreground mb-4">... and {rows.length - 50} more rows</p>}
 
+          <label className="flex items-center gap-2 mb-4 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              checked={replaceMode}
+              onChange={(e) => setReplaceMode(e.target.checked)}
+              className="w-4 h-4 accent-primary"
+            />
+            <span>
+              <span className="font-medium">Replace all existing packages</span>
+              <span className="text-muted-foreground"> — the uploaded file becomes the authoritative data; uncheck to append instead</span>
+            </span>
+          </label>
+
           <button
             onClick={handleImport}
             disabled={importing}
@@ -228,6 +242,7 @@ export default function AdminImportPage() {
         <div className={`rounded-lg border p-6 ${result.failed === 0 ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
           <h2 className="text-lg font-semibold mb-2">Import Result</h2>
           <p className="text-sm">✅ Successfully imported: {result.success}</p>
+          {typeof result.replaced === 'number' && <p className="text-sm">♻️ Existing packages replaced: {result.replaced}</p>}
           {result.failed > 0 && <p className="text-sm text-red-600">❌ Failed: {result.failed}</p>}
           {result.errors.length > 0 && (
             <div className="mt-2">
