@@ -66,9 +66,9 @@ export default function AdminInquiriesPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Inquiries</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Inquiries</h1>
           <p className="text-muted-foreground mt-1">
             Medical escort service requests · {pendingCount} pending
           </p>
@@ -90,7 +90,7 @@ export default function AdminInquiriesPage() {
         <div className="space-y-4">
           {inquiries.map((inq) => (
             <div key={inq.id} className="bg-white rounded-lg border border-border p-5">
-              <div className="flex items-start justify-between gap-4 mb-3">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-3">
                 <div>
                   <p className="font-medium">{inq.name}</p>
                   <p className="text-sm text-muted-foreground">

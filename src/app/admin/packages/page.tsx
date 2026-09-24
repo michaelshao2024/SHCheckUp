@@ -87,12 +87,12 @@ export default function AdminPackagesPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Manage Packages</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Manage Packages</h1>
           <p className="text-muted-foreground mt-1">View, edit, or remove checkup packages</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <a
             href="/api/admin/export?type=packages"
             download
@@ -129,7 +129,7 @@ export default function AdminPackagesPage() {
         <div className="space-y-8">
           {Object.entries(grouped).map(([hospitalId, group]) => (
             <div key={hospitalId} className="bg-white rounded-lg border border-border">
-              <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+              <div className="px-4 sm:px-6 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                 <div>
                   <h2 className="text-lg font-semibold">{group.hospital.name}</h2>
                   {group.hospital.nameCn && (
@@ -140,7 +140,7 @@ export default function AdminPackagesPage() {
               </div>
               <div className="divide-y divide-border">
                 {group.packages.map((pkg) => (
-                  <div key={pkg.id} className="px-6 py-4 flex items-center justify-between">
+                  <div key={pkg.id} className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h3 className="font-medium">{pkg.name}</h3>
@@ -148,7 +148,7 @@ export default function AdminPackagesPage() {
                           <span className="text-xs px-2 py-0.5 bg-red-50 text-red-600 rounded-full">Inactive</span>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground flex-wrap">
                         <span className="font-medium text-foreground">{formatPrice(pkg.price, pkg.currency)}</span>
                         {pkg.duration && <span>{pkg.duration}</span>}
                         <div className="flex gap-1">
@@ -159,7 +159,7 @@ export default function AdminPackagesPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-4">
+                    <div className="flex items-center gap-2 shrink-0 sm:ml-4">
                       <Link
                         href={`/admin/packages/new?id=${pkg.id}`}
                         className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted transition-colors"

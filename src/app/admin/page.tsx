@@ -62,12 +62,12 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Admin Dashboard</h1>
           <p className="text-muted-foreground mt-1">Manage hospitals and checkup packages</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <Link
             href="/admin/inquiries"
             className="inline-flex items-center px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors"
@@ -146,7 +146,7 @@ export default function AdminDashboardPage() {
                 </div>
               ) : (
                 hospitals.map((hospital) => (
-                  <div key={hospital.id} className="px-6 py-4 flex items-center justify-between">
+                  <div key={hospital.id} className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h3 className="font-medium truncate">{hospital.name}</h3>
@@ -159,7 +159,7 @@ export default function AdminDashboardPage() {
                       </div>
                       <p className="text-sm text-muted-foreground truncate mt-0.5">{hospital.address}</p>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-4">
+                    <div className="flex items-center gap-2 shrink-0 sm:ml-4">
                       <Link
                         href={`/admin/hospitals/new?id=${hospital.id}`}
                         className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted transition-colors"

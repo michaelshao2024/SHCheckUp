@@ -65,12 +65,12 @@ export default function AdminHospitalsPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Manage Hospitals</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Manage Hospitals</h1>
           <p className="text-muted-foreground mt-1">View, edit, or remove hospitals</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <a
             href="/api/admin/export?type=hospitals"
             download
@@ -113,9 +113,9 @@ export default function AdminHospitalsPage() {
       ) : (
         <div className="bg-white rounded-lg border border-border divide-y divide-border">
           {hospitals.map((hospital) => (
-            <div key={hospital.id} className="px-6 py-4 flex items-center justify-between">
+            <div key={hospital.id} className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-medium">{hospital.name}</h3>
                   {hospital.nameCn && (
                     <span className="text-sm text-muted-foreground">{hospital.nameCn}</span>
@@ -126,7 +126,7 @@ export default function AdminHospitalsPage() {
                 </div>
                 <p className="text-sm text-muted-foreground truncate mt-0.5">{hospital.address}</p>
               </div>
-              <div className="flex items-center gap-2 shrink-0 ml-4">
+              <div className="flex items-center gap-2 shrink-0 sm:ml-4">
                 <Link
                   href={`/admin/hospitals/new?id=${hospital.id}`}
                   className="px-3 py-1.5 text-sm border border-border rounded-md hover:bg-muted transition-colors"
