@@ -78,10 +78,8 @@ async function getAccessToken(): Promise<string | null> {
   return next.access_token;
 }
 
-export async function sendInquiryEmail(data: MailData): Promise<{ ok: boolean; error?: string }> {
-  const to = process.env.ADMIN_EMAIL;
-  if (!to) return { ok: false, error: 'ADMIN_EMAIL not configured' };
-
+/** Generic transactional email via Agent Mail. */
+export async function sendMail(to: string, subject: string, body: string): Promise<{ ok: boolean; error?: string }> {
   const accessToken = await getAccessToken();
   if (!accessToken) return { ok: false, error: 'Agent Mail token unavailable' };
 
@@ -93,30 +91,8 @@ export async function sendInquiryEmail(data: MailData): Promise<{ ok: boolean; e
     const aliasId = me?.data?.aliases?.[0]?.alias_id;
     if (!aliasId) return { ok: false, error: 'No mail alias found' };
 
-    const subject = `[Escort Inquiry] ${data.name} - ${data.packageName} (${data.hospitalName})`;
-    const body = [
-      'New medical escort service inquiry (陪诊服务工单)',
-      '',
-      `Package: ${data.packageName}`,
-      `Hospital: ${data.hospitalName}`,
-      '',
-      `Name: ${data.name}`,
-      `Email: ${data.email}`,
-      `Phone/WhatsApp: ${data.phone || '-'}`,
-      `Preferred date: ${data.preferredDate || '-'}`,
-      '',
-      'Message:',
-      data.message || '-',
-      '',
-      'View in admin: https://www.sanensheng.com/admin/inquiries',
-    ].join('\n');
-
     const url = `${API_BASE}/v1/aliases/${aliasId}/messages/send`;
-    const payload = {
-      to: [{ email: to }],
-      subject,
-      body,
-    };
+    const payload = { to: [{ email: to }], subject, body };
     const headers = { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
 
     // Step 1: request send -> 428 with confirmation_token
@@ -140,7 +116,32 @@ export async function sendInquiryEmail(data: MailData): Promise<{ ok: boolean; e
     }
     return { ok: true };
   } catch (error: any) {
-    console.error('sendInquiryEmail error:', error);
+    console.error('sendMail error:', error);
     return { ok: false, error: error?.message || 'Failed to send email' };
   }
+}
+
+export async function sendInquiryEmail(data: MailData): Promise<{ ok: boolean; error?: string }> {
+  const to = process.env.ADMIN_EMAIL;
+  if (!to) return { ok: false, error: 'ADMIN_EMAIL not configured' };
+
+  const subject = `[Escort Inquiry] ${data.name} - ${data.packageName} (${data.hospitalName})`;
+  const body = [
+    'New medical escort service inquiry (陪诊服务工单)',
+    '',
+    `Package: ${data.packageName}`,
+    `Hospital: ${data.hospitalName}`,
+    '',
+    `Name: ${data.name}`,
+    `Email: ${data.email}`,
+    `Phone/WhatsApp: ${data.phone || '-'}`,
+    `Preferred date: ${data.preferredDate || '-'}`,
+    '',
+    'Message:',
+    data.message || '-',
+    '',
+    'View in admin: https://www.sanensheng.com/admin/inquiries',
+  ].join('\n');
+
+  return sendMail(to, subject, body);
 }
