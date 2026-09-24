@@ -6,6 +6,17 @@ import type { Metadata } from 'next';
 // ISR: cache for 1 hour to minimize Neon reads
 export const revalidate = 3600;
 
+// Pre-render all existing hospitals at build time; new ones are cached on demand.
+export async function generateStaticParams() {
+  try {
+    if (!prisma) return [];
+    const hospitals = await prisma.hospital.findMany({ select: { id: true } });
+    return hospitals.map((h) => ({ id: h.id }));
+  } catch {
+    return [];
+  }
+}
+
 interface Props { params: { id: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

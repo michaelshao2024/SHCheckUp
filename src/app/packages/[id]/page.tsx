@@ -9,6 +9,17 @@ import type { Metadata } from 'next';
 // handled client-side by ProviderContact so this page stays static.
 export const revalidate = 3600;
 
+// Pre-render all existing packages at build time; new ones are cached on demand.
+export async function generateStaticParams() {
+  try {
+    if (!prisma) return [];
+    const pkgs = await prisma.checkupPackage.findMany({ select: { id: true } });
+    return pkgs.map((p) => ({ id: p.id }));
+  } catch {
+    return [];
+  }
+}
+
 interface Props { params: { id: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
