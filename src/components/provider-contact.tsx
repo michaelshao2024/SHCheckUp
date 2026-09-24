@@ -33,7 +33,7 @@ export function ProviderContact({ phone, email, website }: Props) {
         {website && (
           <p>
             Website:{' '}
-            <a href={website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            <a href={website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
               {website}
             </a>
           </p>

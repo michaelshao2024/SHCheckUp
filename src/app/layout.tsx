@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/navbar';
@@ -7,6 +7,11 @@ import { GdprBanner } from '@/components/gdpr-banner';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

@@ -114,7 +114,7 @@ export default function HomePage() {
       />
       {/* Homepage section navigation */}
       <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 h-11 flex items-center justify-center gap-6 text-sm">
+        <div className="max-w-7xl mx-auto px-4 h-11 flex items-center justify-start sm:justify-center gap-6 text-sm overflow-x-auto whitespace-nowrap">
           <a href="#search" className="text-muted-foreground hover:text-primary transition-colors">Search</a>
           <a href="#hospitals" className="text-muted-foreground hover:text-primary transition-colors">Hospitals</a>
           <a href="#escort" className="text-muted-foreground hover:text-primary transition-colors">Medical Escort</a>
@@ -123,10 +123,10 @@ export default function HomePage() {
       </nav>
 
       {/* Hero */}
-      <section id="search" className="scroll-mt-16 py-20 text-center bg-gradient-to-b from-primary/5 to-background">
+      <section id="search" className="scroll-mt-16 py-12 sm:py-20 text-center bg-gradient-to-b from-primary/5 to-background">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Find Your Health Checkup in Shanghai</h1>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">Find Your Health Checkup in Shanghai</h1>
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Compare medical checkup packages at Shanghai hospitals. Search, compare reviews, and book with confidence.
           </p>
           <div className="flex justify-center">

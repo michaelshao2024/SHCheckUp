@@ -60,7 +60,7 @@ export default function ComparePage() {
       ) : (
         <>
           {/* Select Packages */}
-          <div className="bg-white rounded-lg border border-border p-6 mb-8">
+          <div className="bg-white rounded-lg border border-border p-4 sm:p-6 mb-8">
             <h2 className="text-lg font-semibold mb-4">1. Select packages to compare (max 4)</h2>
             <div className="space-y-2 max-h-80 overflow-y-auto">
               {packages.map(p => (
@@ -82,7 +82,7 @@ export default function ComparePage() {
 
           {/* Comparison Table */}
           {compareList.length >= 2 && (
-            <div className="bg-white rounded-lg border border-border p-6 overflow-x-auto">
+            <div className="bg-white rounded-lg border border-border p-4 sm:p-6 overflow-x-auto">
               <h2 className="text-lg font-semibold mb-4">2. Comparison</h2>
               <table className="w-full text-sm">
                 <thead>

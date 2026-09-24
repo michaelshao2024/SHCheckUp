@@ -60,13 +60,13 @@ export default async function PackageDetailPage({ params }: Props) {
         ← Back to {pkg.hospital.name}
       </a>
 
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
         <div>
-          <h1 className="text-3xl font-bold mb-1">{pkg.name}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1">{pkg.name}</h1>
           <p className="text-muted-foreground">{pkg.hospital.name}</p>
         </div>
-        <div className="text-right">
-          <p className="text-3xl font-bold text-primary">${Number(pkg.price).toLocaleString()}</p>
+        <div className="sm:text-right">
+          <p className="text-2xl sm:text-3xl font-bold text-primary">${Number(pkg.price).toLocaleString()}</p>
           {pkg.duration && <p className="text-sm text-muted-foreground">{pkg.duration}</p>}
         </div>
       </div>
