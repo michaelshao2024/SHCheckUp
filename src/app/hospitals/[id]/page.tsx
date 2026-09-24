@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import { PackageCard } from '@/components/package-card';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+// ISR: cache for 1 hour to minimize Neon reads
+export const revalidate = 3600;
 
 interface Props { params: { id: string } }
 

@@ -5,6 +5,34 @@ import { SearchBar } from '@/components/search-bar';
 import { HospitalCard } from '@/components/hospital-card';
 import { PackageCard } from '@/components/package-card';
 import Link from 'next/link';
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/constants';
+
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+    },
+    {
+      '@type': 'WebSite',
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+      inLanguage: 'en',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+};
 
 // Curated patient feedback shown in the Reviews section
 const TESTIMONIALS = [
@@ -80,6 +108,10 @@ export default function HomePage() {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       {/* Homepage section navigation */}
       <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-border">
         <div className="max-w-7xl mx-auto px-4 h-11 flex items-center justify-center gap-6 text-sm">

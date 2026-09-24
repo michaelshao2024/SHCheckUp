@@ -1,11 +1,13 @@
 import { prisma } from '@/lib/prisma';
-import { getSessionUser } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import { EscortServiceButton } from '@/components/escort-service-button';
 import { HospitalImage } from '@/components/hospital-image';
+import { ProviderContact } from '@/components/provider-contact';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+// ISR: cache for 1 hour to minimize Neon reads; contact details are
+// handled client-side by ProviderContact so this page stays static.
+export const revalidate = 3600;
 
 interface Props { params: { id: string } }
 
@@ -39,7 +41,6 @@ export default async function PackageDetailPage({ params }: Props) {
 
   if (!pkg) notFound();
 
-  const user = await getSessionUser();
   const items = pkg.items as string[] | null;
 
   return (
@@ -107,29 +108,17 @@ export default async function PackageDetailPage({ params }: Props) {
         {pkg.hospital.nameCn && <p className="text-sm text-muted-foreground">{pkg.hospital.nameCn}</p>}
         <p className="text-sm text-muted-foreground mt-2">📍 {pkg.hospital.address}</p>
         <p className="text-sm text-muted-foreground mt-3">{pkg.hospital.description}</p>
-        {user && (
-          <div className="mt-4 pt-4 border-t border-border space-y-1 text-sm">
-            {pkg.hospital.phone && <p>Phone: {pkg.hospital.phone}</p>}
-            {pkg.hospital.email && <p>Email: {pkg.hospital.email}</p>}
-            {pkg.hospital.website && (
-              <p>Website: <a href={pkg.hospital.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">{pkg.hospital.website}</a></p>
-            )}
-          </div>
-        )}
+        <ProviderContact
+          phone={pkg.hospital.phone}
+          email={pkg.hospital.email}
+          website={pkg.hospital.website}
+        />
       </div>
 
       {/* Medical escort service CTA */}
       <div className="mb-6">
         <EscortServiceButton packageId={pkg.id} packageName={pkg.name} hospitalName={pkg.hospital.name} />
       </div>
-
-      {/* Sign in prompt for details — hidden when already signed in */}
-      {!user && (
-        <div className="bg-muted p-6 rounded-lg text-center">
-          <p className="text-muted-foreground mb-2">Sign in to see provider contact details and submit inquiries.</p>
-          <a href="/login" className="text-primary hover:underline font-medium">Sign In →</a>
-        </div>
-      )}
     </div>
   );
 }

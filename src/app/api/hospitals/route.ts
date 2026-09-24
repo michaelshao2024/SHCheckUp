@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { meilisearch, HOSPITALS_INDEX } from '@/lib/meilisearch';
 import { prisma } from '@/lib/prisma';
 
+// Cache responses for 1 hour to reduce Neon reads (data changes rarely)
+export const revalidate = 3600;
+
 export async function GET() {
   // Try Meilisearch first
   try {
