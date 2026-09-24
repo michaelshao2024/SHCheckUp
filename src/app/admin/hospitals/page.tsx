@@ -70,12 +70,21 @@ export default function AdminHospitalsPage() {
           <h1 className="text-3xl font-bold">Manage Hospitals</h1>
           <p className="text-muted-foreground mt-1">View, edit, or remove hospitals</p>
         </div>
-        <Link
-          href="/admin/hospitals/new"
-          className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-        >
-          + New Hospital
-        </Link>
+        <div className="flex gap-3">
+          <a
+            href="/api/admin/export?type=hospitals"
+            download
+            className="inline-flex items-center px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Export Excel
+          </a>
+          <Link
+            href="/admin/hospitals/new"
+            className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          >
+            + New Hospital
+          </Link>
+        </div>
       </div>
 
       {error && (

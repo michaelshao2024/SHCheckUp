@@ -92,12 +92,21 @@ export default function AdminPackagesPage() {
           <h1 className="text-3xl font-bold">Manage Packages</h1>
           <p className="text-muted-foreground mt-1">View, edit, or remove checkup packages</p>
         </div>
-        <Link
-          href="/admin/packages/new"
-          className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-        >
-          + New Package
-        </Link>
+        <div className="flex gap-3">
+          <a
+            href="/api/admin/export?type=packages"
+            download
+            className="inline-flex items-center px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+          >
+            Export Excel
+          </a>
+          <Link
+            href="/admin/packages/new"
+            className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          >
+            + New Package
+          </Link>
+        </div>
       </div>
 
       {error && (
