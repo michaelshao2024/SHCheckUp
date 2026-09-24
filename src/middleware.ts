@@ -12,6 +12,9 @@ const CN_ALLOWED_PREFIXES = [
   '/login',
   '/api/admin',
   '/api/auth',
+  // Search-engine crawler entry points (URL lists only, no sensitive data)
+  '/sitemap.xml',
+  '/robots.txt',
 ];
 
 export function middleware(request: NextRequest) {
