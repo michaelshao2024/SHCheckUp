@@ -158,6 +158,14 @@ model ImportLog {
   @@map("import_logs")
 }
 
+model Setting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
 model VerificationToken {
   identifier String
   token      String   @unique

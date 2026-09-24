@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "agently-mail": {
+      "source": "agent.qq.com",
+      "sourceType": "well-known",
+      "computedHash": "d2ac6842af04dabd3b2e5a2bcbe1adbdbbf56bddc03b00b1967158948ec3e45e"
+    }
+  }
+}

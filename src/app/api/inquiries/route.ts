@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSessionUser } from '@/lib/auth';
-import { notifyAdminInquiry } from '@/lib/notify';
+import { sendInquiryEmail } from '@/lib/agentmail';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Notify admin via configured webhook (wecom/dingtalk/telegram); no-op if not configured
-    await notifyAdminInquiry({
+    // Notify admin via Agent Mail; inquiry is already persisted in DB regardless of mail result
+    const mailResult = await sendInquiryEmail({
       packageName: pkg.name,
       hospitalName: pkg.hospital.name,
       name,
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       message,
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, emailSent: mailResult.ok });
   } catch (error) {
     console.error('Inquiry POST error:', error);
     return NextResponse.json({ error: 'Failed to submit inquiry' }, { status: 500 });
