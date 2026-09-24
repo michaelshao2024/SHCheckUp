@@ -24,17 +24,29 @@ export async function GET(request: NextRequest) {
       where: { isActive: true, name: q ? { contains: q, mode: 'insensitive' } : undefined },
       take: 10,
     });
+    const hospitalIds = hospitals.map(h => h.id);
+    // Packages match by their own name/description/tags, or by belonging to a matched hospital
     const packages = await prisma.checkupPackage.findMany({
-      where: { isActive: true, name: q ? { contains: q, mode: 'insensitive' } : undefined },
+      where: {
+        isActive: true,
+        ...(q
+          ? {
+              OR: [
+                { name: { contains: q, mode: 'insensitive' } },
+                { description: { contains: q, mode: 'insensitive' } },
+                { tags: { has: q.toLowerCase() } },
+                ...(hospitalIds.length ? [{ hospitalId: { in: hospitalIds } }] : []),
+              ],
+            }
+          : {}),
+      },
       include: { hospital: true },
       take: 10,
     });
-    const hospitalIds = new Set(hospitals.map(h => h.id));
-    const hospitalPkgs = packages.filter(p => hospitalIds.has(p.hospitalId));
 
     return NextResponse.json({
       hospitals: hospitals.map(h => ({ id: h.id, name: h.name, description: h.description, address: h.address })),
-      packages: hospitalPkgs.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, avgRating: Number(p.avgRating), tags: p.tags })),
+      packages: packages.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, avgRating: Number(p.avgRating), tags: p.tags })),
       source: 'prisma',
     });
   } catch {
