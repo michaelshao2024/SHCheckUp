@@ -20,6 +20,8 @@ export default function AdminDashboardPage() {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshMsg, setRefreshMsg] = useState<string | null>(null);
 
   useEffect(() => {
     fetchHospitals();
@@ -43,6 +45,21 @@ export default function AdminDashboardPage() {
     }
   }
 
+  async function refreshCache() {
+    setRefreshing(true);
+    setRefreshMsg(null);
+    try {
+      const res = await fetch('/api/admin/revalidate', { method: 'POST' });
+      if (!res.ok) throw new Error('Refresh failed');
+      setRefreshMsg('Cache refreshed. Public pages will show the latest data.');
+    } catch {
+      setRefreshMsg('Failed to refresh cache. Please try again.');
+    } finally {
+      setRefreshing(false);
+      setTimeout(() => setRefreshMsg(null), 5000);
+    }
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
@@ -63,6 +80,13 @@ export default function AdminDashboardPage() {
           >
             Import Excel
           </Link>
+          <button
+            onClick={refreshCache}
+            disabled={refreshing}
+            className="inline-flex items-center px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
+          >
+            {refreshing ? 'Refreshing...' : 'Refresh Cache'}
+          </button>
           <Link
             href="/admin/hospitals/new"
             className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
@@ -81,6 +105,12 @@ export default function AdminDashboardPage() {
       {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
           {error}
+        </div>
+      )}
+
+      {refreshMsg && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+          {refreshMsg}
         </div>
       )}
 
