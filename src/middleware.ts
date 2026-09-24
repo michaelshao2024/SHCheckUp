@@ -18,7 +18,11 @@ export function middleware(request: NextRequest) {
   const country = request.headers.get('x-vercel-ip-country');
   const { pathname } = request.nextUrl;
 
-  if (country === 'CN' && !CN_ALLOWED_PREFIXES.some((p) => pathname.startsWith(p))) {
+  // Dev/testing bypass: requests carrying the secret header skip geo blocking
+  const bypassSecret = process.env.GEO_BYPASS_SECRET;
+  const bypassed = bypassSecret && request.headers.get('x-geo-bypass') === bypassSecret;
+
+  if (!bypassed && country === 'CN' && !CN_ALLOWED_PREFIXES.some((p) => pathname.startsWith(p))) {
     return new NextResponse(
       '<!doctype html><html><head><meta charset="utf-8"><title>Not available</title></head>' +
         '<body style="font-family:sans-serif;max-width:32rem;margin:4rem auto;text-align:center">' +
