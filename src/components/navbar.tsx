@@ -33,10 +33,10 @@ export function Navbar() {
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           {!loaded ? null : user ? (
             <>
-              <span className="text-foreground">{user.name || user.email}</span>
               {user.role === 'admin' && (
-                <a href="/admin" className="hover:text-foreground font-medium text-primary">Admin</a>
+                <a href="/admin" className="hover:text-foreground font-medium text-primary">Admin Dashboard</a>
               )}
+              <span className="text-foreground">{user.name || user.email}</span>
               <button onClick={handleLogout} className="hover:text-foreground">Sign Out</button>
             </>
           ) : (
