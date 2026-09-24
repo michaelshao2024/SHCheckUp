@@ -11,9 +11,7 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "create-admin": "tsx prisma/create-admin.ts",
-    "db:studio": "prisma studio",
-    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
-    "docker:down": "docker compose -f docker/docker-compose.yml down"
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
