@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
     }
     const body = await request.json();
-    const { name, nameCn, address, phone, email, website, description } = body;
+    const { name, nameCn, address, phone, email, website, description, imageUrl } = body;
 
     if (!name || !address || !description) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
 
     const hospital = await prisma.hospital.create({
-      data: { name, nameCn, address, phone, email, website, description },
+      data: { name, nameCn, address, phone, email, website, description, imageUrl: imageUrl || null },
     });
     revalidatePublicContent();
     return NextResponse.json(hospital, { status: 201 });

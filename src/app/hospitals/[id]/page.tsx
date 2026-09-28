@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { PackageCard } from '@/components/package-card';
+import { HospitalImage } from '@/components/hospital-image';
 import type { Metadata } from 'next';
 
 // ISR: cache for 1 hour to minimize Neon reads
@@ -53,8 +54,9 @@ export default async function HospitalDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">{hospital.name}</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-2">{hospital.name}</h1>
       {hospital.nameCn && <p className="text-muted-foreground mb-4">{hospital.nameCn}</p>}
+      {hospital.imageUrl && <HospitalImage src={hospital.imageUrl} alt={hospital.name} />}
       <p className="text-sm text-muted-foreground mb-6">{hospital.address}</p>
       {hospital.phone && <p className="text-sm mb-2">Phone: {hospital.phone}</p>}
       <p className="text-muted-foreground mb-8">{hospital.description}</p>

@@ -12,6 +12,7 @@ interface HospitalFormData {
   email: string;
   website: string;
   description: string;
+  imageUrl: string;
 }
 
 function AdminHospitalFormPage() {
@@ -28,6 +29,7 @@ function AdminHospitalFormPage() {
     email: '',
     website: '',
     description: '',
+    imageUrl: '',
   });
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(isEditing);
@@ -57,6 +59,7 @@ function AdminHospitalFormPage() {
         email: hospital.email || '',
         website: hospital.website || '',
         description: hospital.description || '',
+        imageUrl: hospital.imageUrl || '',
       });
     } catch (err: any) {
       setError(err.message || 'Failed to load hospital');
@@ -68,6 +71,34 @@ function AdminHospitalFormPage() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+  }
+
+  function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    // Compress client-side: max 1200px wide, JPEG q0.8 -> small data URL
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX_W = 1200;
+        const scale = Math.min(1, MAX_W / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        if (dataUrl.length > 900_000) {
+          setError('Image is too large even after compression. Please choose a smaller photo.');
+          return;
+        }
+        setForm(prev => ({ ...prev, imageUrl: dataUrl }));
+      };
+      img.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -95,7 +126,7 @@ function AdminHospitalFormPage() {
       setSuccess(isEditing ? 'Hospital updated successfully!' : 'Hospital created successfully!');
 
       if (!isEditing) {
-        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '' });
+        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', imageUrl: '' });
       }
 
       setTimeout(() => {
@@ -220,6 +251,25 @@ function AdminHospitalFormPage() {
               className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               placeholder="https://www.hospital.com"
             />
+          </div>
+
+          {/* Photo */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Photo</label>
+            {form.imageUrl ? (
+              <div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={form.imageUrl} alt="Hospital" className="w-full max-h-48 object-cover rounded-lg border border-border mb-2" />
+                <button type="button" onClick={() => setForm(prev => ({ ...prev, imageUrl: '' }))}
+                  className="text-sm text-red-600 hover:underline">
+                  Remove photo
+                </button>
+              </div>
+            ) : (
+              <input type="file" accept="image/*" onChange={handleImageUpload}
+                className="w-full text-sm text-muted-foreground file:mr-3 file:px-3 file:py-2 file:border file:border-border file:rounded-lg file:text-sm file:bg-muted file:hover:bg-muted/80 file:cursor-pointer" />
+            )}
+            <p className="text-xs text-muted-foreground mt-1">JPG/PNG, compressed automatically. Shown on the public hospital page.</p>
           </div>
 
           <div>
