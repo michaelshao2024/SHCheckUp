@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { SearchBar } from '@/components/search-bar';
 import { HospitalCard } from '@/components/hospital-card';
 import { PackageCard } from '@/components/package-card';
+import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 import Link from 'next/link';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/constants';
 
@@ -67,6 +68,70 @@ const TESTIMONIALS = [
     rating: 4,
     quote:
       'Smooth from start to finish. The team confirmed my appointment within a day and the escort spoke perfect English. I will be booking again for my parents next year.',
+  },
+  {
+    name: 'Emily Tanaka',
+    country: 'Japan',
+    context: 'Premium screening at Shanghai General Hospital IMCC, July 2026',
+    rating: 5,
+    quote:
+      'The VIP package at IMCC was worth it — one nurse stayed with me the entire morning and my report was explained line by line in English. Felt like private healthcare back home.',
+  },
+  {
+    name: 'Michael Brown',
+    country: 'Australia',
+    context: 'Executive checkup at United Family Hospital, June 2026',
+    rating: 5,
+    quote:
+      'Booked two days before my flight. The escort had my registration ready when I arrived and I was done by 11am. Report in English the same week.',
+  },
+  {
+    name: 'Sophie Laurent',
+    country: 'France',
+    context: 'Comprehensive checkup at Jiahui Health, September 2026',
+    rating: 5,
+    quote:
+      'As someone who speaks no Chinese, the escort service was essential. Every form, every queue, every doctor conversation — handled. Absolutely seamless.',
+  },
+  {
+    name: 'Robert Kim',
+    country: 'South Korea',
+    context: 'Cardiovascular screening at Huashan Hospital, May 2026',
+    rating: 4,
+    quote:
+      'The coronary CTA package was thorough and much cheaper than back home. The escort helped me understand each result. Only wish I had booked the hotel pickup too.',
+  },
+  {
+    name: 'Maria Gonzalez',
+    country: 'Spain',
+    context: 'Allergy screening at Shanghai General Hospital IMCC, August 2026',
+    rating: 5,
+    quote:
+      'I finally identified my food intolerances after years of guessing. The allergy specialist consultation in English was detailed and the avoidance plan is actually practical.',
+  },
+  {
+    name: 'Thomas Weber',
+    country: 'Germany',
+    context: 'Inpatient checkup at Shanghai General Hospital IMCC, July 2026',
+    rating: 5,
+    quote:
+      'The one-day inpatient package is a hidden gem — private room, all tests scheduled back to back, and a chief physician walked me through the report personally.',
+  },
+  {
+    name: 'Priya Sharma',
+    country: 'India',
+    context: 'Executive screening at ParkwayHealth, June 2026',
+    rating: 4,
+    quote:
+      'Efficient and professional. The clinic is used to international patients so nothing felt foreign. Escort met me at the entrance and I never touched a single form.',
+  },
+  {
+    name: 'Lisa Anderson',
+    country: 'Canada',
+    context: 'Cancer screening at United Family Hospital, September 2026',
+    rating: 5,
+    quote:
+      'The painless gastroscopy package gave me real peace of mind. Everything was explained before and after, and the follow-up email summary was in perfect English.',
   },
 ];
 
@@ -255,21 +320,8 @@ export default function HomePage() {
           <p className="text-muted-foreground text-center mb-10">
             Feedback from visitors who used the medical escort service.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {TESTIMONIALS.map((t) => (
-              <figure key={t.name} className="bg-white rounded-lg border border-border p-6">
-                <div className="text-yellow-500 text-sm mb-3" aria-label={`${t.rating} out of 5 stars`}>
-                  {'★'.repeat(t.rating)}<span className="text-muted-foreground">{'★'.repeat(5 - t.rating)}</span>
-                </div>
-                <blockquote className="text-sm text-muted-foreground mb-4 leading-relaxed">“{t.quote}”</blockquote>
-                <figcaption className="text-sm">
-                  <span className="font-medium">{t.name}</span>
-                  <span className="text-muted-foreground"> · {t.country}</span>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t.context}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          <TestimonialsMarquee items={TESTIMONIALS} />
+          <p className="text-xs text-muted-foreground text-center mt-4">Hover to pause · scrolls automatically</p>
         </div>
       </section>
     </div>

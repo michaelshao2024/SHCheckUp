@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Testimonials marquee */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (min-width: 640px) {
+  .marquee-track {
+    animation: marquee-scroll 60s linear infinite;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+}
+@media (max-width: 639.98px) {
+  /* Mobile: no auto-scroll, swipe instead */
+  .marquee-track {
+    animation: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
