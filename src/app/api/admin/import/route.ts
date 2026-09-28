@@ -32,12 +32,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Replace mode: the uploaded file is authoritative — wipe all existing
-    // packages before inserting the new rows. (Reviews cascade-delete with
-    // their package; inquiries keep their record but lose the package link.)
+    // packages AND hospitals before inserting the new rows. Hospitals are
+    // recreated from the file's hospitalName column. (Reviews cascade-delete
+    // with their package; inquiries keep their records but lose the links.)
     let replacedCount = 0;
+    let replacedHospitals = 0;
     if (mode === 'replace') {
-      const deleted = await prisma.checkupPackage.deleteMany({});
-      replacedCount = deleted.count;
+      const deletedPkgs = await prisma.checkupPackage.deleteMany({});
+      replacedCount = deletedPkgs.count;
+      const deletedHospitals = await prisma.hospital.deleteMany({});
+      replacedHospitals = deletedHospitals.count;
     }
 
     let success = 0;
@@ -122,7 +126,7 @@ export async function POST(request: NextRequest) {
       failed,
       errors: errors.slice(0, 100), // Limit error messages
       total: rows.length,
-      ...(mode === 'replace' && { replaced: replacedCount }),
+      ...(mode === 'replace' && { replaced: replacedCount, replacedHospitals }),
     });
   } catch (err) {
     return NextResponse.json({

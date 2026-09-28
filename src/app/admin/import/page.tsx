@@ -20,7 +20,7 @@ export default function AdminImportPage() {
   const [file, setFile] = useState<File | null>(null);
   const [rows, setRows] = useState<ImportRow[]>([]);
   const [importing, setImporting] = useState(false);
-  const [result, setResult] = useState<{ success: number; failed: number; errors: string[]; replaced?: number } | null>(null);
+  const [result, setResult] = useState<{ success: number; failed: number; errors: string[]; replaced?: number; replacedHospitals?: number } | null>(null);
   const [replaceMode, setReplaceMode] = useState(true);
   const [columnMap, setColumnMap] = useState<Record<string, string>>({
     hospitalName: 'hospitalName',
@@ -194,11 +194,7 @@ export default function AdminImportPage() {
                   <th className="p-2 text-left font-medium">Price</th>
                   <th className="p-2 text-left font-medium">Currency</th>
                   <th className="p-2 text-left font-medium">Duration</th>
-                  <th className="p-2 text-left font-medium">Items</th>
-                  <th className="p-2 text-left font-medium">Description</th>
-                  <th className="p-2 text-left font-medium">Tags</th>
                   <th className="p-2 text-left font-medium">Translator</th>
-                  <th className="p-2 text-left font-medium">Source</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,11 +206,7 @@ export default function AdminImportPage() {
                     <td className="p-2">{row.price}</td>
                     <td className="p-2">{row.currency}</td>
                     <td className="p-2">{row.duration}</td>
-                    <td className="p-2 max-w-48 truncate" title={row.items}>{row.items}</td>
-                    <td className="p-2 max-w-48 truncate" title={row.description}>{row.description}</td>
-                    <td className="p-2">{row.tags}</td>
                     <td className="p-2">{row.includesTranslator}</td>
-                    <td className="p-2 max-w-48 truncate" title={row.source}>{row.source}</td>
                   </tr>
                 ))}
               </tbody>
@@ -230,8 +222,8 @@ export default function AdminImportPage() {
               className="w-4 h-4 accent-primary"
             />
             <span>
-              <span className="font-medium">Replace all existing packages</span>
-              <span className="text-muted-foreground"> — the uploaded file becomes the authoritative data; uncheck to append instead</span>
+              <span className="font-medium">Replace all existing data</span>
+              <span className="text-muted-foreground"> — wipes all packages and hospitals first; the uploaded file becomes the authoritative data. Uncheck to append instead</span>
             </span>
           </label>
 
@@ -250,7 +242,7 @@ export default function AdminImportPage() {
         <div className={`rounded-lg border p-6 ${result.failed === 0 ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
           <h2 className="text-lg font-semibold mb-2">Import Result</h2>
           <p className="text-sm">✅ Successfully imported: {result.success}</p>
-          {typeof result.replaced === 'number' && <p className="text-sm">♻️ Existing packages replaced: {result.replaced}</p>}
+          {typeof result.replaced === 'number' && <p className="text-sm">♻️ Existing packages replaced: {result.replaced}{typeof result.replacedHospitals === 'number' && ` · hospitals replaced: ${result.replacedHospitals}`}</p>}
           {result.failed > 0 && <p className="text-sm text-red-600">❌ Failed: {result.failed}</p>}
           {result.errors.length > 0 && (
             <div className="mt-2">
