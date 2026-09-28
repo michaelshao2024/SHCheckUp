@@ -148,6 +148,29 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn: string | null; description: string; address: string }>>([]);
+  const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'duration-asc' | 'duration-desc'>('default');
+
+  // Duration strings like "3 hours" / "Half day" / "Full day" -> approximate hours
+  function durationHours(d: string | null): number {
+    if (!d) return Number.POSITIVE_INFINITY;
+    const lower = d.toLowerCase();
+    if (lower.includes('full day')) return 8;
+    if (lower.includes('half day')) return 4;
+    const m = lower.match(/(\d+(?:\.\d+)?)/);
+    if (m) return lower.includes('day') ? parseFloat(m[1]) * 8 : parseFloat(m[1]);
+    return Number.POSITIVE_INFINITY;
+  }
+
+  function sortedPackages(pkgs: SearchResult['packages']) {
+    const arr = [...pkgs];
+    switch (sortBy) {
+      case 'price-asc': return arr.sort((a, b) => a.price - b.price);
+      case 'price-desc': return arr.sort((a, b) => b.price - a.price);
+      case 'duration-asc': return arr.sort((a, b) => durationHours(a.duration) - durationHours(b.duration));
+      case 'duration-desc': return arr.sort((a, b) => durationHours(b.duration) - durationHours(a.duration));
+      default: return arr;
+    }
+  }
 
   useEffect(() => {
     fetch('/api/hospitals').then(r => r.json()).then(data => {
@@ -211,9 +234,25 @@ export default function HomePage() {
           <>
             {results.packages.length > 0 && (
               <div className="mb-12">
-                <h2 className="text-xl font-semibold mb-4">Checkup Packages</h2>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <h2 className="text-xl font-semibold">Checkup Packages</h2>
+                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                    Sort by
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                      className="px-2 py-1.5 border border-border rounded-lg text-sm bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    >
+                      <option value="default">Relevance</option>
+                      <option value="price-asc">Price: low to high</option>
+                      <option value="price-desc">Price: high to low</option>
+                      <option value="duration-asc">Duration: shortest first</option>
+                      <option value="duration-desc">Duration: longest first</option>
+                    </select>
+                  </label>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {results.packages.map((p) => (
+                  {sortedPackages(results.packages).map((p) => (
                     <PackageCard key={p.id} {...p} />
                   ))}
                 </div>
