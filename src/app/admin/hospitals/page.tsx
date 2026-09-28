@@ -45,7 +45,7 @@ export default function AdminHospitalsPage() {
   }
 
   async function handleDelete(id: string, name: string) {
-    if (!window.confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+    if (!window.confirm(`Are you sure you want to delete "${name}"? All of its checkup packages will be deleted too. This action cannot be undone.`)) {
       return;
     }
     setError(null);

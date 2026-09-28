@@ -45,7 +45,7 @@ model CheckupPackage {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  hospital Hospital  @relation(fields: [hospitalId], references: [id])
+  hospital Hospital  @relation(fields: [hospitalId], references: [id], onDelete: Cascade)
   reviews  Review[]
   inquiries Inquiry[]
 
