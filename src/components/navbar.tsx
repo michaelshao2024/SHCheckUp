@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface Me {
   id: string;
@@ -12,14 +13,19 @@ interface Me {
 export function Navbar() {
   const [user, setUser] = useState<Me | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const pathname = usePathname();
 
+  // Refetch session on every route change so the navbar reflects
+  // login/logout immediately without a full page reload.
   useEffect(() => {
+    let cancelled = false;
     fetch('/api/auth/me')
       .then((r) => r.json())
-      .then((d) => setUser(d.user ?? null))
+      .then((d) => { if (!cancelled) setUser(d.user ?? null); })
       .catch(() => {})
-      .finally(() => setLoaded(true));
-  }, []);
+      .finally(() => { if (!cancelled) setLoaded(true); });
+    return () => { cancelled = true; };
+  }, [pathname]);
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
