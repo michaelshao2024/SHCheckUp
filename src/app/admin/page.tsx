@@ -120,10 +120,11 @@ export default function AdminDashboardPage() {
         <>
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="bg-white rounded-lg border border-border p-6">
+            <Link href="/admin/hospitals" className="bg-white rounded-lg border border-border p-6 hover:border-primary transition-colors block">
               <p className="text-sm text-muted-foreground">Total Hospitals</p>
               <p className="text-3xl font-bold mt-1">{hospitals.length}</p>
-            </div>
+              <p className="text-xs text-primary mt-1">Manage →</p>
+            </Link>
             <div className="bg-white rounded-lg border border-border p-6">
               <p className="text-sm text-muted-foreground">Active Hospitals</p>
               <p className="text-3xl font-bold mt-1">{hospitals.filter(h => h.isActive).length}</p>
@@ -136,8 +137,9 @@ export default function AdminDashboardPage() {
 
           {/* Hospital List */}
           <div className="bg-white rounded-lg border border-border">
-            <div className="px-6 py-4 border-b border-border">
+            <div className="px-6 py-4 border-b border-border flex items-center justify-between">
               <h2 className="text-lg font-semibold">Hospitals</h2>
+              <Link href="/admin/hospitals" className="text-sm text-primary hover:underline">Manage all →</Link>
             </div>
             <div className="divide-y divide-border">
               {hospitals.length === 0 ? (
