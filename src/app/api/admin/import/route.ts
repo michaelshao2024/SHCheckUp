@@ -16,6 +16,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { rows, mode } = body as { rows: Array<{
       hospitalName: string;
+      hospitalNameCn: string;
+      address: string;
+      phone: string;
+      email: string;
+      website: string;
       name: string;
       price: string;
       currency: string;
@@ -66,19 +71,41 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Find or create hospital
+        // Find or create hospital (exact match first, then fuzzy)
+        const hospName = row.hospitalName.trim();
         let hospital = await prisma.hospital.findFirst({
-          where: { name: { contains: row.hospitalName.trim(), mode: 'insensitive' } },
+          where: { name: { equals: hospName, mode: 'insensitive' } },
         });
+        if (!hospital) {
+          hospital = await prisma.hospital.findFirst({
+            where: { name: { contains: hospName, mode: 'insensitive' } },
+          });
+        }
+
+        // Optional hospital detail columns from the same row
+        const hospDetails = {
+          ...(row.hospitalNameCn?.trim() && { nameCn: row.hospitalNameCn.trim() }),
+          ...(row.address?.trim() && { address: row.address.trim() }),
+          ...(row.phone?.trim() && { phone: row.phone.trim() }),
+          ...(row.email?.trim() && { email: row.email.trim() }),
+          ...(row.website?.trim() && { website: row.website.trim() }),
+        };
 
         if (!hospital) {
           hospital = await prisma.hospital.create({
             data: {
-              name: row.hospitalName.trim(),
-              address: '',
+              name: hospName,
+              address: row.address?.trim() || '',
               description: `Auto-imported hospital`,
               isActive: true,
+              ...hospDetails,
             },
+          });
+        } else if (Object.keys(hospDetails).length > 0) {
+          // Enrich the existing hospital with any detail columns provided
+          hospital = await prisma.hospital.update({
+            where: { id: hospital.id },
+            data: hospDetails,
           });
         }
 

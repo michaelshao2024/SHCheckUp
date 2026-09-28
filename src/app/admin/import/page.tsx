@@ -5,6 +5,11 @@ import Link from 'next/link';
 
 interface ImportRow {
   hospitalName: string;
+  hospitalNameCn: string;
+  address: string;
+  phone: string;
+  email: string;
+  website: string;
   name: string;
   price: string;
   currency: string;
@@ -61,9 +66,14 @@ export default function AdminImportPage() {
       // Auto-detect column mapping
       const headerLower = headers.map(h => h.toLowerCase().replace(/[\s\-_]/g, ''));
       const autoMap: Record<string, string> = {};
-      const fieldKeys = ['hospitalName', 'name', 'price', 'currency', 'duration', 'items', 'description', 'source', 'tags', 'includesTranslator'];
+      const fieldKeys = ['hospitalName', 'hospitalNameCn', 'address', 'phone', 'email', 'website', 'name', 'price', 'currency', 'duration', 'items', 'description', 'source', 'tags', 'includesTranslator'];
       const fieldPatterns: Record<string, string[]> = {
         hospitalName: ['hospitalname', 'hospital', 'hospital_name', '医院'],
+        hospitalNameCn: ['hospitalnamecn', 'hospital_name_cn', 'namecn', '医院中文名', '中文名'],
+        address: ['address', '地址'],
+        phone: ['phone', 'tel', '电话', '联系电话'],
+        email: ['email', '邮箱', '电子邮件'],
+        website: ['website', 'url', 'site', '网站', '网址'],
         name: ['name', 'packagename', 'package_name', '套餐名称', '套餐名'],
         price: ['price', 'cost', 'amount', '价格', '费用'],
         currency: ['currency', '币种', '货币'],
@@ -92,6 +102,11 @@ export default function AdminImportPage() {
         headers.forEach((h, i) => { obj[h] = row[i] || ''; });
         return {
           hospitalName: obj[autoMap.hospitalName || headers[0]] || '',
+          hospitalNameCn: obj[autoMap.hospitalNameCn || ''] || '',
+          address: obj[autoMap.address || ''] || '',
+          phone: obj[autoMap.phone || ''] || '',
+          email: obj[autoMap.email || ''] || '',
+          website: obj[autoMap.website || ''] || '',
           name: obj[autoMap.name || headers[1]] || '',
           price: obj[autoMap.price || ''] || '',
           currency: obj[autoMap.currency || ''] || 'CNY',
@@ -173,7 +188,8 @@ export default function AdminImportPage() {
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li>First row must be column headers</li>
             <li>Required columns: <code className="bg-background px-1 rounded">hospitalName</code>, <code className="bg-background px-1 rounded">name</code>, <code className="bg-background px-1 rounded">price</code></li>
-            <li>Optional: <code className="bg-background px-1 rounded">currency</code> (default CNY), <code className="bg-background px-1 rounded">duration</code>, <code className="bg-background px-1 rounded">items</code> (comma separated), <code className="bg-background px-1 rounded">description</code>, <code className="bg-background px-1 rounded">source</code> (URL), <code className="bg-background px-1 rounded">tags</code> (comma separated), <code className="bg-background px-1 rounded">includesTranslator</code> (true/false)</li>
+            <li>Hospital details (optional, applied to the hospital): <code className="bg-background px-1 rounded">hospitalNameCn</code>, <code className="bg-background px-1 rounded">address</code>, <code className="bg-background px-1 rounded">phone</code>, <code className="bg-background px-1 rounded">email</code>, <code className="bg-background px-1 rounded">website</code></li>
+            <li>Package optional: <code className="bg-background px-1 rounded">currency</code> (default CNY), <code className="bg-background px-1 rounded">duration</code>, <code className="bg-background px-1 rounded">items</code> (comma separated), <code className="bg-background px-1 rounded">description</code>, <code className="bg-background px-1 rounded">source</code> (URL), <code className="bg-background px-1 rounded">tags</code> (comma separated), <code className="bg-background px-1 rounded">includesTranslator</code> (true/false)</li>
             <li>If hospital doesn&apos;t exist, it will be automatically created</li>
             <li>Replace mode (default): all existing packages are wiped first, the uploaded file becomes the authoritative data</li>
           </ul>
