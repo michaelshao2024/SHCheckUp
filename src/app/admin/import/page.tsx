@@ -194,7 +194,11 @@ export default function AdminImportPage() {
                   <th className="p-2 text-left font-medium">Price</th>
                   <th className="p-2 text-left font-medium">Currency</th>
                   <th className="p-2 text-left font-medium">Duration</th>
+                  <th className="p-2 text-left font-medium">Items</th>
+                  <th className="p-2 text-left font-medium">Description</th>
+                  <th className="p-2 text-left font-medium">Tags</th>
                   <th className="p-2 text-left font-medium">Translator</th>
+                  <th className="p-2 text-left font-medium">Source</th>
                 </tr>
               </thead>
               <tbody>
@@ -206,7 +210,11 @@ export default function AdminImportPage() {
                     <td className="p-2">{row.price}</td>
                     <td className="p-2">{row.currency}</td>
                     <td className="p-2">{row.duration}</td>
+                    <td className="p-2 max-w-48 truncate" title={row.items}>{row.items}</td>
+                    <td className="p-2 max-w-48 truncate" title={row.description}>{row.description}</td>
+                    <td className="p-2">{row.tags}</td>
                     <td className="p-2">{row.includesTranslator}</td>
+                    <td className="p-2 max-w-48 truncate" title={row.source}>{row.source}</td>
                   </tr>
                 ))}
               </tbody>
