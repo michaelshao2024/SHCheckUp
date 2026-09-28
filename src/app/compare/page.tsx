@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface Hospital { id: string; name: string; }
 
@@ -12,9 +13,13 @@ interface Package {
   englishReport: boolean | null; englishService: boolean | null;
 }
 
-export default function ComparePage() {
+function CompareContent() {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [packages, setPackages] = useState<Package[]>([]);
+  const searchParams = useSearchParams();
+  // When arriving from search results, restrict the list to those packages
+  const idsParam = searchParams.get('ids');
+  const idsFilter = idsParam ? new Set(idsParam.split(',').filter(Boolean)) : null;
   const [selected, setSelected] = useState<string[]>([]);
   const [filterEnReport, setFilterEnReport] = useState(false);
   const [filterEnService, setFilterEnService] = useState(false);
@@ -41,6 +46,8 @@ export default function ComparePage() {
     load();
   }, []);
 
+  const visiblePackages = idsFilter ? packages.filter(p => idsFilter.has(p.id)) : packages;
+
   const toggleSelect = (id: string) => {
     setSelected(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
@@ -65,6 +72,12 @@ export default function ComparePage() {
           {/* Select Packages */}
           <div className="bg-white rounded-lg border border-border p-4 sm:p-6 mb-8">
             <h2 className="text-lg font-semibold mb-4">1. Select packages to compare (max 4)</h2>
+            {idsFilter && (
+              <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg text-sm flex flex-wrap items-center justify-between gap-2">
+                <span>Showing <strong>{visiblePackages.length}</strong> packages from your search results.</span>
+                <Link href="/compare" className="text-primary hover:underline whitespace-nowrap">Show all packages →</Link>
+              </div>
+            )}
             <div className="flex flex-wrap gap-4 mb-4 text-sm">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={filterEnReport} onChange={(e) => setFilterEnReport(e.target.checked)} className="w-4 h-4 accent-primary" />
@@ -76,7 +89,7 @@ export default function ComparePage() {
               </label>
             </div>
             <div className="space-y-2 max-h-80 overflow-y-auto">
-              {packages
+              {visiblePackages
                 .filter(p => (!filterEnReport || p.englishReport) && (!filterEnService || p.englishService))
                 .map(p => (
                 <label key={p.id} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${selected.includes(p.id) ? 'border-primary bg-primary/5' : 'border-border hover:bg-muted'}`}>
@@ -172,5 +185,13 @@ export default function ComparePage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense>
+      <CompareContent />
+    </Suspense>
   );
 }

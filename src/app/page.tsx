@@ -262,8 +262,11 @@ export default function HomePage() {
               <div className="mb-12">
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                   <h2 className="text-xl font-semibold">Checkup Packages</h2>
-                  <Link href="/compare" className="text-sm text-primary hover:underline font-medium whitespace-nowrap">
-                    Compare Packages →
+                  <Link
+                    href={`/compare?ids=${results.packages.map(p => p.id).join(',')}`}
+                    className="text-sm text-primary hover:underline font-medium whitespace-nowrap"
+                  >
+                    Compare these {results.packages.length} packages →
                   </Link>
                 </div>
                 <div className="bg-white rounded-lg border border-border overflow-x-auto">
