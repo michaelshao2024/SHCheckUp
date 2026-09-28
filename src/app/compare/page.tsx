@@ -9,7 +9,7 @@ interface Package {
   id: string; name: string; price: number; currency: string; duration: string | null;
   hospitalId: string; hospitalName: string; avgRating: number; tags: string[];
   items: string[]; description: string | null; includesTranslator: boolean;
-  englishReport: boolean; englishService: boolean;
+  englishReport: boolean | null; englishService: boolean | null;
 }
 
 export default function ComparePage() {
@@ -130,11 +130,11 @@ export default function ComparePage() {
                   </tr>
                   <tr className="border-t border-border">
                     <td className="p-3 font-medium">English Report</td>
-                    {compareList.map(p => <td key={p.id} className="p-3">{p.englishReport ? '✅ Yes' : '—'}</td>)}
+                    {compareList.map(p => <td key={p.id} className="p-3">{p.englishReport === true ? '✅ Yes' : p.englishReport === false ? '❌ No' : '❔ Unknown'}</td>)}
                   </tr>
                   <tr className="border-t border-border">
                     <td className="p-3 font-medium">Full English Service</td>
-                    {compareList.map(p => <td key={p.id} className="p-3">{p.englishService ? '✅ Yes' : '—'}</td>)}
+                    {compareList.map(p => <td key={p.id} className="p-3">{p.englishService === true ? '✅ Yes' : p.englishService === false ? '❌ No' : '❔ Unknown'}</td>)}
                   </tr>
                   <tr className="border-t border-border">
                     <td className="p-3 font-medium">Translator</td>

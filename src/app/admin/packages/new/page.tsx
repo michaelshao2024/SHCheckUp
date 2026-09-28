@@ -23,8 +23,8 @@ interface PackageFormData {
   tagInput: string;
   tags: string[];
   includesTranslator: boolean;
-  englishReport: boolean;
-  englishService: boolean;
+  englishReport: string; // 'true' | 'false' | '' (unknown)
+  englishService: string;
 }
 
 function AdminPackageFormPage() {
@@ -47,8 +47,8 @@ function AdminPackageFormPage() {
     tagInput: '',
     tags: [],
     includesTranslator: false,
-    englishReport: false,
-    englishService: false,
+    englishReport: '',
+    englishService: '',
   });
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
@@ -100,8 +100,8 @@ function AdminPackageFormPage() {
         tagInput: '',
         tags: Array.isArray(pkg.tags) ? pkg.tags : [],
         includesTranslator: pkg.includesTranslator || false,
-        englishReport: pkg.englishReport || false,
-        englishService: pkg.englishService || false,
+        englishReport: pkg.englishReport === true ? 'true' : pkg.englishReport === false ? 'false' : '',
+        englishService: pkg.englishService === true ? 'true' : pkg.englishService === false ? 'false' : '',
       });
     } catch (err: any) {
       setError(err.message || 'Failed to load package');
@@ -176,8 +176,8 @@ function AdminPackageFormPage() {
         source: form.source || null,
         tags: form.tags,
         includesTranslator: form.includesTranslator,
-        englishReport: form.englishReport,
-        englishService: form.englishService,
+        englishReport: form.englishReport === '' ? null : form.englishReport === 'true',
+        englishService: form.englishService === '' ? null : form.englishService === 'true',
       };
 
       const res = await fetch(url, {
@@ -208,8 +208,8 @@ function AdminPackageFormPage() {
           tagInput: '',
           tags: [],
           includesTranslator: false,
-          englishReport: false,
-          englishService: false,
+          englishReport: '',
+          englishService: '',
         }));
       }
 
@@ -471,26 +471,34 @@ function AdminPackageFormPage() {
             </span>
           </div>
 
-          {/* English service toggles */}
+          {/* English service selectors */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input
-                type="checkbox"
-                checked={form.englishReport}
-                onChange={(e) => setForm(prev => ({ ...prev, englishReport: e.target.checked }))}
-                className="w-4 h-4 accent-primary"
-              />
-              <span>English report available <span className="text-muted-foreground">(报告为英文)</span></span>
-            </label>
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input
-                type="checkbox"
-                checked={form.englishService}
-                onChange={(e) => setForm(prev => ({ ...prev, englishService: e.target.checked }))}
-                className="w-4 h-4 accent-primary"
-              />
-              <span>Full English service <span className="text-muted-foreground">(全程英语服务)</span></span>
-            </label>
+            <div>
+              <label htmlFor="englishReport" className="block text-sm font-medium mb-1">English report <span className="text-muted-foreground font-normal">(报告为英文)</span></label>
+              <select
+                id="englishReport"
+                value={form.englishReport}
+                onChange={(e) => setForm(prev => ({ ...prev, englishReport: e.target.value }))}
+                className="px-3 py-2 border border-border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">Unknown</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="englishService" className="block text-sm font-medium mb-1">Full English service <span className="text-muted-foreground font-normal">(全程英语服务)</span></label>
+              <select
+                id="englishService"
+                value={form.englishService}
+                onChange={(e) => setForm(prev => ({ ...prev, englishService: e.target.value }))}
+                className="px-3 py-2 border border-border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="">Unknown</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
           </div>
 
           {/* Buttons */}

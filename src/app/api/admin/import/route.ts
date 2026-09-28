@@ -122,9 +122,15 @@ export async function POST(request: NextRequest) {
           : ['general'];
 
         const includesTranslator = row.includesTranslator?.toLowerCase() === 'true' || row.includesTranslator === '1';
-        const truthy = (v?: string) => v?.toLowerCase() === 'true' || v === '1' || v?.toLowerCase() === 'yes' || v === '是';
-        const englishReport = truthy(row.englishReport);
-        const englishService = truthy(row.englishService);
+        // Tri-state: true/yes/1/是 -> true; false/no/0/否 -> false; empty/other -> null (unknown)
+        const triState = (v?: string): boolean | null => {
+          const s = (v || '').trim().toLowerCase();
+          if (['true', '1', 'yes', '是'].includes(s)) return true;
+          if (['false', '0', 'no', '否'].includes(s)) return false;
+          return null;
+        };
+        const englishReport = triState(row.englishReport);
+        const englishService = triState(row.englishService);
 
         // Create package
         await prisma.checkupPackage.create({

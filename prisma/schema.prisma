@@ -36,8 +36,8 @@ model CheckupPackage {
   duration      String?  // e.g. "3 hours", "Full day"
   items         Json?    // Array of checkup items, e.g. ["Blood test", "ECG", "CT Scan"]
   includesTranslator Boolean @default(false) @map("includes_translator")
-  englishReport   Boolean  @default(false) @map("english_report") // report delivered in English
-  englishService  Boolean  @default(false) @map("english_service") // full English service throughout the checkup
+  englishReport   Boolean? @map("english_report") // true=English report, false=no, null=unknown
+  englishService  Boolean? @map("english_service") // true=full English service, false=no, null=unknown
   source        String?  // URL of the package's original listing / source page
   description   String?  @db.Text
   tags          String[] // e.g. ["basic", "comprehensive", "premium"]

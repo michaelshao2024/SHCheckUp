@@ -59,8 +59,8 @@ export async function GET(request: NextRequest) {
         description: p.description ?? '',
         tags: p.tags.join(', '),
         includesTranslator: p.includesTranslator ? 'true' : 'false',
-        englishReport: p.englishReport ? 'true' : 'false',
-        englishService: p.englishService ? 'true' : 'false',
+        englishReport: p.englishReport === null ? '' : p.englishReport ? 'true' : 'false',
+        englishService: p.englishService === null ? '' : p.englishService ? 'true' : 'false',
         source: p.source ?? '',
       }));
       sheetName = 'Packages';
