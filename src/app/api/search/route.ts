@@ -28,6 +28,24 @@ export async function GET(request: NextRequest) {
       take: 10,
     });
     const hospitalIds = hospitals.map(h => h.id);
+
+    // items is a JSON array of strings; Prisma's string_contains on JSON is
+    // case-sensitive, so find case-insensitive item matches via raw SQL first.
+    let itemMatchedIds: string[] = [];
+    if (q) {
+      const rows = await prisma.$queryRaw<{ id: string }[]>`
+        SELECT p.id FROM checkup_packages p
+        JOIN hospitals h ON h.id = p.hospital_id
+        WHERE p.is_active = true AND h."isActive" = true
+          AND p.items IS NOT NULL
+          AND EXISTS (
+            SELECT 1 FROM jsonb_array_elements_text(p.items) AS elem
+            WHERE elem ILIKE ${'%' + q + '%'}
+          )
+        LIMIT 50`;
+      itemMatchedIds = rows.map(r => r.id);
+    }
+
     // Packages match across all package fields (name, description, checkup
     // items, tags), via the hospital name, or by belonging to a matched hospital
     const packages = await prisma.checkupPackage.findMany({
@@ -45,6 +63,7 @@ export async function GET(request: NextRequest) {
                 { tags: { has: q.toLowerCase() } },
                 { hospital: { name: { contains: q, mode: 'insensitive' } } },
                 ...(hospitalIds.length ? [{ hospitalId: { in: hospitalIds } }] : []),
+                ...(itemMatchedIds.length ? [{ id: { in: itemMatchedIds } }] : []),
               ],
             }
           : {}),
