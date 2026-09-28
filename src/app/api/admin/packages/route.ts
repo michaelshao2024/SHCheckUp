@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
     }
     const body = await request.json();
-    const { hospitalId, name, price, currency, duration, items, description, source, tags, includesTranslator } = body;
+    const { hospitalId, name, price, currency, duration, items, description, source, tags, includesTranslator, englishReport, englishService } = body;
 
     if (!hospitalId || !name || price === undefined) {
       return NextResponse.json(
@@ -62,6 +62,8 @@ export async function POST(request: NextRequest) {
         source: source || null,
         tags: tags || [],
         includesTranslator: includesTranslator || false,
+        englishReport: englishReport || false,
+        englishService: englishService || false,
       },
     });
     revalidatePublicContent();

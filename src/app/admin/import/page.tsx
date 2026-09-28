@@ -19,6 +19,8 @@ interface ImportRow {
   source: string;
   tags: string;
   includesTranslator: string;
+  englishReport: string;
+  englishService: string;
 }
 
 export default function AdminImportPage() {
@@ -38,6 +40,8 @@ export default function AdminImportPage() {
     source: 'source',
     tags: 'tags',
     includesTranslator: 'includesTranslator',
+    englishReport: 'englishReport',
+    englishService: 'englishService',
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,7 +70,7 @@ export default function AdminImportPage() {
       // Auto-detect column mapping
       const headerLower = headers.map(h => h.toLowerCase().replace(/[\s\-_]/g, ''));
       const autoMap: Record<string, string> = {};
-      const fieldKeys = ['hospitalName', 'hospitalNameCn', 'address', 'phone', 'email', 'website', 'name', 'price', 'currency', 'duration', 'items', 'description', 'source', 'tags', 'includesTranslator'];
+      const fieldKeys = ['hospitalName', 'hospitalNameCn', 'address', 'phone', 'email', 'website', 'name', 'price', 'currency', 'duration', 'items', 'description', 'source', 'tags', 'includesTranslator', 'englishReport', 'englishService'];
       const fieldPatterns: Record<string, string[]> = {
         hospitalName: ['hospitalname', 'hospital', 'hospital_name', '医院'],
         hospitalNameCn: ['hospitalnamecn', 'hospital_name_cn', 'namecn', '医院中文名', '中文名'],
@@ -83,6 +87,8 @@ export default function AdminImportPage() {
         source: ['source', 'sourceurl', 'source_url', '出处', '来源', '来源链接'],
         tags: ['tags', 'tag', '标签', '分类'],
         includesTranslator: ['includestranslator', 'translator', '翻译', 'translation'],
+        englishReport: ['englishreport', 'english_report', '英文报告'],
+        englishService: ['englishservice', 'english_service', '全程英语', '全程英语服务'],
       };
 
       for (let i = 0; i < headers.length; i++) {
@@ -116,6 +122,8 @@ export default function AdminImportPage() {
           source: obj[autoMap.source || ''] || '',
           tags: obj[autoMap.tags || ''] || '',
           includesTranslator: obj[autoMap.includesTranslator || ''] || 'false',
+          englishReport: obj[autoMap.englishReport || ''] || 'false',
+          englishService: obj[autoMap.englishService || ''] || 'false',
         };
       });
 

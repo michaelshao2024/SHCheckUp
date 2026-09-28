@@ -6,9 +6,11 @@ interface PackageCardProps {
   hospitalName: string;
   avgRating: number;
   tags: string[];
+  englishReport?: boolean;
+  englishService?: boolean;
 }
 
-export function PackageCard({ id, name, price, duration, hospitalName, avgRating, tags }: PackageCardProps) {
+export function PackageCard({ id, name, price, duration, hospitalName, avgRating, tags, englishReport, englishService }: PackageCardProps) {
   return (
     <a href={`/packages/${id}`} className="block p-6 rounded-lg border border-border hover:border-primary transition-colors">
       <div className="flex justify-between items-start mb-2">
@@ -22,6 +24,8 @@ export function PackageCard({ id, name, price, duration, hospitalName, avgRating
         {duration && <span className="text-xs text-muted-foreground">· {duration}</span>}
       </div>
       <div className="flex gap-1 flex-wrap">
+        {englishReport && <span className="px-2 py-0.5 bg-green-50 text-green-700 rounded text-xs">EN report</span>}
+        {englishService && <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs">Full English</span>}
         {tags.map((tag) => (
           <span key={tag} className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground capitalize">{tag}</span>
         ))}

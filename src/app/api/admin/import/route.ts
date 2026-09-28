@@ -30,6 +30,8 @@ export async function POST(request: NextRequest) {
       source: string;
       tags: string;
       includesTranslator: string;
+      englishReport: string;
+      englishService: string;
     }>; mode?: 'append' | 'replace' };
 
     if (!rows || !Array.isArray(rows) || rows.length === 0) {
@@ -120,6 +122,9 @@ export async function POST(request: NextRequest) {
           : ['general'];
 
         const includesTranslator = row.includesTranslator?.toLowerCase() === 'true' || row.includesTranslator === '1';
+        const truthy = (v?: string) => v?.toLowerCase() === 'true' || v === '1' || v?.toLowerCase() === 'yes' || v === '是';
+        const englishReport = truthy(row.englishReport);
+        const englishService = truthy(row.englishService);
 
         // Create package
         await prisma.checkupPackage.create({
@@ -134,6 +139,8 @@ export async function POST(request: NextRequest) {
             source: row.source?.trim() || null,
             tags: tagsList,
             includesTranslator,
+            englishReport,
+            englishService,
             isActive: true,
           },
         });

@@ -23,6 +23,8 @@ interface PackageFormData {
   tagInput: string;
   tags: string[];
   includesTranslator: boolean;
+  englishReport: boolean;
+  englishService: boolean;
 }
 
 function AdminPackageFormPage() {
@@ -45,6 +47,8 @@ function AdminPackageFormPage() {
     tagInput: '',
     tags: [],
     includesTranslator: false,
+    englishReport: false,
+    englishService: false,
   });
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
@@ -96,6 +100,8 @@ function AdminPackageFormPage() {
         tagInput: '',
         tags: Array.isArray(pkg.tags) ? pkg.tags : [],
         includesTranslator: pkg.includesTranslator || false,
+        englishReport: pkg.englishReport || false,
+        englishService: pkg.englishService || false,
       });
     } catch (err: any) {
       setError(err.message || 'Failed to load package');
@@ -170,6 +176,8 @@ function AdminPackageFormPage() {
         source: form.source || null,
         tags: form.tags,
         includesTranslator: form.includesTranslator,
+        englishReport: form.englishReport,
+        englishService: form.englishService,
       };
 
       const res = await fetch(url, {
@@ -200,6 +208,8 @@ function AdminPackageFormPage() {
           tagInput: '',
           tags: [],
           includesTranslator: false,
+          englishReport: false,
+          englishService: false,
         }));
       }
 
@@ -459,6 +469,28 @@ function AdminPackageFormPage() {
             <span className="text-sm text-muted-foreground">
               {form.includesTranslator ? 'Yes' : 'No'}
             </span>
+          </div>
+
+          {/* English service toggles */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.englishReport}
+                onChange={(e) => setForm(prev => ({ ...prev, englishReport: e.target.checked }))}
+                className="w-4 h-4 accent-primary"
+              />
+              <span>English report available <span className="text-muted-foreground">(报告为英文)</span></span>
+            </label>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.englishService}
+                onChange={(e) => setForm(prev => ({ ...prev, englishService: e.target.checked }))}
+                className="w-4 h-4 accent-primary"
+              />
+              <span>Full English service <span className="text-muted-foreground">(全程英语服务)</span></span>
+            </label>
           </div>
 
           {/* Buttons */}

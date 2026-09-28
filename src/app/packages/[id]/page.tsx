@@ -113,6 +113,18 @@ export default async function PackageDetailPage({ params }: Props) {
         </div>
       )}
 
+      {/* English service badges */}
+      {(pkg.englishReport || pkg.englishService) && (
+        <div className="flex gap-2 flex-wrap mb-6">
+          {pkg.englishReport && (
+            <span className="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">English report available ✓</span>
+          )}
+          {pkg.englishService && (
+            <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">Full English service ✓</span>
+          )}
+        </div>
+      )}
+
       {/* Translator notice */}
       {pkg.includesTranslator && (
         <div className="bg-accent p-4 rounded-lg mb-6">

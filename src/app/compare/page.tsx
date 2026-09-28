@@ -9,12 +9,15 @@ interface Package {
   id: string; name: string; price: number; currency: string; duration: string | null;
   hospitalId: string; hospitalName: string; avgRating: number; tags: string[];
   items: string[]; description: string | null; includesTranslator: boolean;
+  englishReport: boolean; englishService: boolean;
 }
 
 export default function ComparePage() {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [packages, setPackages] = useState<Package[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
+  const [filterEnReport, setFilterEnReport] = useState(false);
+  const [filterEnService, setFilterEnService] = useState(false);
   const [compareList, setCompareList] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -62,8 +65,20 @@ export default function ComparePage() {
           {/* Select Packages */}
           <div className="bg-white rounded-lg border border-border p-4 sm:p-6 mb-8">
             <h2 className="text-lg font-semibold mb-4">1. Select packages to compare (max 4)</h2>
+            <div className="flex flex-wrap gap-4 mb-4 text-sm">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={filterEnReport} onChange={(e) => setFilterEnReport(e.target.checked)} className="w-4 h-4 accent-primary" />
+                English report available
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={filterEnService} onChange={(e) => setFilterEnService(e.target.checked)} className="w-4 h-4 accent-primary" />
+                Full English service
+              </label>
+            </div>
             <div className="space-y-2 max-h-80 overflow-y-auto">
-              {packages.map(p => (
+              {packages
+                .filter(p => (!filterEnReport || p.englishReport) && (!filterEnService || p.englishService))
+                .map(p => (
                 <label key={p.id} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${selected.includes(p.id) ? 'border-primary bg-primary/5' : 'border-border hover:bg-muted'}`}>
                   <input type="checkbox" checked={selected.includes(p.id)} onChange={() => toggleSelect(p.id)} disabled={!selected.includes(p.id) && selected.length >= 4} className="w-4 h-4 accent-primary" />
                   <div className="flex-1">
@@ -112,6 +127,14 @@ export default function ComparePage() {
                   <tr className="border-t border-border">
                     <td className="p-3 font-medium">Rating</td>
                     {compareList.map(p => <td key={p.id} className="p-3">{'★'.repeat(Math.round(p.avgRating))} {p.avgRating.toFixed(1)}</td>)}
+                  </tr>
+                  <tr className="border-t border-border">
+                    <td className="p-3 font-medium">English Report</td>
+                    {compareList.map(p => <td key={p.id} className="p-3">{p.englishReport ? '✅ Yes' : '—'}</td>)}
+                  </tr>
+                  <tr className="border-t border-border">
+                    <td className="p-3 font-medium">Full English Service</td>
+                    {compareList.map(p => <td key={p.id} className="p-3">{p.englishService ? '✅ Yes' : '—'}</td>)}
                   </tr>
                   <tr className="border-t border-border">
                     <td className="p-3 font-medium">Translator</td>
