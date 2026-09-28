@@ -140,6 +140,7 @@ interface SearchResult {
   packages: Array<{
     id: string; name: string; price: number; duration: string | null;
     hospitalName: string; avgRating: number; tags: string[];
+    englishReport?: boolean | null; englishService?: boolean | null;
   }>;
 }
 
@@ -148,7 +149,18 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn: string | null; description: string; address: string }>>([]);
-  const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'duration-asc' | 'duration-desc' | 'rating-desc' | 'rating-asc'>('default');
+  // Sort: key + direction; clicking a column header toggles direction
+  const [sortKey, setSortKey] = useState<'default' | 'price' | 'duration' | 'rating'>('default');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+
+  function toggleSort(key: 'price' | 'duration' | 'rating') {
+    if (sortKey === key) {
+      setSortDir(d => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortKey(key);
+      setSortDir(key === 'rating' ? 'desc' : 'asc'); // rating defaults to highest first
+    }
+  }
 
   // Duration strings like "3 hours" / "Half day" / "Full day" -> approximate hours
   function durationHours(d: string | null): number {
@@ -162,16 +174,28 @@ export default function HomePage() {
   }
 
   function sortedPackages(pkgs: SearchResult['packages']) {
+    if (sortKey === 'default') return pkgs;
     const arr = [...pkgs];
-    switch (sortBy) {
-      case 'price-asc': return arr.sort((a, b) => a.price - b.price);
-      case 'price-desc': return arr.sort((a, b) => b.price - a.price);
-      case 'duration-asc': return arr.sort((a, b) => durationHours(a.duration) - durationHours(b.duration));
-      case 'duration-desc': return arr.sort((a, b) => durationHours(b.duration) - durationHours(a.duration));
-      case 'rating-desc': return arr.sort((a, b) => b.avgRating - a.avgRating);
-      case 'rating-asc': return arr.sort((a, b) => a.avgRating - b.avgRating);
-      default: return arr;
-    }
+    const dir = sortDir === 'asc' ? 1 : -1;
+    const keyVal = (x: SearchResult['packages'][number]) =>
+      sortKey === 'price' ? x.price : sortKey === 'duration' ? durationHours(x.duration) : x.avgRating;
+    return arr.sort((a, b) => (keyVal(a) - keyVal(b)) * dir);
+  }
+
+  function SortHeader({ label, k, className }: { label: string; k: 'price' | 'duration' | 'rating'; className?: string }) {
+    const active = sortKey === k;
+    return (
+      <th className={`p-3 text-left font-medium ${className || ''}`}>
+        <button
+          type="button"
+          onClick={() => toggleSort(k)}
+          className={`inline-flex items-center gap-1 hover:text-primary ${active ? 'text-primary' : ''}`}
+        >
+          {label}
+          <span className="text-xs">{active ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+        </button>
+      </th>
+    );
   }
 
   useEffect(() => {
@@ -238,34 +262,53 @@ export default function HomePage() {
               <div className="mb-12">
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                   <h2 className="text-xl font-semibold">Checkup Packages</h2>
-                  <label className="flex items-center gap-2 text-sm text-muted-foreground">
-                    Sort by
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                      className="px-2 py-1.5 border border-border rounded-lg text-sm bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    >
-                      <option value="default">Relevance</option>
-                      <option value="price-asc">Price: low to high</option>
-                      <option value="price-desc">Price: high to low</option>
-                      <option value="duration-asc">Duration: shortest first</option>
-                      <option value="duration-desc">Duration: longest first</option>
-                      <option value="rating-desc">Rating: highest first</option>
-                      <option value="rating-asc">Rating: lowest first</option>
-                    </select>
-                  </label>
                   <Link href="/compare" className="text-sm text-primary hover:underline font-medium whitespace-nowrap">
                     Compare Packages →
                   </Link>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {sortedPackages(results.packages).map((p) => (
-                    <PackageCard key={p.id} {...p} />
-                  ))}
+                <div className="bg-white rounded-lg border border-border overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-muted">
+                        <th className="p-3 text-left font-medium min-w-52">Package</th>
+                        <th className="p-3 text-left font-medium min-w-40">Hospital</th>
+                        <SortHeader label="Price" k="price" />
+                        <SortHeader label="Duration" k="duration" />
+                        <SortHeader label="Rating" k="rating" />
+                        <th className="p-3 text-left font-medium">English</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedPackages(results.packages).map((p) => (
+                        <tr key={p.id} className="border-t border-border hover:bg-muted/50 transition-colors">
+                          <td className="p-3">
+                            <Link href={`/packages/${p.id}`} className="font-medium hover:text-primary hover:underline">
+                              {p.name}
+                            </Link>
+                            <div className="flex gap-1 mt-1 flex-wrap">
+                              {p.tags.slice(0, 3).map(t => (
+                                <span key={t} className="px-1.5 py-0.5 bg-muted rounded text-xs text-muted-foreground capitalize">{t}</span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="p-3 text-muted-foreground">{p.hospitalName}</td>
+                          <td className="p-3 whitespace-nowrap"><span className="font-bold text-primary">¥{p.price.toLocaleString()}</span></td>
+                          <td className="p-3 whitespace-nowrap text-muted-foreground">{p.duration || '-'}</td>
+                          <td className="p-3 whitespace-nowrap">
+                            <span className="text-yellow-500">{'★'.repeat(Math.round(p.avgRating))}</span>
+                            <span className="text-xs text-muted-foreground ml-1">{p.avgRating.toFixed(1)}</span>
+                          </td>
+                          <td className="p-3 whitespace-nowrap text-xs">
+                            {p.englishService === true && <span className="inline-block px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded mr-1">Full EN</span>}
+                            {p.englishReport === true && <span className="inline-block px-1.5 py-0.5 bg-green-50 text-green-700 rounded">EN report</span>}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}
-
             {results.hospitals.length > 0 && (
               <div>
                 <h2 className="text-xl font-semibold mb-4">Hospitals</h2>
