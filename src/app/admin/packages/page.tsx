@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface CheckupPackage {
   id: string;
@@ -23,7 +24,9 @@ interface CheckupPackage {
   };
 }
 
-export default function AdminPackagesPage() {
+function AdminPackagesContent() {
+  const searchParams = useSearchParams();
+  const hospitalFilter = searchParams.get('hospital');
   const [packages, setPackages] = useState<CheckupPackage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -76,7 +79,13 @@ export default function AdminPackagesPage() {
   }
 
   // Group packages by hospital
-  const grouped = packages.reduce<Record<string, { hospital: CheckupPackage['hospital']; packages: CheckupPackage[] }>>((acc, pkg) => {
+  const visiblePackages = hospitalFilter
+    ? packages.filter(p => p.hospitalId === hospitalFilter)
+    : packages;
+  const filterHospitalName = hospitalFilter
+    ? (packages.find(p => p.hospitalId === hospitalFilter)?.hospital.name || null)
+    : null;
+  const grouped = visiblePackages.reduce<Record<string, { hospital: CheckupPackage['hospital']; packages: CheckupPackage[] }>>((acc, pkg) => {
     const key = pkg.hospital.id;
     if (!acc[key]) {
       acc[key] = { hospital: pkg.hospital, packages: [] };
@@ -114,6 +123,13 @@ export default function AdminPackagesPage() {
       )}
       {message && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">{message}</div>
+      )}
+
+      {hospitalFilter && (
+        <div className="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-lg text-sm flex items-center justify-between">
+          <span>Showing packages for: <strong>{filterHospitalName || 'selected hospital'}</strong></span>
+          <Link href="/admin/packages" className="text-primary hover:underline">Show all →</Link>
+        </div>
       )}
 
       {loading ? (
@@ -185,5 +201,13 @@ export default function AdminPackagesPage() {
         <Link href="/admin" className="text-sm text-primary hover:underline">← Back to Dashboard</Link>
       </div>
     </div>
+  );
+}
+
+export default function AdminPackagesPage() {
+  return (
+    <Suspense>
+      <AdminPackagesContent />
+    </Suspense>
   );
 }

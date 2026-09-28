@@ -169,7 +169,7 @@ export default function AdminDashboardPage() {
                         Edit
                       </Link>
                       <Link
-                        href="/admin/packages"
+                        href={`/admin/packages?hospital=${hospital.id}`}
                         className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                       >
                         Packages
