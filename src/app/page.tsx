@@ -148,7 +148,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn: string | null; description: string; address: string }>>([]);
-  const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'duration-asc' | 'duration-desc'>('default');
+  const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'duration-asc' | 'duration-desc' | 'rating-desc' | 'rating-asc'>('default');
 
   // Duration strings like "3 hours" / "Half day" / "Full day" -> approximate hours
   function durationHours(d: string | null): number {
@@ -168,6 +168,8 @@ export default function HomePage() {
       case 'price-desc': return arr.sort((a, b) => b.price - a.price);
       case 'duration-asc': return arr.sort((a, b) => durationHours(a.duration) - durationHours(b.duration));
       case 'duration-desc': return arr.sort((a, b) => durationHours(b.duration) - durationHours(a.duration));
+      case 'rating-desc': return arr.sort((a, b) => b.avgRating - a.avgRating);
+      case 'rating-asc': return arr.sort((a, b) => a.avgRating - b.avgRating);
       default: return arr;
     }
   }
@@ -248,8 +250,13 @@ export default function HomePage() {
                       <option value="price-desc">Price: high to low</option>
                       <option value="duration-asc">Duration: shortest first</option>
                       <option value="duration-desc">Duration: longest first</option>
+                      <option value="rating-desc">Rating: highest first</option>
+                      <option value="rating-asc">Rating: lowest first</option>
                     </select>
                   </label>
+                  <Link href="/compare" className="text-sm text-primary hover:underline font-medium whitespace-nowrap">
+                    Compare Packages →
+                  </Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {sortedPackages(results.packages).map((p) => (
