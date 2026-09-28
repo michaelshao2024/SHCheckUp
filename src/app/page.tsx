@@ -209,23 +209,23 @@ export default function HomePage() {
 
         {!loading && hasSearched && results && (
           <>
-            {results.hospitals.length > 0 && (
+            {results.packages.length > 0 && (
               <div className="mb-12">
-                <h2 className="text-xl font-semibold mb-4">Hospitals</h2>
+                <h2 className="text-xl font-semibold mb-4">Checkup Packages</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {results.hospitals.map((h) => (
-                    <HospitalCard key={h.id} {...h} />
+                  {results.packages.map((p) => (
+                    <PackageCard key={p.id} {...p} />
                   ))}
                 </div>
               </div>
             )}
 
-            {results.packages.length > 0 && (
+            {results.hospitals.length > 0 && (
               <div>
-                <h2 className="text-xl font-semibold mb-4">Checkup Packages</h2>
+                <h2 className="text-xl font-semibold mb-4">Hospitals</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {results.packages.map((p) => (
-                    <PackageCard key={p.id} {...p} />
+                  {results.hospitals.map((h) => (
+                    <HospitalCard key={h.id} {...h} />
                   ))}
                 </div>
               </div>
