@@ -50,7 +50,7 @@ export default async function HospitalDetailPage({ params }: Props) {
     hospital = null;
   }
 
-  if (!hospital) notFound();
+  if (!hospital || !hospital.isActive) notFound();
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">

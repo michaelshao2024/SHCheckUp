@@ -13,6 +13,7 @@ interface HospitalFormData {
   website: string;
   description: string;
   imageUrl: string;
+  isActive: boolean;
 }
 
 function AdminHospitalFormPage() {
@@ -30,6 +31,7 @@ function AdminHospitalFormPage() {
     website: '',
     description: '',
     imageUrl: '',
+    isActive: true,
   });
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(isEditing);
@@ -60,6 +62,7 @@ function AdminHospitalFormPage() {
         website: hospital.website || '',
         description: hospital.description || '',
         imageUrl: hospital.imageUrl || '',
+        isActive: hospital.isActive !== false,
       });
     } catch (err: any) {
       setError(err.message || 'Failed to load hospital');
@@ -126,7 +129,7 @@ function AdminHospitalFormPage() {
       setSuccess(isEditing ? 'Hospital updated successfully!' : 'Hospital created successfully!');
 
       if (!isEditing) {
-        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', imageUrl: '' });
+        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', imageUrl: '', isActive: true });
       }
 
       setTimeout(() => {
@@ -288,7 +291,21 @@ function AdminHospitalFormPage() {
             />
           </div>
 
-          <div className="flex gap-3 pt-2">
+                    {/* Visibility */}
+          <label className="flex items-center gap-3 py-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={!form.isActive}
+              onChange={(e) => setForm(prev => ({ ...prev, isActive: !e.target.checked }))}
+              className="w-4 h-4 accent-primary"
+            />
+            <span className="text-sm">
+              <span className="font-medium">Hidden from public site</span>
+              <span className="text-muted-foreground"> — hidden hospitals and their packages do not appear in search or on public pages</span>
+            </span>
+          </label>
+
+<div className="flex gap-3 pt-2">
             <button
               type="submit"
               disabled={loading}

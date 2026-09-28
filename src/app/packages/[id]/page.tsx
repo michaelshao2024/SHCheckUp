@@ -50,7 +50,7 @@ export default async function PackageDetailPage({ params }: Props) {
     pkg = null;
   }
 
-  if (!pkg) notFound();
+  if (!pkg || !pkg.isActive || !pkg.hospital.isActive) notFound();
 
   const items = pkg.items as string[] | null;
 

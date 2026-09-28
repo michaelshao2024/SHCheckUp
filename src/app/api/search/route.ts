@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
     const packages = await prisma.checkupPackage.findMany({
       where: {
         isActive: true,
+        hospital: { isActive: true },
         ...(q
           ? {
               OR: [
