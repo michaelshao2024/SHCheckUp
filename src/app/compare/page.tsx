@@ -22,8 +22,8 @@ export default function ComparePage() {
     async function load() {
       try {
         const [hRes, pRes] = await Promise.all([
-          fetch('/api/admin/hospitals').then(r => r.json()).catch(() => []),
-          fetch('/api/admin/packages').then(r => r.json()).catch(() => []),
+          fetch('/api/hospitals').then(r => r.json()).catch(() => []),
+          fetch('/api/packages').then(r => r.json()).catch(() => []),
         ]);
         setHospitals(Array.isArray(hRes) ? hRes : []);
         // Admin API serializes Prisma Decimal fields (price, avgRating) as strings — normalize to numbers

@@ -8,6 +8,10 @@ export async function GET() {
     if (!prisma) {
       return NextResponse.json({ error: 'Database not available' }, { status: 503 });
     }
+    const admin = await requireAdmin();
+    if (!admin) {
+      return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
+    }
     const packages = await prisma.checkupPackage.findMany({
       include: { hospital: { select: { id: true, name: true, nameCn: true } } },
       orderBy: { createdAt: 'desc' },
