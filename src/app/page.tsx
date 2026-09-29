@@ -233,6 +233,7 @@ export default function HomePage() {
           <a href="#hospitals" className="text-muted-foreground hover:text-primary transition-colors">Hospitals</a>
           <a href="#escort" className="text-muted-foreground hover:text-primary transition-colors">Medical Escort</a>
           <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Reviews</a>
+          <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
         </div>
       </nav>
 
@@ -375,43 +376,47 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
             <div>
-              <p className="text-xs font-semibold tracking-widest text-primary mb-2">MEDICAL ESCORT SERVICE</p>
-              <h2 className="text-2xl font-bold mb-4">A local guide for your hospital visit in Shanghai</h2>
-              <p className="text-muted-foreground mb-5">
+              <p className="text-xs font-semibold tracking-widest text-primary mb-2">MEDICAL ESCORT SERVICE · 培诊服务</p>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">A local guide for your hospital visit in Shanghai</h2>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
                 A health checkup abroad can feel complicated — Chinese forms, unfamiliar departments, long queues,
-                and no idea where to go next. Your escort picks you up at your hotel, guides you through the whole
-                visit, and takes you back. You never navigate the hospital alone.
+                and no idea where to go next. Your SanEnSheng escort picks you up at your hotel, guides you through the
+                whole visit, and takes you back. You never navigate the hospital alone.
               </p>
-              <ul className="space-y-2.5 text-sm">
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Hotel pickup and drop-off — door to door, on time for your appointment</span></li>
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Appointment booked and registration paperwork prepared in advance</span></li>
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Your escort guides you between departments and handles non-medical communication — directions, scheduling, payments, logistics</span></li>
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>We arrange a results walkthrough with the hospital&apos;s own physicians where available</span></li>
+              <ul className="space-y-3 text-sm">
+                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Hotel pickup and drop-off</span> — door to door, on time for your appointment</span></li>
+                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Appointment &amp; paperwork prepared in advance</span> — registration handled before you arrive</span></li>
+                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Guidance between departments</span> — non-medical communication: directions, scheduling, payments, logistics</span></li>
+                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Results walkthrough where available</span> — arranged with the hospital&apos;s own physicians</span></li>
               </ul>
-              <div className="mt-5 text-xs text-muted-foreground bg-background/60 border border-border rounded-lg p-3 space-y-1.5">
+              <div className="mt-6 text-xs text-muted-foreground bg-background/60 border border-border rounded-lg p-4 space-y-2">
                 <p><span className="font-medium text-foreground">Your privacy:</span> we do not sit in on private consultations with doctors or nurses, and we do not translate medical conversations — those stay between you and your physician.</p>
                 <p><span className="font-medium text-foreground">We are not doctors:</span> we do not interpret medical reports. Report explanation is always done by the hospital&apos;s licensed physicians.</p>
               </div>
+              <Link href="/about" className="inline-flex items-center gap-1.5 mt-6 text-sm font-semibold text-primary hover:gap-2.5 transition-all">
+                Learn more about SanEnSheng &amp; our escort service
+                <span aria-hidden="true">→</span>
+              </Link>
             </div>
-            <div className="bg-white rounded-lg border border-border p-6">
-              <h3 className="font-semibold mb-5">How it works</h3>
+            <div className="bg-white rounded-xl border border-border p-6 shadow-sm md:sticky md:top-16">
+              <h3 className="font-semibold mb-5 text-base">How it works</h3>
               <ol className="space-y-5 text-sm">
                 <li className="flex gap-3">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">1</span>
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">1</span>
                   <div>
                     <p className="font-medium">Tell us your plan</p>
                     <p className="text-muted-foreground mt-0.5">Pick any checkup package and submit the escort request form — it takes two minutes.</p>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">2</span>
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">2</span>
                   <div>
                     <p className="font-medium">We confirm by email</p>
                     <p className="text-muted-foreground mt-0.5">You receive the date, hospital details, and your escort’s name and phone number.</p>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">3</span>
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">3</span>
                   <div>
                     <p className="font-medium">Hotel pickup on the day</p>
                     <p className="text-muted-foreground mt-0.5">Your escort meets you at your hotel, takes you to the hospital, guides you through every step, and brings you back.</p>
@@ -427,15 +432,18 @@ export default function HomePage() {
       </section>
 
       {/* Patient reviews */}
-      <section id="testimonials" className="scroll-mt-16 py-16">
+      <section id="testimonials" className="scroll-mt-16 py-16 overflow-hidden">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl font-bold mb-2 text-center">What our customers say</h2>
           <p className="text-muted-foreground text-center mb-10">
             Feedback from visitors who used the medical escort service.
           </p>
-          <TestimonialsMarquee items={TESTIMONIALS} />
-          <p className="text-xs text-muted-foreground text-center mt-4">Hover to pause · scrolls automatically</p>
         </div>
+        {/* Full-width marquee with soft edge fades */}
+        <div className="marquee-full relative">
+          <TestimonialsMarquee items={TESTIMONIALS} />
+        </div>
+        <p className="text-xs text-muted-foreground text-center mt-4">Hover to pause · scrolls automatically</p>
       </section>
     </div>
   );

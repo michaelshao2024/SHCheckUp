@@ -30,6 +30,29 @@
     overflow-x: auto;
   }
 }
+/* Full-width marquee: soft fade at both page edges (desktop only) */
+@media (min-width: 640px) {
+  .marquee-full {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
+  }
+}
+.marquee-full .marquee-track {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 
 @layer base {
   :root {
@@ -48,9 +71,6 @@
 }
 
 @layer utilities {
-  .font-display {
-    font-family: var(--font-display), Georgia, serif;
-  }
   .border-border {
     border-color: hsl(var(--border));
   }
