@@ -408,12 +408,14 @@ export default function HomePage() {
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/78 via-[#0F1B2A]/62 to-[#0F1B2A]/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/80 via-[#0F1B2A]/68 to-[#0F1B2A]/88" />
+        {/* Extra left-side darkening so the headline/intro over the bright sky stays legible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F1B2A]/85 via-[#0F1B2A]/45 to-transparent" />
         <div className="relative max-w-5xl mx-auto px-4">
           <div className="max-w-2xl mb-10">
-            <p className="text-xs font-semibold tracking-widest text-amber-400 mb-2">MEDICAL ESCORT SERVICE</p>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight text-white">A local guide for your hospital visit</h2>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-xs font-semibold tracking-widest text-amber-300 mb-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">MEDICAL ESCORT SERVICE</p>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">A local guide for your hospital visit</h2>
+            <p className="text-white/90 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)]">
               An English-speaking escort meets you at your hotel, guides you through the whole
               hospital visit, and takes you back — so you never navigate registration, forms or
               departments alone.
