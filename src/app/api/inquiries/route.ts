@@ -25,17 +25,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email address' }, { status: 400 });
     }
 
-    const pkg = await prisma.checkupPackage.findUnique({
-      where: { id: packageId },
-      include: { hospital: true },
-    });
-    if (!pkg) {
+    const pkg = packageId
+      ? await prisma.checkupPackage.findUnique({
+          where: { id: packageId },
+          include: { hospital: true },
+        })
+      : null;
+
+    // A specific package id was supplied but does not exist -> reject.
+    if (packageId && !pkg) {
       return NextResponse.json({ error: 'Package not found' }, { status: 404 });
     }
 
     const user = await getSessionUser();
     const fullMessage = [
       `Service: Medical escort (陪诊服务)`,
+      pkg ? null : `Source: General escort request (no specific package)`,
       phone ? `Phone/WhatsApp: ${phone}` : null,
       message ? `Message: ${message}` : null,
     ].filter(Boolean).join('\n');
@@ -43,8 +48,8 @@ export async function POST(request: NextRequest) {
     await prisma.inquiry.create({
       data: {
         userId: user?.id ?? null,
-        hospitalId: pkg.hospitalId,
-        packageId: pkg.id,
+        hospitalId: pkg?.hospitalId ?? null,
+        packageId: pkg?.id ?? null,
         name,
         email,
         preferredDate: preferredDate ? new Date(preferredDate) : null,
@@ -54,8 +59,8 @@ export async function POST(request: NextRequest) {
 
     // Notify admin via Agent Mail; inquiry is already persisted in DB regardless of mail result
     const mailResult = await sendInquiryEmail({
-      packageName: pkg.name,
-      hospitalName: pkg.hospital.name,
+      packageName: pkg?.name ?? 'General escort request',
+      hospitalName: pkg?.hospital.name ?? 'No specific hospital',
       name,
       email,
       phone: phone || null,

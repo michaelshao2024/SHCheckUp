@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { SITE_NAME } from '@/lib/constants';
+import { EscortRequestButton } from '@/components/escort-request-button';
 
 export const metadata: Metadata = {
   title: 'About SanEnSheng & Our Medical Escort Service',
@@ -183,16 +183,11 @@ export default function AboutPage() {
 
         {/* CTA */}
         <section className="text-center">
-          <h2 className="text-2xl font-bold mb-3">Ready to plan your checkup?</h2>
+          <h2 className="text-2xl font-bold mb-3">Ready to plan your hospital visit?</h2>
           <p className="text-muted-foreground mb-6">
-            Compare packages across Shanghai hospitals and request an escort in minutes.
+            Request a medical escort in minutes — you only pay after we confirm availability.
           </p>
-          <Link
-            href="/#search"
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
-          >
-            Browse checkup packages →
-          </Link>
+          <EscortRequestButton label="Request Medical Escort Service →" />
         </section>
       </div>
     </div>

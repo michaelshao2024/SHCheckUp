@@ -372,61 +372,50 @@ export default function HomePage() {
       </section>
 
       {/* Medical Escort Service */}
-      <section id="escort" className="scroll-mt-16 border-t border-border bg-muted/40 py-16">
+      <section id="escort" className="scroll-mt-16 border-t border-border bg-muted/40 py-16 sm:py-20">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-            <div>
-              <p className="text-xs font-semibold tracking-widest text-primary mb-2">MEDICAL ESCORT SERVICE · 培诊服务</p>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">A local guide for your hospital visit in Shanghai</h2>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                A health checkup abroad can feel complicated — Chinese forms, unfamiliar departments, long queues,
-                and no idea where to go next. Your SanEnSheng escort picks you up at your hotel, guides you through the
-                whole visit, and takes you back. You never navigate the hospital alone.
-              </p>
-              <ul className="space-y-3 text-sm">
-                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Hotel pickup and drop-off</span> — door to door, on time for your appointment</span></li>
-                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Appointment &amp; paperwork prepared in advance</span> — registration handled before you arrive</span></li>
-                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Guidance between departments</span> — non-medical communication: directions, scheduling, payments, logistics</span></li>
-                <li className="flex gap-3"><span className="text-primary shrink-0 font-bold">—</span><span><span className="font-medium text-foreground">Results walkthrough where available</span> — arranged with the hospital&apos;s own physicians</span></li>
-              </ul>
-              <div className="mt-6 text-xs text-muted-foreground bg-background/60 border border-border rounded-lg p-4 space-y-2">
-                <p><span className="font-medium text-foreground">Your privacy:</span> we do not sit in on private consultations with doctors or nurses, and we do not translate medical conversations — those stay between you and your physician.</p>
-                <p><span className="font-medium text-foreground">We are not doctors:</span> we do not interpret medical reports. Report explanation is always done by the hospital&apos;s licensed physicians.</p>
-              </div>
-              <Link href="/about" className="inline-flex items-center gap-1.5 mt-6 text-sm font-semibold text-primary hover:gap-2.5 transition-all">
-                Learn more about SanEnSheng &amp; our escort service
-                <span aria-hidden="true">→</span>
-              </Link>
+          <div className="max-w-2xl mb-10">
+            <p className="text-xs font-semibold tracking-widest text-primary mb-2">MEDICAL ESCORT SERVICE</p>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">A local guide for your hospital visit</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              An English-speaking escort meets you at your hotel, guides you through the whole
+              hospital visit, and takes you back — so you never navigate registration, forms or
+              departments alone.
+            </p>
+          </div>
+
+          {/* Three concise value points */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+            <div className="rounded-xl bg-white border border-border p-5">
+              <div className="text-primary text-xl mb-2" aria-hidden="true">📍</div>
+              <h3 className="font-semibold text-sm mb-1">Hotel pickup &amp; return</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Door to door, on time, with your appointment and paperwork arranged in advance.</p>
             </div>
-            <div className="bg-white rounded-xl border border-border p-6 shadow-sm md:sticky md:top-16">
-              <h3 className="font-semibold mb-5 text-base">How it works</h3>
-              <ol className="space-y-5 text-sm">
-                <li className="flex gap-3">
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">1</span>
-                  <div>
-                    <p className="font-medium">Tell us your plan</p>
-                    <p className="text-muted-foreground mt-0.5">Pick any checkup package and submit the escort request form — it takes two minutes.</p>
-                  </div>
-                </li>
-                <li className="flex gap-3">
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">2</span>
-                  <div>
-                    <p className="font-medium">We confirm by email</p>
-                    <p className="text-muted-foreground mt-0.5">You receive the date, hospital details, and your escort’s name and phone number.</p>
-                  </div>
-                </li>
-                <li className="flex gap-3">
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">3</span>
-                  <div>
-                    <p className="font-medium">Hotel pickup on the day</p>
-                    <p className="text-muted-foreground mt-0.5">Your escort meets you at your hotel, takes you to the hospital, guides you through every step, and brings you back.</p>
-                  </div>
-                </li>
-              </ol>
-              <p className="text-xs text-muted-foreground mt-6 pt-4 border-t border-border">
-                Free to request — you only pay after we confirm availability.
-              </p>
+            <div className="rounded-xl bg-white border border-border p-5">
+              <div className="text-primary text-xl mb-2" aria-hidden="true">🧭</div>
+              <h3 className="font-semibold text-sm mb-1">Guidance on the day</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">Directions, scheduling, payments and logistics handled — you just focus on your health.</p>
             </div>
+            <div className="rounded-xl bg-white border border-border p-5">
+              <div className="text-primary text-xl mb-2" aria-hidden="true">🔒</div>
+              <h3 className="font-semibold text-sm mb-1">Private &amp; professional</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">We handle logistics only — your consultations and reports stay with the hospital&apos;s physicians.</p>
+            </div>
+          </div>
+
+          {/* Compact how-it-works + CTA row */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl bg-white border border-border p-5">
+            <ol className="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+              <li className="flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">1</span> Tell us your plan</li>
+              <li aria-hidden="true" className="text-muted-foreground">→</li>
+              <li className="flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">2</span> We confirm by email</li>
+              <li aria-hidden="true" className="text-muted-foreground">→</li>
+              <li className="flex items-center gap-2"><span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">3</span> Hotel pickup on the day</li>
+            </ol>
+            <Link href="/about" className="inline-flex items-center gap-1.5 shrink-0 text-sm font-semibold text-primary hover:gap-2.5 transition-all">
+              Learn more
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>
