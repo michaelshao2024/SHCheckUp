@@ -52,7 +52,7 @@ const JSON_LD = {
 const FAQS = [
   {
     q: 'How much does a health checkup cost in Shanghai?',
-    a: 'Checkup packages on Shanghai HealthFinder range from about ¥6,000 to ¥40,000 (RMB), depending on the hospital and how comprehensive the screening is. Create a free account to compare exact package prices side by side.',
+    a: 'For quality-assured health checkups at Shanghai hospitals, prices range from about ¥6,000 to ¥40,000 (RMB). The exact price depends on what the screening includes — more comprehensive packages cost more. Create a free account to compare exact package prices side by side.',
   },
   {
     q: 'Do Shanghai hospitals provide English reports and English-speaking staff?',
@@ -530,16 +530,16 @@ export default function HomePage() {
 
       {/* FAQ */}
       <section id="faq" className="scroll-mt-16 py-16 bg-muted/40 border-t border-border">
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl font-bold mb-2 text-center">Frequently asked questions</h2>
           <p className="text-muted-foreground text-center mb-10">
             Common questions about health checkups in Shanghai and our escort service.
           </p>
-          <div className="space-y-3">
+          <div className="grid sm:grid-cols-2 gap-3">
             {FAQS.map((f) => (
               <details
                 key={f.q}
-                className="group bg-white rounded-xl border border-border px-5 py-4 open:shadow-sm"
+                className="group self-start bg-white rounded-xl border border-border px-5 py-4 open:shadow-sm"
               >
                 <summary className="cursor-pointer font-medium list-none flex items-center justify-between gap-4">
                   {f.q}
