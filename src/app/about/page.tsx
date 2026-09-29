@@ -37,7 +37,7 @@ export default function AboutPage() {
         {/* The brand */}
         <section>
           <h2 className="text-2xl font-bold mb-4">Who we are</h2>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
+          <div className="space-y-4 text-muted-foreground leading-relaxed max-w-2xl">
             <p>
               <span className="font-medium text-foreground">SanEnSheng (优联智康)</span> is
               a Shanghai-based service dedicated to making world-class Chinese
@@ -169,7 +169,7 @@ export default function AboutPage() {
         </section>
 
         {/* Boundaries / trust */}
-        <section className="rounded-xl border border-border bg-muted/40 p-6 space-y-3 text-sm text-muted-foreground">
+        <section className="rounded-xl border border-border bg-muted/40 p-6 space-y-3 text-sm text-muted-foreground max-w-2xl">
           <h2 className="text-base font-semibold text-foreground">
             The boundaries we keep
           </h2>
