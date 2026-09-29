@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { meilisearch, PACKAGES_INDEX, HOSPITALS_INDEX } from '@/lib/meilisearch';
 import { prisma } from '@/lib/prisma';
-import { isAuthed, publicHospital, publicPackage } from '@/lib/access';
+import { publicHospital, publicPackage } from '@/lib/access';
+import { getSessionUser } from '@/lib/auth';
+import { rateLimit, clientKey } from '@/lib/rate-limit';
 
 // Responses depend on the caller's session (anonymous vs registered), so this
 // endpoint must never be cached.
@@ -12,7 +14,20 @@ export async function GET(request: NextRequest) {
   const q = searchParams.get('q') || '';
   const fReport = searchParams.get('englishReport') === 'true';
   const fService = searchParams.get('englishService') === 'true';
-  const authed = await isAuthed();
+  const user = await getSessionUser();
+  const authed = user !== null;
+
+  // Anti-scraping rate limits: anonymous by IP (strict), logged-in by user id
+  // (generous for real use, but caps scripted bulk extraction).
+  const rl = authed
+    ? rateLimit(clientKey(user!.id, request), 60, 60_000)
+    : rateLimit(clientKey(null, request), 10, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please slow down and try again shortly.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+    );
+  }
 
   // Shape the final payload according to the access policy. Anonymous users
   // get hospital name + simple address, and package name only.

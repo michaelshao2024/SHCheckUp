@@ -3,13 +3,27 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { GoogleSignInButton } from '@/components/google-signin-button';
+
+const GOOGLE_ERRORS: Record<string, string> = {
+  google_not_configured: 'Google sign-in is not available yet. Please use email and password.',
+  google_denied: 'Google sign-in was cancelled.',
+  google_state: 'Google sign-in session expired. Please try again.',
+  google_token: 'Google sign-in failed. Please try again.',
+  google_profile: 'Could not read your Google profile. Please try again.',
+  google_failed: 'Google sign-in failed. Please try again.',
+  db_unavailable: 'Service temporarily unavailable. Please try again later.',
+};
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(() => {
+    const e = searchParams.get('error');
+    return e && GOOGLE_ERRORS[e] ? GOOGLE_ERRORS[e] : null;
+  });
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -84,6 +98,13 @@ function LoginForm() {
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
+
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex-1 border-t border-border" />
+          or
+          <div className="flex-1 border-t border-border" />
+        </div>
+        <GoogleSignInButton />
       </form>
     </div>
   );

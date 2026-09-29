@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { GoogleSignInButton } from '@/components/google-signin-button';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -83,6 +84,13 @@ export default function RegisterPage() {
         >
           {loading ? 'Creating account...' : 'Create Account'}
         </button>
+
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="flex-1 border-t border-border" />
+          or
+          <div className="flex-1 border-t border-border" />
+        </div>
+        <GoogleSignInButton label="Sign up with Google" />
       </form>
     </div>
   );

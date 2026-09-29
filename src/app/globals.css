@@ -121,5 +121,18 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Text stays readable but cannot be selected/copied (anti-scraping UX). */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+  /* Keep form fields and editable areas fully usable. */
+  input,
+  textarea,
+  select,
+  [contenteditable='true'] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
   }
 }

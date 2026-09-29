@@ -1,14 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { meilisearch, HOSPITALS_INDEX } from '@/lib/meilisearch';
 import { prisma } from '@/lib/prisma';
-import { isAuthed, publicHospital } from '@/lib/access';
+import { publicHospital } from '@/lib/access';
+import { getSessionUser } from '@/lib/auth';
+import { rateLimit, clientKey } from '@/lib/rate-limit';
 
 // Responses depend on the caller's session (anonymous vs registered), so this
 // endpoint is dynamic and never cached.
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  const authed = await isAuthed();
+export async function GET(request: NextRequest) {
+  const user = await getSessionUser();
+  const authed = user !== null;
+  const rl = authed
+    ? rateLimit(clientKey(user!.id, request), 60, 60_000)
+    : rateLimit(clientKey(null, request), 20, 60_000);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please slow down and try again shortly.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } }
+    );
+  }
   const shape = (hospitals: any[]) => (authed ? hospitals : hospitals.map(publicHospital));
 
   // Try Meilisearch first
