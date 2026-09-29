@@ -5,6 +5,7 @@ import { HospitalImage } from '@/components/hospital-image';
 import { ProviderContact } from '@/components/provider-contact';
 import { SignUpPrompt } from '@/components/sign-up-prompt';
 import { isAuthed } from '@/lib/access';
+import { SITE_URL } from '@/lib/constants';
 import type { Metadata } from 'next';
 
 // Content depends on the caller's session (anonymous vs registered), so this
@@ -21,7 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       include: { hospital: true },
     });
     if (!pkg) return { title: 'Package Not Found' };
-    return { title: `${pkg.name} - ${pkg.hospital.name}` };
+    const title = `${pkg.name} - ${pkg.hospital.name}`;
+    const description = `${pkg.name} health checkup package at ${pkg.hospital.name}, Shanghai. See what is included, compare with other Shanghai checkup packages, and request our English-speaking medical escort service.`;
+    return {
+      title,
+      description,
+      alternates: { canonical: `/packages/${pkg.id}` },
+      openGraph: { title: `${title} | Shanghai HealthFinder`, description, type: 'article' },
+    };
   } catch {
     return { title: 'Checkup Package' };
   }
@@ -45,11 +53,45 @@ export default async function PackageDetailPage({ params }: Props) {
 
   if (!pkg || !pkg.isActive || !pkg.hospital.isActive) notFound();
 
+  // Structured data for search engines & AI agents. Limited to fields visible
+  // to anonymous visitors (package name) plus the provider brand — no price,
+  // hospital detail or item list leaks to crawlers.
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'MedicalWebPage',
+        name: `${pkg.name} — health checkup package in Shanghai`,
+        url: `${SITE_URL}/packages/${pkg.id}`,
+        about: {
+          '@type': 'MedicalProcedure',
+          procedureType: 'https://schema.org/PhysicalExam',
+          name: pkg.name,
+          bodyLocation: 'General health screening',
+        },
+        provider: {
+          '@type': 'Organization',
+          name: 'Shanghai HealthFinder (SanEnSheng 优联智康)',
+          url: SITE_URL,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Checkup Packages', item: `${SITE_URL}/#hospitals` },
+          { '@type': 'ListItem', position: 3, name: pkg.name, item: `${SITE_URL}/packages/${pkg.id}` },
+        ],
+      },
+    ],
+  };
+
   // Anonymous visitors: package name only, plus a sign-up prompt. Price,
   // hospital, items and all other details require a free account.
   if (!authed) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <a href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
           ← Back to search
         </a>
@@ -63,6 +105,7 @@ export default async function PackageDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <a href={`/hospitals/${pkg.hospital.id}`} className="text-sm text-primary hover:underline mb-4 inline-block">
         ← Back to {pkg.hospital.name}
       </a>

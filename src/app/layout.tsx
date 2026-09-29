@@ -18,6 +18,19 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${SITE_NAME} — Compare Medical Checkups in Shanghai`, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    'Shanghai health checkup',
+    'medical checkup Shanghai',
+    'health screening Shanghai for foreigners',
+    'expat health check Shanghai',
+    'Shanghai hospital international department',
+    'medical escort Shanghai',
+    'compare checkup packages Shanghai',
+    'English-speaking hospital Shanghai',
+    'executive health screening China',
+  ],
+  category: 'healthcare',
   alternates: {
     canonical: '/',
   },
@@ -28,15 +41,23 @@ export const metadata: Metadata = {
     title: `${SITE_NAME} — Compare Medical Checkups in Shanghai`,
     description: SITE_DESCRIPTION,
     locale: 'en_US',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: `${SITE_NAME} — compare medical checkup packages at Shanghai hospitals` }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: `${SITE_NAME} — Compare Medical Checkups in Shanghai`,
     description: SITE_DESCRIPTION,
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

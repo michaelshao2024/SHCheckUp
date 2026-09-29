@@ -15,8 +15,20 @@ const JSON_LD = {
     {
       '@type': 'Organization',
       name: SITE_NAME,
+      alternateName: 'SanEnSheng 优联智康',
       url: SITE_URL,
       description: SITE_DESCRIPTION,
+    },
+    {
+      '@type': 'MedicalBusiness',
+      name: 'SanEnSheng Medical Escort Service',
+      alternateName: '优联智康陪诊服务',
+      url: `${SITE_URL}/about`,
+      description:
+        'English-speaking medical escort service in Shanghai: hotel pickup, guidance through registration and hospital departments, and return transfer for international visitors.',
+      areaServed: { '@type': 'City', name: 'Shanghai' },
+      availableLanguage: ['en', 'zh'],
+      parentOrganization: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     },
     {
       '@type': 'WebSite',
@@ -34,6 +46,44 @@ const JSON_LD = {
       },
     },
   ],
+};
+
+// FAQ — visible section + FAQPage structured data (helps search & AI answers)
+const FAQS = [
+  {
+    q: 'How much does a health checkup cost in Shanghai?',
+    a: 'It depends on the hospital and package depth. Basic screenings at public hospital international departments start from a few hundred RMB, while comprehensive VIP packages at private international hospitals typically range from about ¥4,000 to over ¥17,000. Create a free account to compare exact prices side by side.',
+  },
+  {
+    q: 'Do Shanghai hospitals provide English reports and English-speaking staff?',
+    a: 'Private international hospitals generally provide English reports and English-speaking physicians. Public hospital international departments usually have English-speaking staff, but report language varies. We mark each package as Yes / No / Unknown for English service and English reports so you can filter confidently.',
+  },
+  {
+    q: 'What is the medical escort service?',
+    a: 'An English-speaking local escort meets you at your hotel, accompanies you through the entire hospital visit — registration, forms, departments, queues — and takes you back afterwards. Escorts handle non-medical communication only; they do not sit in on private consultations or interpret medical reports.',
+  },
+  {
+    q: 'How do I book a checkup through Shanghai HealthFinder?',
+    a: 'Search and compare packages, create a free account to see full details, then submit a booking or escort request from the package page or the About page. Our team confirms your appointment with the hospital, usually within one business day.',
+  },
+  {
+    q: 'Is Shanghai HealthFinder free to use?',
+    a: 'Yes. Browsing is free, and a free registered account unlocks full package prices, hospital details and contact information. Requesting the medical escort service is also free — you only pay the hospital for the checkup itself.',
+  },
+  {
+    q: 'Is my personal information private?',
+    a: 'Yes. We only collect the details needed to arrange your booking, never sell your data, and escorts are bound by a strict privacy policy. See our privacy policy for details.',
+  },
+];
+
+const FAQ_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
 };
 
 // Curated patient feedback shown in the Reviews section
@@ -230,6 +280,10 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
+      />
       {/* Homepage section navigation */}
       <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-border">
         <div className="max-w-7xl mx-auto px-4 h-11 flex items-center justify-start sm:justify-center gap-6 text-sm overflow-x-auto whitespace-nowrap">
@@ -237,6 +291,7 @@ export default function HomePage() {
           <a href="#hospitals" className="text-muted-foreground hover:text-primary transition-colors">Hospitals</a>
           <a href="#escort" className="text-muted-foreground hover:text-primary transition-colors">Medical Escort</a>
           <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Reviews</a>
+          <a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
           <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
         </div>
       </nav>
@@ -471,6 +526,30 @@ export default function HomePage() {
           <TestimonialsMarquee items={TESTIMONIALS} />
         </div>
         <p className="text-xs text-muted-foreground text-center mt-4">Hover to pause · scrolls automatically</p>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="scroll-mt-16 py-16 bg-muted/40 border-t border-border">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-2 text-center">Frequently asked questions</h2>
+          <p className="text-muted-foreground text-center mb-10">
+            Common questions about health checkups in Shanghai and our escort service.
+          </p>
+          <div className="space-y-3">
+            {FAQS.map((f) => (
+              <details
+                key={f.q}
+                className="group bg-white rounded-xl border border-border px-5 py-4 open:shadow-sm"
+              >
+                <summary className="cursor-pointer font-medium list-none flex items-center justify-between gap-4">
+                  {f.q}
+                  <span className="text-primary transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                </summary>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
       </section>
     </div>
   );

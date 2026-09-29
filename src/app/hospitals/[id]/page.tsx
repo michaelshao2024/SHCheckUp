@@ -6,6 +6,7 @@ import { HospitalImage } from '@/components/hospital-image';
 import { parseHospitalImages } from '@/lib/hospital-images';
 import { isAuthed, simpleAddress } from '@/lib/access';
 import { SignUpPrompt } from '@/components/sign-up-prompt';
+import { SITE_URL } from '@/lib/constants';
 import type { Metadata } from 'next';
 
 // Content depends on the caller's session (anonymous vs registered), so this
@@ -19,7 +20,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!prisma) return { title: 'Hospital' };
     const hospital = await prisma.hospital.findUnique({ where: { id: params.id } });
     if (!hospital) return { title: 'Hospital Not Found' };
-    return { title: hospital.name };
+    const area = hospital.address ? hospital.address.split(/[,，]/)[0].slice(0, 60) : 'Shanghai';
+    const description = `${hospital.name} — health checkup packages at a Shanghai hospital (${area}). Compare prices, duration and English-language services on Shanghai HealthFinder.`;
+    return {
+      title: hospital.name,
+      description,
+      alternates: { canonical: `/hospitals/${hospital.id}` },
+      openGraph: { title: `${hospital.name} | Shanghai HealthFinder`, description, type: 'article' },
+    };
   } catch {
     return { title: 'Hospital' };
   }
@@ -48,10 +56,40 @@ export default async function HospitalDetailPage({ params }: Props) {
 
   if (!hospital || !hospital.isActive) notFound();
 
+  // Structured data for search engines & AI agents. Intentionally limited to
+  // the fields anonymous visitors may see (name + area-level address) so it
+  // never leaks gated content to crawlers.
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': ['Hospital', 'MedicalOrganization'],
+        name: hospital.name,
+        url: `${SITE_URL}/hospitals/${hospital.id}`,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: simpleAddress(hospital.address),
+          addressLocality: 'Shanghai',
+          addressCountry: 'CN',
+        },
+        medicalSpecialty: 'PreventiveHealth',
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Hospitals', item: `${SITE_URL}/#hospitals` },
+          { '@type': 'ListItem', position: 3, name: hospital.name, item: `${SITE_URL}/hospitals/${hospital.id}` },
+        ],
+      },
+    ],
+  };
+
   // Anonymous visitors: name + simple address only, plus a sign-up prompt.
   if (!authed) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Link href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
           ← Back to search
         </Link>
@@ -64,6 +102,7 @@ export default async function HospitalDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Link href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
         ← Back to search
       </Link>

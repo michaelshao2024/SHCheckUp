@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE_NAME } from '@/lib/constants';
+import { SITE_NAME, SITE_URL } from '@/lib/constants';
 import { EscortRequestButton } from '@/components/escort-request-button';
 
 export const metadata: Metadata = {
@@ -10,9 +10,33 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 };
 
+const ABOUT_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      name: 'About SanEnSheng & Our Medical Escort Service',
+      url: `${SITE_URL}/about`,
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'MedicalBusiness',
+      name: 'SanEnSheng Medical Escort Service',
+      alternateName: '优联智康陪诊服务',
+      url: `${SITE_URL}/about`,
+      description:
+        'English-speaking medical escort service in Shanghai: hotel pickup, guidance through registration and hospital departments, and return transfer for international visitors. Escorts handle non-medical communication only.',
+      areaServed: { '@type': 'City', name: 'Shanghai' },
+      availableLanguage: ['en', 'zh'],
+      parentOrganization: { '@type': 'Organization', name: 'Shanghai HealthFinder', alternateName: 'SanEnSheng 优联智康', url: SITE_URL },
+    },
+  ],
+};
+
 export default function AboutPage() {
   return (
     <div className="bg-background">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_JSON_LD) }} />
       {/* Hero */}
       <section className="border-b border-border bg-muted/40">
         <div className="max-w-4xl mx-auto px-4 py-16 sm:py-20">
