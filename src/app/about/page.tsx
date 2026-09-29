@@ -25,7 +25,7 @@ export default function AboutPage() {
           <h1 className="font-display text-3xl sm:text-4xl font-bold leading-tight mb-5">
             A trusted local partner for your health checkup in Shanghai
           </h1>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl">
+          <p className="text-muted-foreground text-lg leading-relaxed">
             SanEnSheng (优联智康) helps overseas visitors and expatriates arrange
             medical checkups at Shanghai&apos;s leading hospitals — and stands beside
             you on the day, so you never navigate an unfamiliar hospital alone.
@@ -37,7 +37,7 @@ export default function AboutPage() {
         {/* The brand */}
         <section>
           <h2 className="text-2xl font-bold mb-4">Who we are</h2>
-          <div className="space-y-4 text-muted-foreground leading-relaxed max-w-2xl">
+          <div className="space-y-4 text-muted-foreground leading-relaxed">
             <p>
               <span className="font-medium text-foreground">SanEnSheng (优联智康)</span> is
               a Shanghai-based service dedicated to making world-class Chinese
@@ -87,12 +87,12 @@ export default function AboutPage() {
         {/* The escort service */}
         <section id="escort-service" className="scroll-mt-16">
           <p className="text-xs font-semibold tracking-widest text-primary mb-2">
-            MEDICAL ESCORT SERVICE · 培诊服务
+            MEDICAL ESCORT SERVICE
           </p>
           <h2 className="text-2xl font-bold mb-4">
             A local guide, from your hotel door and back
           </h2>
-          <p className="text-muted-foreground leading-relaxed mb-6 max-w-2xl">
+          <p className="text-muted-foreground leading-relaxed mb-6">
             A checkup at a large Chinese hospital involves registration desks,
             unfamiliar departments, Chinese-language forms and long queues. Our
             escort walks the entire path with you — so you can focus on your health,
@@ -169,7 +169,7 @@ export default function AboutPage() {
         </section>
 
         {/* Boundaries / trust */}
-        <section className="rounded-xl border border-border bg-muted/40 p-6 space-y-3 text-sm text-muted-foreground max-w-2xl">
+        <section className="rounded-xl border border-border bg-muted/40 p-6 space-y-3 text-sm text-muted-foreground">
           <h2 className="text-base font-semibold text-foreground">
             The boundaries we keep
           </h2>
