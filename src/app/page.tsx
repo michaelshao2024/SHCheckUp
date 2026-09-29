@@ -480,17 +480,17 @@ export default function HomePage() {
           {/* Three concise value points */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
             <div className="rounded-xl bg-white border border-border p-5">
-              <div className="text-primary text-xl mb-2" aria-hidden="true">📍</div>
+              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></div>
               <h3 className="font-semibold text-sm mb-1">Hotel pickup &amp; return</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">Door to door, on time, with your appointment and paperwork arranged in advance.</p>
             </div>
             <div className="rounded-xl bg-white border border-border p-5">
-              <div className="text-primary text-xl mb-2" aria-hidden="true">🧭</div>
+              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
               <h3 className="font-semibold text-sm mb-1">Guidance on the day</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">Directions, scheduling, payments and logistics handled — you just focus on your health.</p>
             </div>
             <div className="rounded-xl bg-white border border-border p-5">
-              <div className="text-primary text-xl mb-2" aria-hidden="true">🔒</div>
+              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
               <h3 className="font-semibold text-sm mb-1">Private &amp; professional</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">We handle logistics only — your consultations and reports stay with the hospital&apos;s physicians.</p>
             </div>
