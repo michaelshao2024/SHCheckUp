@@ -3,22 +3,13 @@ import { notFound } from 'next/navigation';
 import { EscortServiceButton } from '@/components/escort-service-button';
 import { HospitalImage } from '@/components/hospital-image';
 import { ProviderContact } from '@/components/provider-contact';
+import { SignUpPrompt } from '@/components/sign-up-prompt';
+import { isAuthed } from '@/lib/access';
 import type { Metadata } from 'next';
 
-// ISR: cache for 1 hour to minimize Neon reads; contact details are
-// handled client-side by ProviderContact so this page stays static.
-export const revalidate = 3600;
-
-// Pre-render all existing packages at build time; new ones are cached on demand.
-export async function generateStaticParams() {
-  try {
-    if (!prisma) return [];
-    const pkgs = await prisma.checkupPackage.findMany({ select: { id: true } });
-    return pkgs.map((p) => ({ id: p.id }));
-  } catch {
-    return [];
-  }
-}
+// Content depends on the caller's session (anonymous vs registered), so this
+// page is rendered dynamically per request and never statically cached.
+export const dynamic = 'force-dynamic';
 
 interface Props { params: { id: string } }
 
@@ -37,6 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PackageDetailPage({ params }: Props) {
+  const authed = await isAuthed();
+
   let pkg;
   try {
     if (!prisma) { pkg = null; }
@@ -51,6 +44,20 @@ export default async function PackageDetailPage({ params }: Props) {
   }
 
   if (!pkg || !pkg.isActive || !pkg.hospital.isActive) notFound();
+
+  // Anonymous visitors: package name only, plus a sign-up prompt. Price,
+  // hospital, items and all other details require a free account.
+  if (!authed) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <a href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
+          ← Back to search
+        </a>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">{pkg.name}</h1>
+        <SignUpPrompt message="Create a free account to see this checkup package's price, what's included, the hospital and how to book." />
+      </div>
+    );
+  }
 
   const items = pkg.items as string[] | null;
 

@@ -5,6 +5,7 @@ import { SearchBar } from '@/components/search-bar';
 import { HospitalCard } from '@/components/hospital-card';
 import { PackageCard } from '@/components/package-card';
 import { TestimonialsMarquee } from '@/components/testimonials-marquee';
+import { SignUpPrompt } from '@/components/sign-up-prompt';
 import Link from 'next/link';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/constants';
 
@@ -136,19 +137,21 @@ const TESTIMONIALS = [
 ];
 
 interface SearchResult {
-  hospitals: Array<{ id: string; name: string; description: string; address: string }>;
+  hospitals: Array<{ id: string; name: string; description?: string; address: string }>;
   packages: Array<{
-    id: string; name: string; price: number; duration: string | null;
-    hospitalName: string; avgRating: number; tags: string[];
+    id: string; name: string; price?: number; duration?: string | null;
+    hospitalName?: string; avgRating?: number; tags?: string[];
     englishReport?: boolean | null; englishService?: boolean | null;
   }>;
+  authRequired?: boolean;
 }
 
 export default function HomePage() {
   const [results, setResults] = useState<SearchResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn: string | null; description: string; address: string }>>([]);
+  const [authed, setAuthed] = useState<boolean | null>(null);
+  const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn?: string | null; description?: string; address: string }>>([]);
   // Sort: key + direction; clicking a column header toggles direction
   const [sortKey, setSortKey] = useState<'default' | 'price' | 'duration' | 'rating'>('default');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
@@ -178,7 +181,7 @@ export default function HomePage() {
     const arr = [...pkgs];
     const dir = sortDir === 'asc' ? 1 : -1;
     const keyVal = (x: SearchResult['packages'][number]) =>
-      sortKey === 'price' ? x.price : sortKey === 'duration' ? durationHours(x.duration) : x.avgRating;
+      sortKey === 'price' ? (x.price ?? 0) : sortKey === 'duration' ? durationHours(x.duration ?? null) : (x.avgRating ?? 0);
     return arr.sort((a, b) => (keyVal(a) - keyVal(b)) * dir);
   }
 
@@ -199,6 +202,7 @@ export default function HomePage() {
   }
 
   useEffect(() => {
+    fetch('/api/auth/me').then(r => r.json()).then(d => setAuthed(!!d.user)).catch(() => setAuthed(false));
     fetch('/api/hospitals').then(r => r.json()).then(data => {
       if (Array.isArray(data)) setInitialHospitals(data);
     }).catch(() => {});
@@ -277,56 +281,70 @@ export default function HomePage() {
           <>
             {results.packages.length > 0 && (
               <div className="mb-12">
-                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                  <h2 className="text-xl font-semibold">Checkup Packages</h2>
-                  <Link
-                    href={`/compare?ids=${results.packages.map(p => p.id).join(',')}`}
-                    className="text-sm text-primary hover:underline font-medium whitespace-nowrap"
-                  >
-                    Compare these {results.packages.length} packages →
-                  </Link>
-                </div>
-                <div className="bg-white rounded-lg border border-border overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-muted">
-                        <th className="p-3 text-left font-medium min-w-52">Package</th>
-                        <th className="p-3 text-left font-medium min-w-40">Hospital</th>
-                        <SortHeader label="Price" k="price" />
-                        <SortHeader label="Duration" k="duration" />
-                        <SortHeader label="Rating" k="rating" />
-                        <th className="p-3 text-left font-medium">English</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedPackages(results.packages).map((p) => (
-                        <tr key={p.id} className="border-t border-border hover:bg-muted/50 transition-colors">
-                          <td className="p-3">
-                            <Link href={`/packages/${p.id}`} className="font-medium hover:text-primary hover:underline">
-                              {p.name}
-                            </Link>
-                            <div className="flex gap-1 mt-1 flex-wrap">
-                              {p.tags.slice(0, 3).map(t => (
-                                <span key={t} className="px-1.5 py-0.5 bg-muted rounded text-xs text-muted-foreground capitalize">{t}</span>
-                              ))}
-                            </div>
-                          </td>
-                          <td className="p-3 text-muted-foreground">{p.hospitalName}</td>
-                          <td className="p-3 whitespace-nowrap"><span className="font-bold text-primary">¥{p.price.toLocaleString()}</span></td>
-                          <td className="p-3 whitespace-nowrap text-muted-foreground">{p.duration || '-'}</td>
-                          <td className="p-3 whitespace-nowrap">
-                            <span className="text-yellow-500">{'★'.repeat(Math.round(p.avgRating))}</span>
-                            <span className="text-xs text-muted-foreground ml-1">{p.avgRating.toFixed(1)}</span>
-                          </td>
-                          <td className="p-3 whitespace-nowrap text-xs">
-                            {p.englishService === true && <span className="inline-block px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded mr-1">Full EN</span>}
-                            {p.englishReport === true && <span className="inline-block px-1.5 py-0.5 bg-green-50 text-green-700 rounded">EN report</span>}
-                          </td>
-                        </tr>
+                {results.authRequired ? (
+                  <>
+                    <h2 className="text-xl font-semibold mb-4">Checkup Packages</h2>
+                    <div className="bg-white rounded-lg border border-border divide-y divide-border mb-4">
+                      {results.packages.map((p) => (
+                        <div key={p.id} className="px-4 py-3 font-medium">{p.name}</div>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
+                    </div>
+                    <SignUpPrompt message="Sign in or create a free account to see prices, hospitals, ratings, what's included and how to book these checkup packages." />
+                  </>
+                ) : (
+                  <>
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                      <h2 className="text-xl font-semibold">Checkup Packages</h2>
+                      <Link
+                        href={`/compare?ids=${results.packages.map(p => p.id).join(',')}`}
+                        className="text-sm text-primary hover:underline font-medium whitespace-nowrap"
+                      >
+                        Compare these {results.packages.length} packages →
+                      </Link>
+                    </div>
+                    <div className="bg-white rounded-lg border border-border overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-muted">
+                            <th className="p-3 text-left font-medium min-w-52">Package</th>
+                            <th className="p-3 text-left font-medium min-w-40">Hospital</th>
+                            <SortHeader label="Price" k="price" />
+                            <SortHeader label="Duration" k="duration" />
+                            <SortHeader label="Rating" k="rating" />
+                            <th className="p-3 text-left font-medium">English</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sortedPackages(results.packages).map((p) => (
+                            <tr key={p.id} className="border-t border-border hover:bg-muted/50 transition-colors">
+                              <td className="p-3">
+                                <Link href={`/packages/${p.id}`} className="font-medium hover:text-primary hover:underline">
+                                  {p.name}
+                                </Link>
+                                <div className="flex gap-1 mt-1 flex-wrap">
+                                  {(p.tags ?? []).slice(0, 3).map(t => (
+                                    <span key={t} className="px-1.5 py-0.5 bg-muted rounded text-xs text-muted-foreground capitalize">{t}</span>
+                                  ))}
+                                </div>
+                              </td>
+                              <td className="p-3 text-muted-foreground">{p.hospitalName}</td>
+                              <td className="p-3 whitespace-nowrap"><span className="font-bold text-primary">¥{(p.price ?? 0).toLocaleString()}</span></td>
+                              <td className="p-3 whitespace-nowrap text-muted-foreground">{p.duration || '-'}</td>
+                              <td className="p-3 whitespace-nowrap">
+                                <span className="text-yellow-500">{'★'.repeat(Math.round(p.avgRating ?? 0))}</span>
+                                <span className="text-xs text-muted-foreground ml-1">{(p.avgRating ?? 0).toFixed(1)}</span>
+                              </td>
+                              <td className="p-3 whitespace-nowrap text-xs">
+                                {p.englishService === true && <span className="inline-block px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded mr-1">Full EN</span>}
+                                {p.englishReport === true && <span className="inline-block px-1.5 py-0.5 bg-green-50 text-green-700 rounded">EN report</span>}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
               </div>
             )}
             {results.hospitals.length > 0 && (
@@ -355,13 +373,20 @@ export default function HomePage() {
               <div className="mb-12">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold">Shanghai Hospitals</h2>
-                  <Link href="/compare" className="text-sm text-primary hover:underline">Compare Packages →</Link>
+                  {authed && (
+                    <Link href="/compare" className="text-sm text-primary hover:underline">Compare Packages →</Link>
+                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {initialHospitals.map((h) => (
                     <HospitalCard key={h.id} id={h.id} name={h.name} description={h.description} address={h.address} />
                   ))}
                 </div>
+                {authed === false && (
+                  <div className="mt-8">
+                    <SignUpPrompt message="You're seeing hospital names and areas only. Create a free account to unlock full addresses, contacts, checkup packages and prices." />
+                  </div>
+                )}
               </div>
             )}
             <div className="text-center py-8 text-muted-foreground">

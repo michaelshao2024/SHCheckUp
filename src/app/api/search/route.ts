@@ -1,12 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { meilisearch, PACKAGES_INDEX, HOSPITALS_INDEX } from '@/lib/meilisearch';
 import { prisma } from '@/lib/prisma';
+import { isAuthed, publicHospital, publicPackage } from '@/lib/access';
+
+// Responses depend on the caller's session (anonymous vs registered), so this
+// endpoint must never be cached.
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get('q') || '';
   const fReport = searchParams.get('englishReport') === 'true';
   const fService = searchParams.get('englishService') === 'true';
+  const authed = await isAuthed();
+
+  // Shape the final payload according to the access policy. Anonymous users
+  // get hospital name + simple address, and package name only.
+  const shape = (hospitals: any[], packages: any[], source: string) =>
+    authed
+      ? { hospitals, packages, source }
+      : {
+          hospitals: hospitals.map(publicHospital),
+          packages: packages.map(publicPackage),
+          source,
+          authRequired: true,
+        };
 
   // Try Meilisearch first, fallback to Prisma
   if (q.trim()) {
@@ -14,7 +32,7 @@ export async function GET(request: NextRequest) {
       const pkgFilter = ['isActive = true', ...(fReport ? ['englishReport = true'] : []), ...(fService ? ['englishService = true'] : [])];
       const hospitalsResult = await meilisearch.index(HOSPITALS_INDEX).search(q, { limit: 5, filter: ['isActive = true'], attributesToRetrieve: ['id', 'name', 'description', 'address'] });
       const packagesResult = await meilisearch.index(PACKAGES_INDEX).search(q, { limit: 10, filter: pkgFilter, attributesToRetrieve: ['id', 'name', 'price', 'currency', 'duration', 'hospitalName', 'avgRating', 'tags', 'hospitalId', 'englishReport', 'englishService'] });
-      return NextResponse.json({ hospitals: hospitalsResult.hits, packages: packagesResult.hits, source: 'meilisearch' });
+      return NextResponse.json(shape(hospitalsResult.hits as any[], packagesResult.hits as any[], 'meilisearch'));
     } catch { /* fallback to Prisma below */ }
   }
 
@@ -83,11 +101,11 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      hospitals: [...hospitalMap.values()],
-      packages: packages.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, avgRating: Number(p.avgRating), tags: p.tags, englishReport: p.englishReport, englishService: p.englishService })),
-      source: 'prisma',
-    });
+    return NextResponse.json(shape(
+      [...hospitalMap.values()],
+      packages.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, avgRating: Number(p.avgRating), tags: p.tags, englishReport: p.englishReport, englishService: p.englishService })),
+      'prisma',
+    ));
   } catch {
     return NextResponse.json({ hospitals: [], packages: [] });
   }

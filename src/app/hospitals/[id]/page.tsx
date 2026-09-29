@@ -4,21 +4,13 @@ import Link from 'next/link';
 import { PackageCard } from '@/components/package-card';
 import { HospitalImage } from '@/components/hospital-image';
 import { parseHospitalImages } from '@/lib/hospital-images';
+import { isAuthed, simpleAddress } from '@/lib/access';
+import { SignUpPrompt } from '@/components/sign-up-prompt';
 import type { Metadata } from 'next';
 
-// ISR: cache for 1 hour to minimize Neon reads
-export const revalidate = 3600;
-
-// Pre-render all existing hospitals at build time; new ones are cached on demand.
-export async function generateStaticParams() {
-  try {
-    if (!prisma) return [];
-    const hospitals = await prisma.hospital.findMany({ select: { id: true } });
-    return hospitals.map((h) => ({ id: h.id }));
-  } catch {
-    return [];
-  }
-}
+// Content depends on the caller's session (anonymous vs registered), so this
+// page is rendered dynamically per request and never statically cached.
+export const dynamic = 'force-dynamic';
 
 interface Props { params: { id: string } }
 
@@ -34,6 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function HospitalDetailPage({ params }: Props) {
+  const authed = await isAuthed();
+
   let hospital;
   try {
     if (!prisma) { hospital = null; }
@@ -53,6 +47,20 @@ export default async function HospitalDetailPage({ params }: Props) {
   }
 
   if (!hospital || !hospital.isActive) notFound();
+
+  // Anonymous visitors: name + simple address only, plus a sign-up prompt.
+  if (!authed) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <Link href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
+          ← Back to search
+        </Link>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">{hospital.name}</h1>
+        <p className="text-sm text-muted-foreground mb-8">{simpleAddress(hospital.address)}</p>
+        <SignUpPrompt message="Create a free account to see this hospital's full details, contact information, photos and its checkup packages." />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">

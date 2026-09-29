@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { SignUpPrompt } from '@/components/sign-up-prompt';
 
 interface Hospital { id: string; name: string; }
 
@@ -25,19 +26,26 @@ function CompareContent() {
   const [filterEnService, setFilterEnService] = useState(false);
   const [compareList, setCompareList] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
+  const [authRequired, setAuthRequired] = useState(false);
 
   useEffect(() => {
     async function load() {
       try {
-        const [hRes, pRes] = await Promise.all([
+        const pRes = await fetch('/api/packages');
+        if (pRes.status === 401) {
+          setAuthRequired(true);
+          setLoading(false);
+          return;
+        }
+        const [hData, pData] = await Promise.all([
           fetch('/api/hospitals').then(r => r.json()).catch(() => []),
-          fetch('/api/packages').then(r => r.json()).catch(() => []),
+          pRes.json().catch(() => []),
         ]);
-        setHospitals(Array.isArray(hRes) ? hRes : []);
+        setHospitals(Array.isArray(hData) ? hData : []);
         // Admin API serializes Prisma Decimal fields (price, avgRating) as strings — normalize to numbers
         setPackages(
-          Array.isArray(pRes)
-            ? pRes.map((p: any) => ({ ...p, price: Number(p.price), avgRating: Number(p.avgRating) }))
+          Array.isArray(pData)
+            ? pData.map((p: any) => ({ ...p, price: Number(p.price), avgRating: Number(p.avgRating) }))
             : []
         );
       } catch { /* ignore */ }
@@ -65,7 +73,9 @@ function CompareContent() {
       <h1 className="text-3xl font-bold mb-2">Compare Checkup Packages</h1>
       <p className="text-muted-foreground mb-8">Select packages to compare their features side by side.</p>
 
-      {loading ? (
+      {authRequired ? (
+        <SignUpPrompt message="Comparing checkup packages — including prices, hospitals and what's included — is available to registered members. Create a free account to continue." />
+      ) : loading ? (
         <div className="text-center py-12 text-muted-foreground">Loading packages...</div>
       ) : (
         <>
