@@ -43,7 +43,7 @@ const TESTIMONIALS = [
     context: 'Executive checkup at Jiahui Health, June 2026',
     rating: 5,
     quote:
-      'My escort Lily met me at the hospital entrance and handled everything — registration, translating the doctors’ questions, even walking me through my report afterwards. I could not have managed on my own.',
+      'My escort Lily picked me up at my hotel and handled everything — registration, directions, every queue. The IMCC physicians explained my report in English themselves. I could not have managed on my own.',
   },
   {
     name: 'James Whitfield',
@@ -75,7 +75,7 @@ const TESTIMONIALS = [
     context: 'Premium screening at Shanghai General Hospital IMCC, July 2026',
     rating: 5,
     quote:
-      'The VIP package at IMCC was worth it — one nurse stayed with me the entire morning and my report was explained line by line in English. Felt like private healthcare back home.',
+      'The VIP package at IMCC was worth it — the escort handled all the logistics from my hotel, and the hospital’s own physician walked me through my report in English. Felt like private healthcare back home.',
   },
   {
     name: 'Michael Brown',
@@ -362,15 +362,20 @@ export default function HomePage() {
               <p className="text-xs font-semibold tracking-widest text-primary mb-2">MEDICAL ESCORT SERVICE</p>
               <h2 className="text-2xl font-bold mb-4">A local guide for your hospital visit in Shanghai</h2>
               <p className="text-muted-foreground mb-5">
-                Booking a health checkup abroad can feel complicated — forms in Chinese, unfamiliar departments,
-                long queues. Our bilingual medical escorts meet you at the hospital and stay with you through
-                the entire visit.
+                A health checkup abroad can feel complicated — Chinese forms, unfamiliar departments, long queues,
+                and no idea where to go next. Your escort picks you up at your hotel, guides you through the whole
+                visit, and takes you back. You never navigate the hospital alone.
               </p>
               <ul className="space-y-2.5 text-sm">
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>We book the appointment and prepare your registration in advance</span></li>
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Your escort translates every conversation with doctors and staff</span></li>
-                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Results and reports collected and explained to you in English</span></li>
+                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Hotel pickup and drop-off — door to door, on time for your appointment</span></li>
+                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Appointment booked and registration paperwork prepared in advance</span></li>
+                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>Your escort guides you between departments and handles non-medical communication — directions, scheduling, payments, logistics</span></li>
+                <li className="flex gap-2.5"><span className="text-primary shrink-0">—</span><span>We arrange a results walkthrough with the hospital&apos;s own physicians where available</span></li>
               </ul>
+              <div className="mt-5 text-xs text-muted-foreground bg-background/60 border border-border rounded-lg p-3 space-y-1.5">
+                <p><span className="font-medium text-foreground">Your privacy:</span> we do not sit in on private consultations with doctors or nurses, and we do not translate medical conversations — those stay between you and your physician.</p>
+                <p><span className="font-medium text-foreground">We are not doctors:</span> we do not interpret medical reports. Report explanation is always done by the hospital&apos;s licensed physicians.</p>
+              </div>
             </div>
             <div className="bg-white rounded-lg border border-border p-6">
               <h3 className="font-semibold mb-5">How it works</h3>
@@ -392,8 +397,8 @@ export default function HomePage() {
                 <li className="flex gap-3">
                   <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-semibold flex items-center justify-center">3</span>
                   <div>
-                    <p className="font-medium">Meet at the hospital</p>
-                    <p className="text-muted-foreground mt-0.5">Your escort handles the day — you just follow along and get checked.</p>
+                    <p className="font-medium">Hotel pickup on the day</p>
+                    <p className="text-muted-foreground mt-0.5">Your escort meets you at your hotel, takes you to the hospital, guides you through every step, and brings you back.</p>
                   </div>
                 </li>
               </ol>
