@@ -3,6 +3,7 @@
 import { Suspense, useState, useEffect, FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { parseHospitalImages, serializeHospitalImages } from '@/lib/hospital-images';
 
 interface HospitalFormData {
   name: string;
@@ -12,9 +13,13 @@ interface HospitalFormData {
   email: string;
   website: string;
   description: string;
-  imageUrl: string;
   isActive: boolean;
 }
+
+// Keep total serialized photo payload under ~1.6MB so it fits comfortably in the
+// imageUrl text column and one request body.
+const MAX_TOTAL_IMAGE_CHARS = 1_600_000;
+const MAX_IMAGES = 8;
 
 function AdminHospitalFormPage() {
   const router = useRouter();
@@ -30,9 +35,10 @@ function AdminHospitalFormPage() {
     email: '',
     website: '',
     description: '',
-    imageUrl: '',
     isActive: true,
   });
+  const [images, setImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(isEditing);
   const [error, setError] = useState<string | null>(null);
@@ -61,9 +67,9 @@ function AdminHospitalFormPage() {
         email: hospital.email || '',
         website: hospital.website || '',
         description: hospital.description || '',
-        imageUrl: hospital.imageUrl || '',
         isActive: hospital.isActive !== false,
       });
+      setImages(parseHospitalImages(hospital.imageUrl));
     } catch (err: any) {
       setError(err.message || 'Failed to load hospital');
     } finally {
@@ -76,32 +82,76 @@ function AdminHospitalFormPage() {
     setForm(prev => ({ ...prev, [name]: value }));
   }
 
-  function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    // Compress client-side: max 1200px wide, JPEG q0.8 -> small data URL
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const MAX_W = 1200;
-        const scale = Math.min(1, MAX_W / img.width);
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.round(img.width * scale);
-        canvas.height = Math.round(img.height * scale);
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        if (dataUrl.length > 900_000) {
-          setError('Image is too large even after compression. Please choose a smaller photo.');
-          return;
-        }
-        setForm(prev => ({ ...prev, imageUrl: dataUrl }));
+  // Compress one file client-side: max 1200px wide, JPEG q0.8 -> small data URL
+  function compressFile(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Could not read file'));
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Could not decode image'));
+        img.onload = () => {
+          const MAX_W = 1200;
+          const scale = Math.min(1, MAX_W / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return reject(new Error('Canvas not supported'));
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', 0.8));
+        };
+        img.src = String(reader.result);
       };
-      img.src = String(reader.result);
-    };
-    reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    // allow re-selecting the same file(s) later
+    e.target.value = '';
+    if (files.length === 0) return;
+    setError(null);
+    setUploading(true);
+    try {
+      let next = [...images];
+      for (const file of files) {
+        if (next.length >= MAX_IMAGES) {
+          setError(`You can upload up to ${MAX_IMAGES} photos.`);
+          break;
+        }
+        const dataUrl = await compressFile(file);
+        const projectedTotal =
+          [...next, dataUrl].reduce((sum, s) => sum + s.length, 0);
+        if (projectedTotal > MAX_TOTAL_IMAGE_CHARS) {
+          setError(
+            'Total photo size is too large after compression. Remove a photo or choose smaller images.'
+          );
+          break;
+        }
+        next = [...next, dataUrl];
+      }
+      setImages(next);
+    } catch {
+      setError('One of the images could not be processed. Please try another file.');
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function removeImage(index: number) {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function moveImage(index: number, dir: -1 | 1) {
+    setImages((prev) => {
+      const target = index + dir;
+      if (target < 0 || target >= prev.length) return prev;
+      const copy = [...prev];
+      [copy[index], copy[target]] = [copy[target], copy[index]];
+      return copy;
+    });
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -117,7 +167,7 @@ function AdminHospitalFormPage() {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, imageUrl: serializeHospitalImages(images) }),
       });
 
       const data = await res.json();
@@ -129,7 +179,8 @@ function AdminHospitalFormPage() {
       setSuccess(isEditing ? 'Hospital updated successfully!' : 'Hospital created successfully!');
 
       if (!isEditing) {
-        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', imageUrl: '', isActive: true });
+        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', isActive: true });
+        setImages([]);
       }
 
       setTimeout(() => {
@@ -256,23 +307,44 @@ function AdminHospitalFormPage() {
             />
           </div>
 
-          {/* Photo */}
+          {/* Photos */}
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Photo</label>
-            {form.imageUrl ? (
-              <div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={form.imageUrl} alt="Hospital" className="w-full max-h-48 object-cover rounded-lg border border-border mb-2" />
-                <button type="button" onClick={() => setForm(prev => ({ ...prev, imageUrl: '' }))}
-                  className="text-sm text-red-600 hover:underline">
-                  Remove photo
-                </button>
+            <label className="block text-sm font-medium mb-1">Photos</label>
+            {images.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
+                {images.map((src, i) => (
+                  <div key={i} className="relative group rounded-lg border border-border overflow-hidden bg-muted">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={src} alt={`Photo ${i + 1}`} className="w-full aspect-[4/3] object-cover" />
+                    {i === 0 && (
+                      <span className="absolute top-1 left-1 text-[10px] font-medium px-1.5 py-0.5 rounded bg-primary text-primary-foreground">
+                        Cover
+                      </span>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-black/45 px-1.5 py-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                      <div className="flex gap-1">
+                        <button type="button" onClick={() => moveImage(i, -1)} disabled={i === 0}
+                          aria-label="Move left"
+                          className="text-white text-xs px-1.5 py-0.5 rounded hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed">←</button>
+                        <button type="button" onClick={() => moveImage(i, 1)} disabled={i === images.length - 1}
+                          aria-label="Move right"
+                          className="text-white text-xs px-1.5 py-0.5 rounded hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed">→</button>
+                      </div>
+                      <button type="button" onClick={() => removeImage(i)}
+                        aria-label="Remove photo"
+                        className="text-white text-xs px-1.5 py-0.5 rounded hover:bg-red-500/70">Remove</button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ) : (
-              <input type="file" accept="image/*" onChange={handleImageUpload}
-                className="w-full text-sm text-muted-foreground file:mr-3 file:px-3 file:py-2 file:border file:border-border file:rounded-lg file:text-sm file:bg-muted file:hover:bg-muted/80 file:cursor-pointer" />
             )}
-            <p className="text-xs text-muted-foreground mt-1">JPG/PNG, compressed automatically. Shown on the public hospital page.</p>
+            {images.length < MAX_IMAGES && (
+              <input type="file" accept="image/*" multiple onChange={handleImageUpload} disabled={uploading}
+                className="w-full text-sm text-muted-foreground file:mr-3 file:px-3 file:py-2 file:border file:border-border file:rounded-lg file:text-sm file:bg-muted file:hover:bg-muted/80 file:cursor-pointer disabled:opacity-50" />
+            )}
+            <p className="text-xs text-muted-foreground mt-1">
+              {uploading ? 'Processing image…' : `JPG/PNG, up to ${MAX_IMAGES} photos, compressed automatically. The first photo (Cover) leads the gallery on the public page.`}
+            </p>
           </div>
 
           <div>
