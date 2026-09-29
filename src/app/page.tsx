@@ -237,16 +237,32 @@ export default function HomePage() {
       </nav>
 
       {/* Hero */}
-      <section id="search" className="scroll-mt-16 py-12 sm:py-20 text-center bg-gradient-to-b from-primary/5 to-background">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">Find Your Health Checkup in Shanghai</h1>
-          <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+      <section id="search" className="scroll-mt-16 relative overflow-hidden">
+        {/* Shanghai skyline backdrop */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/hero-shanghai.jpg"
+          alt="Shanghai Lujiazui skyline at dusk"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/80 via-[#0F1B2A]/60 to-[#0F1B2A]/85" />
+
+        <div className="relative max-w-4xl mx-auto px-4 py-20 sm:py-28 text-center">
+          <p className="text-xs font-semibold tracking-[0.2em] text-amber-300/90 mb-4">
+            SHANGHAI · ENGLISH-SPEAKING HEALTH CHECKUPS
+          </p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight">
+            Find Your Health Checkup in Shanghai
+          </h1>
+          <p className="text-base sm:text-lg text-white/80 mb-10 max-w-2xl mx-auto">
             Compare medical checkup packages at Shanghai hospitals. Search, compare reviews, and book with confidence.
           </p>
           <div className="flex justify-center">
-            <SearchBar onSearch={handleSearch} />
+            <div className="w-full max-w-2xl bg-white rounded-xl p-2 shadow-2xl shadow-black/30">
+              <SearchBar onSearch={handleSearch} />
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-4">
+          <p className="text-xs text-white/60 mt-5">
             Sign in for detailed results. Anonymous users see limited information.
           </p>
         </div>
