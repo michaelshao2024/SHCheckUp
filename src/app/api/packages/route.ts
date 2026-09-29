@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
     // Registered users are capped too — prevents bulk scripted extraction
     // of the full package catalogue via a single account.
-    const rl = rateLimit(clientKey(user.id, request), 30, 60_000);
+    const rl = await rateLimit(clientKey(user.id, request), 30, 60_000);
     if (!rl.ok) {
       return NextResponse.json(
         { error: 'Too many requests. Please slow down and try again shortly.' },

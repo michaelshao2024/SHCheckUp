@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
   const user = await getSessionUser();
   const authed = user !== null;
   const rl = authed
-    ? rateLimit(clientKey(user!.id, request), 60, 60_000)
-    : rateLimit(clientKey(null, request), 20, 60_000);
+    ? await rateLimit(clientKey(user!.id, request), 60, 60_000)
+    : await rateLimit(clientKey(null, request), 20, 60_000);
   if (!rl.ok) {
     return NextResponse.json(
       { error: 'Too many requests. Please slow down and try again shortly.' },

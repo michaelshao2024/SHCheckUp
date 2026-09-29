@@ -177,3 +177,10 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
+model RateLimit {
+  id        String   @id // "<key>:<windowStart>"
+  count     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("rate_limits")
+}

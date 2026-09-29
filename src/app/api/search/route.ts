@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
   // Anti-scraping rate limits: anonymous by IP (strict), logged-in by user id
   // (generous for real use, but caps scripted bulk extraction).
   const rl = authed
-    ? rateLimit(clientKey(user!.id, request), 60, 60_000)
-    : rateLimit(clientKey(null, request), 10, 60_000);
+    ? await rateLimit(clientKey(user!.id, request), 60, 60_000)
+    : await rateLimit(clientKey(null, request), 10, 60_000);
   if (!rl.ok) {
     return NextResponse.json(
       { error: 'Too many requests. Please slow down and try again shortly.' },

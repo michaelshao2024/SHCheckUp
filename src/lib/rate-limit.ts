@@ -1,37 +1,28 @@
+import { prisma } from './prisma';
+
 /**
- * Lightweight in-memory sliding-window rate limiter.
+ * Rate limiting for public data APIs (anti-scraping).
  *
- * NOTE (honesty): on Vercel serverless each warm instance keeps its own map,
- * so limits are enforced per instance, not globally — this raises the cost of
- * naive scraping but is not a hard global quota. For strict global limits a
- * shared store (e.g. Upstash Redis) would be required.
+ * Primary path: fixed-window counters stored in Postgres (rate_limits table),
+ * which makes limits GLOBAL across all Vercel serverless instances — a scraper
+ * cannot bypass the cap by landing on a fresh instance.
+ *
+ * Fallback: if the DB is unavailable, an in-memory per-instance sliding window
+ * keeps the site functional (fail-open) with best-effort limiting.
  */
 
 interface Bucket {
   timestamps: number[];
 }
-
 const buckets = new Map<string, Bucket>();
-
-// Periodically drop stale keys so the map does not grow unbounded.
 let lastSweep = 0;
-function sweep(now: number) {
-  if (now - lastSweep < 60_000) return;
-  lastSweep = now;
-  for (const [key, b] of buckets) {
-    if (b.timestamps.length === 0) buckets.delete(key);
-  }
-}
 
-export interface RateLimitResult {
-  ok: boolean;
-  /** Seconds the caller should wait before retrying (when ok = false). */
-  retryAfter: number;
-}
-
-export function rateLimit(key: string, limit: number, windowMs: number): RateLimitResult {
+function memoryLimit(key: string, limit: number, windowMs: number): boolean {
   const now = Date.now();
-  sweep(now);
+  if (now - lastSweep >= 60_000) {
+    lastSweep = now;
+    for (const [k, b] of buckets) if (b.timestamps.length === 0) buckets.delete(k);
+  }
   let b = buckets.get(key);
   if (!b) {
     b = { timestamps: [] };
@@ -39,12 +30,45 @@ export function rateLimit(key: string, limit: number, windowMs: number): RateLim
   }
   const cutoff = now - windowMs;
   b.timestamps = b.timestamps.filter((t) => t > cutoff);
-  if (b.timestamps.length >= limit) {
-    const oldest = b.timestamps[0];
-    return { ok: false, retryAfter: Math.max(1, Math.ceil((oldest + windowMs - now) / 1000)) };
-  }
+  if (b.timestamps.length >= limit) return false;
   b.timestamps.push(now);
-  return { ok: true, retryAfter: 0 };
+  return true;
+}
+
+export interface RateLimitResult {
+  ok: boolean;
+  retryAfter: number; // seconds
+}
+
+/**
+ * DB-backed fixed-window rate limit.
+ * Window id = `<key>:<windowStartMs>`; each hit atomically increments `count`.
+ */
+export async function rateLimit(key: string, limit: number, windowMs: number): Promise<RateLimitResult> {
+  const now = Date.now();
+  const windowStart = Math.floor(now / windowMs) * windowMs;
+  const id = `${key}:${windowStart}`;
+  try {
+    if (!prisma) throw new Error('no db');
+    const row = await prisma.rateLimit.upsert({
+      where: { id },
+      create: { id, count: 1 },
+      update: { count: { increment: 1 } },
+    });
+    if (row.count > limit) {
+      const retryAfter = Math.max(1, Math.ceil((windowStart + windowMs - now) / 1000));
+      return { ok: false, retryAfter };
+    }
+    // Cheap occasional cleanup of old windows (~1% of requests).
+    if (Math.random() < 0.01) {
+      const cutoff = new Date(now - 10 * windowMs);
+      prisma.rateLimit.deleteMany({ where: { createdAt: { lt: cutoff } } }).catch(() => {});
+    }
+    return { ok: true, retryAfter: 0 };
+  } catch {
+    // Fail-open with per-instance limiting so the site stays usable.
+    return { ok: memoryLimit(key, limit, windowMs), retryAfter: 60 };
+  }
 }
 
 /** Best-effort client identifier: session user id when logged in, else IP. */
