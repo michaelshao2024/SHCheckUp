@@ -5,7 +5,7 @@ import { SITE_NAME } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'About SanEnSheng & Our Medical Escort Service',
   description:
-    'SanEnSheng (三生生) helps overseas visitors arrange health checkups in Shanghai. Learn about our brand and how our medical escort service guides you through your hospital visit.',
+    'SanEnSheng (三恩胜) helps overseas visitors arrange health checkups in Shanghai. Learn about our brand and how our medical escort service guides you through your hospital visit.',
   alternates: { canonical: '/about' },
 };
 
@@ -16,13 +16,13 @@ export default function AboutPage() {
       <section className="border-b border-border bg-muted/40">
         <div className="max-w-4xl mx-auto px-4 py-16 sm:py-20">
           <p className="text-xs font-semibold tracking-widest text-primary mb-3">
-            SANENSHENG · 三生生
+            SANENSHENG · 三恩胜
           </p>
           <h1 className="font-display text-3xl sm:text-4xl font-bold leading-tight mb-5">
             A trusted local partner for your health checkup in Shanghai
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl">
-            SanEnSheng (三生生) helps overseas visitors and expatriates arrange
+            SanEnSheng (三恩胜) helps overseas visitors and expatriates arrange
             medical checkups at Shanghai&apos;s leading hospitals — and stands beside
             you on the day, so you never navigate an unfamiliar hospital alone.
           </p>
@@ -35,7 +35,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold mb-4">Who we are</h2>
           <div className="space-y-4 text-muted-foreground leading-relaxed">
             <p>
-              <span className="font-medium text-foreground">SanEnSheng (三生生)</span> is
+              <span className="font-medium text-foreground">SanEnSheng (三恩胜)</span> is
               a Shanghai-based service dedicated to making world-class Chinese
               healthcare accessible to people who do not speak the language or know
               the system. We began with a simple observation: a health checkup abroad
