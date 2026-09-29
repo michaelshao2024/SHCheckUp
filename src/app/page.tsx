@@ -397,12 +397,21 @@ export default function HomePage() {
       </section>
 
       {/* Medical Escort Service */}
-      <section id="escort" className="scroll-mt-16 border-t border-border bg-muted/40 py-16 sm:py-20">
-        <div className="max-w-5xl mx-auto px-4">
+      <section id="escort" className="scroll-mt-16 relative overflow-hidden border-t border-border py-16 sm:py-20">
+        {/* Shanghai skyline backdrop (on-brand, matches hero) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/escort-shanghai.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/85 via-[#0F1B2A]/75 to-[#0F1B2A]/90" />
+        <div className="relative max-w-5xl mx-auto px-4">
           <div className="max-w-2xl mb-10">
-            <p className="text-xs font-semibold tracking-widest text-primary mb-2">MEDICAL ESCORT SERVICE</p>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">A local guide for your hospital visit</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-xs font-semibold tracking-widest text-amber-400 mb-2">MEDICAL ESCORT SERVICE</p>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight text-white">A local guide for your hospital visit</h2>
+            <p className="text-white/80 leading-relaxed">
               An English-speaking escort meets you at your hotel, guides you through the whole
               hospital visit, and takes you back — so you never navigate registration, forms or
               departments alone.
