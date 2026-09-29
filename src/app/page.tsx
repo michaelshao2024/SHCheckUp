@@ -52,7 +52,7 @@ const JSON_LD = {
 const FAQS = [
   {
     q: 'How much does a health checkup cost in Shanghai?',
-    a: 'It depends on the hospital and package depth. Basic screenings at public hospital international departments start from a few hundred RMB, while comprehensive VIP packages at private international hospitals typically range from about ¥4,000 to over ¥17,000. Create a free account to compare exact prices side by side.',
+    a: 'Checkup packages on Shanghai HealthFinder range from about ¥6,000 to ¥40,000 (RMB), depending on the hospital and how comprehensive the screening is. Create a free account to compare exact package prices side by side.',
   },
   {
     q: 'Do Shanghai hospitals provide English reports and English-speaking staff?',
@@ -68,7 +68,7 @@ const FAQS = [
   },
   {
     q: 'Is Shanghai HealthFinder free to use?',
-    a: 'Yes. Browsing is free, and a free registered account unlocks full package prices, hospital details and contact information. Requesting the medical escort service is also free — you only pay the hospital for the checkup itself.',
+    a: 'Browsing is free, and a free registered account unlocks full package prices, hospital details and contact information. The medical escort service is a paid add-on — you pay the hospital for the checkup itself, and a separate service fee for the escort. Submit a request and our team will confirm the escort fee for your visit.',
   },
   {
     q: 'Is my personal information private?',
