@@ -248,9 +248,10 @@ export default function HomePage() {
         <img
           src="/hero-shanghai.jpg"
           alt="Shanghai Lujiazui skyline at dusk"
-          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/80 via-[#0F1B2A]/60 to-[#0F1B2A]/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/70 via-[#0F1B2A]/45 to-[#0F1B2A]/80" />
 
         <div className="relative max-w-4xl mx-auto px-4 py-20 sm:py-28 text-center">
           <p className="text-xs font-semibold tracking-[0.2em] text-amber-300/90 mb-4">
@@ -398,15 +399,16 @@ export default function HomePage() {
 
       {/* Medical Escort Service */}
       <section id="escort" className="scroll-mt-16 relative overflow-hidden border-t border-border py-16 sm:py-20">
-        {/* Shanghai skyline backdrop (on-brand, matches hero) */}
+        {/* Shanghai Bund heritage waterfront backdrop (distinct from hero) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/escort-shanghai.jpg"
+          src="/escort-bund.jpg"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/85 via-[#0F1B2A]/75 to-[#0F1B2A]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F1B2A]/78 via-[#0F1B2A]/62 to-[#0F1B2A]/85" />
         <div className="relative max-w-5xl mx-auto px-4">
           <div className="max-w-2xl mb-10">
             <p className="text-xs font-semibold tracking-widest text-amber-400 mb-2">MEDICAL ESCORT SERVICE</p>
