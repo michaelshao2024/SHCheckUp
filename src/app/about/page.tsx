@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { SITE_NAME } from '@/lib/constants';
 import { EscortRequestButton } from '@/components/escort-request-button';
 
@@ -15,6 +16,9 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="border-b border-border bg-muted/40">
         <div className="max-w-4xl mx-auto px-4 py-16 sm:py-20">
+          <Link href="/" className="inline-block text-sm text-primary hover:underline mb-6">
+            ← Back to home
+          </Link>
           <p className="text-xs font-semibold tracking-widest text-primary mb-3">
             SANENSHENG · 三恩胜
           </p>
