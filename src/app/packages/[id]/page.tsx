@@ -113,6 +113,11 @@ export default async function PackageDetailPage({ params }: Props) {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-6">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1">{pkg.name}</h1>
+          {pkg.pendingUpdate && (
+            <span className="inline-block px-2 py-0.5 mt-2 bg-amber-50 border border-amber-200 text-amber-700 rounded text-xs font-medium">
+              Being updated — details may change
+            </span>
+          )}
           <p className="text-muted-foreground">{pkg.hospital.name}</p>
         </div>
         <div className="sm:text-right">

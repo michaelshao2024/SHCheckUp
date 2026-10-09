@@ -135,6 +135,7 @@ export default async function HospitalDetailPage({ params }: Props) {
             hospitalName={hospital.name}
             avgRating={Number(pkg.avgRating)}
             tags={pkg.tags}
+            pendingUpdate={pkg.pendingUpdate}
           />
         ))}
       </div>

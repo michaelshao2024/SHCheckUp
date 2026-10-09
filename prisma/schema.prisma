@@ -39,6 +39,7 @@ model CheckupPackage {
   includesTranslator Boolean @default(false) @map("includes_translator")
   englishReport   Boolean? @map("english_report") // true=English report, false=no, null=unknown
   englishService  Boolean? @map("english_service") // true=full English service, false=no, null=unknown
+  pendingUpdate Boolean  @default(false) @map("pending_update") // package details being refreshed; show "Updating" badge
   source        String?  // URL of the package's original listing / source page
   description   String?  @db.Text
   tags          String[] // e.g. ["basic", "comprehensive", "premium"]

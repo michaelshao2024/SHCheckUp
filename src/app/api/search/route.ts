@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     try {
       const pkgFilter = ['isActive = true', ...(fReport ? ['englishReport = true'] : []), ...(fService ? ['englishService = true'] : [])];
       const hospitalsResult = await meilisearch.index(HOSPITALS_INDEX).search(q, { limit: 5, filter: ['isActive = true'], attributesToRetrieve: ['id', 'name', 'description', 'address', 'jciAccredited'] });
-      const packagesResult = await meilisearch.index(PACKAGES_INDEX).search(q, { limit: 10, filter: pkgFilter, attributesToRetrieve: ['id', 'name', 'price', 'currency', 'duration', 'hospitalName', 'avgRating', 'tags', 'hospitalId', 'englishReport', 'englishService'] });
+      const packagesResult = await meilisearch.index(PACKAGES_INDEX).search(q, { limit: 10, filter: pkgFilter, attributesToRetrieve: ['id', 'name', 'price', 'currency', 'duration', 'hospitalName', 'avgRating', 'tags', 'hospitalId', 'englishReport', 'englishService', 'pendingUpdate'] });
       return NextResponse.json(shape(hospitalsResult.hits as any[], packagesResult.hits as any[], 'meilisearch'));
     } catch { /* fallback to Prisma below */ }
   }

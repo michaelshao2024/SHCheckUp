@@ -213,6 +213,7 @@ interface SearchResult {
     id: string; name: string; price?: number; duration?: string | null;
     hospitalName?: string; avgRating?: number; tags?: string[];
     englishReport?: boolean | null; englishService?: boolean | null;
+    pendingUpdate?: boolean;
   }>;
   authRequired?: boolean;
 }
@@ -403,6 +404,11 @@ export default function HomePage() {
                                 <Link href={`/packages/${p.id}`} className="font-medium hover:text-primary hover:underline">
                                   {p.name}
                                 </Link>
+                                {p.pendingUpdate && (
+                                  <span className="inline-block px-1.5 py-0.5 mt-1 bg-amber-50 border border-amber-200 text-amber-700 rounded text-xs font-medium">
+                                    Being updated
+                                  </span>
+                                )}
                                 <div className="flex gap-1 mt-1 flex-wrap">
                                   {(p.tags ?? []).slice(0, 3).map(t => (
                                     <span key={t} className="px-1.5 py-0.5 bg-muted rounded text-xs text-muted-foreground capitalize">{t}</span>

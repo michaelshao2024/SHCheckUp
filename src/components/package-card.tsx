@@ -8,15 +8,21 @@ interface PackageCardProps {
   tags: string[];
   englishReport?: boolean;
   englishService?: boolean;
+  pendingUpdate?: boolean;
 }
 
-export function PackageCard({ id, name, price, duration, hospitalName, avgRating, tags, englishReport, englishService }: PackageCardProps) {
+export function PackageCard({ id, name, price, duration, hospitalName, avgRating, tags, englishReport, englishService, pendingUpdate }: PackageCardProps) {
   return (
     <a href={`/packages/${id}`} className="block p-6 rounded-lg border border-border hover:border-primary transition-colors">
-      <div className="flex justify-between items-start mb-2">
+      <div className="flex justify-between items-start gap-2 mb-2">
         <h3 className="text-lg font-semibold">{name}</h3>
-        <span className="text-lg font-bold text-primary">¥{price.toLocaleString()}</span>
+        <span className="text-lg font-bold text-primary shrink-0">¥{price.toLocaleString()}</span>
       </div>
+      {pendingUpdate && (
+        <span className="inline-block px-2 py-0.5 mb-2 bg-amber-50 border border-amber-200 text-amber-700 rounded text-xs font-medium">
+          Being updated — details may change
+        </span>
+      )}
       <p className="text-sm text-muted-foreground mb-1">{hospitalName}</p>
       <div className="flex items-center gap-2 mb-3">
         <span className="text-sm text-yellow-500">{'★'.repeat(Math.round(avgRating))}</span>
