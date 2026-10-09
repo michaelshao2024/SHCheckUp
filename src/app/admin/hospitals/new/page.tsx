@@ -14,6 +14,7 @@ interface HospitalFormData {
   website: string;
   description: string;
   isActive: boolean;
+  jciAccredited: boolean;
 }
 
 // Keep total serialized photo payload under ~1.6MB so it fits comfortably in the
@@ -36,6 +37,7 @@ function AdminHospitalFormPage() {
     website: '',
     description: '',
     isActive: true,
+    jciAccredited: false,
   });
   const [images, setImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -68,6 +70,7 @@ function AdminHospitalFormPage() {
         website: hospital.website || '',
         description: hospital.description || '',
         isActive: hospital.isActive !== false,
+        jciAccredited: hospital.jciAccredited === true,
       });
       setImages(parseHospitalImages(hospital.imageUrl));
     } catch (err: any) {
@@ -179,7 +182,7 @@ function AdminHospitalFormPage() {
       setSuccess(isEditing ? 'Hospital updated successfully!' : 'Hospital created successfully!');
 
       if (!isEditing) {
-        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', isActive: true });
+        setForm({ name: '', nameCn: '', address: '', phone: '', email: '', website: '', description: '', isActive: true, jciAccredited: false });
         setImages([]);
       }
 
@@ -362,6 +365,20 @@ function AdminHospitalFormPage() {
               placeholder="Describe the hospital, its specialties, location highlights..."
             />
           </div>
+
+          {/* JCI accreditation */}
+          <label className="flex items-center gap-3 py-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={form.jciAccredited}
+              onChange={(e) => setForm(prev => ({ ...prev, jciAccredited: e.target.checked }))}
+              className="w-4 h-4 accent-amber-500"
+            />
+            <span className="text-sm">
+              <span className="font-medium">JCI Accredited</span>
+              <span className="text-muted-foreground"> — show the JCI (Joint Commission International) badge on this hospital</span>
+            </span>
+          </label>
 
                     {/* Visibility */}
           <label className="flex items-center gap-3 py-2 cursor-pointer">

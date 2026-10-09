@@ -6,6 +6,7 @@ import { HospitalImage } from '@/components/hospital-image';
 import { parseHospitalImages } from '@/lib/hospital-images';
 import { isAuthed, simpleAddress } from '@/lib/access';
 import { SignUpPrompt } from '@/components/sign-up-prompt';
+import { JciBadge } from '@/components/jci-badge';
 import { SITE_URL } from '@/lib/constants';
 import type { Metadata } from 'next';
 
@@ -73,6 +74,7 @@ export default async function HospitalDetailPage({ params }: Props) {
           addressCountry: 'CN',
         },
         medicalSpecialty: 'PreventiveHealth',
+        ...(hospital.jciAccredited ? { award: 'JCI Accredited (Joint Commission International)' } : {}),
       },
       {
         '@type': 'BreadcrumbList',
@@ -93,7 +95,10 @@ export default async function HospitalDetailPage({ params }: Props) {
         <Link href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
           ← Back to search
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-bold mb-2">{hospital.name}</h1>
+        <div className="flex flex-wrap items-center gap-3 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold">{hospital.name}</h1>
+          {hospital.jciAccredited && <JciBadge />}
+        </div>
         <p className="text-sm text-muted-foreground mb-8">{simpleAddress(hospital.address)}</p>
         <SignUpPrompt message="Create a free account to see this hospital's full details, contact information, photos and its checkup packages." />
       </div>
@@ -106,7 +111,10 @@ export default async function HospitalDetailPage({ params }: Props) {
       <Link href="/" className="text-sm text-primary hover:underline mb-4 inline-block">
         ← Back to search
       </Link>
-      <h1 className="text-2xl sm:text-3xl font-bold mb-2">{hospital.name}</h1>
+      <div className="flex flex-wrap items-center gap-3 mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold">{hospital.name}</h1>
+        {hospital.jciAccredited && <JciBadge />}
+      </div>
       {hospital.nameCn && <p className="text-muted-foreground mb-4">{hospital.nameCn}</p>}
       {hospital.imageUrl && (
         <HospitalImage images={parseHospitalImages(hospital.imageUrl)} alt={hospital.name} />

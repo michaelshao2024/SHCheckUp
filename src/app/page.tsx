@@ -208,7 +208,7 @@ const REVIEWS_LD = {
 };
 
 interface SearchResult {
-  hospitals: Array<{ id: string; name: string; description?: string; address: string }>;
+  hospitals: Array<{ id: string; name: string; description?: string; address: string; jciAccredited?: boolean }>;
   packages: Array<{
     id: string; name: string; price?: number; duration?: string | null;
     hospitalName?: string; avgRating?: number; tags?: string[];
@@ -222,7 +222,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [authed, setAuthed] = useState<boolean | null>(null);
-  const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn?: string | null; description?: string; address: string }>>([]);
+  const [initialHospitals, setInitialHospitals] = useState<Array<{ id: string; name: string; nameCn?: string | null; description?: string; address: string; jciAccredited?: boolean }>>([]);
   // Sort: key + direction; clicking a column header toggles direction
   const [sortKey, setSortKey] = useState<'default' | 'price' | 'duration' | 'rating'>('default');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
@@ -461,7 +461,7 @@ export default function HomePage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {initialHospitals.map((h) => (
-                    <HospitalCard key={h.id} id={h.id} name={h.name} description={h.description} address={h.address} />
+                    <HospitalCard key={h.id} id={h.id} name={h.name} description={h.description} address={h.address} jciAccredited={h.jciAccredited} />
                   ))}
                 </div>
                 {authed === false && (

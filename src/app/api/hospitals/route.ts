@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
 
   // Try Meilisearch first
   try {
-    const result = await meilisearch.index(HOSPITALS_INDEX).search('', { limit: 50, filter: ['isActive = true'], attributesToRetrieve: ['id', 'name', 'description', 'address'] });
+    const result = await meilisearch.index(HOSPITALS_INDEX).search('', { limit: 50, filter: ['isActive = true'], attributesToRetrieve: ['id', 'name', 'description', 'address', 'jciAccredited'] });
     return NextResponse.json(shape(result.hits as any[]));
   } catch { /* fallback */ }
 

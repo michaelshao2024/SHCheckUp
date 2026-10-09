@@ -18,6 +18,7 @@ model Hospital {
   description String   @db.Text
   imageUrl    String?
   isActive    Boolean  @default(true)
+  jciAccredited Boolean @default(false) @map("jci_accredited") // JCI (Joint Commission International) accreditation badge
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 

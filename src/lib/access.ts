@@ -49,12 +49,14 @@ export interface FullHospital {
   [k: string]: unknown;
 }
 
-/** Public (anonymous) hospital shape: name + simple address only. */
+/** Public (anonymous) hospital shape: name + simple address + JCI badge flag
+ *  (accreditation is a public trust signal, not gated data). */
 export function publicHospital(h: FullHospital) {
   return {
     id: h.id,
     name: h.name,
     address: simpleAddress(h.address),
+    jciAccredited: h.jciAccredited === true,
   };
 }
 

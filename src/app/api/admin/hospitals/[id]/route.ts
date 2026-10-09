@@ -15,7 +15,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
       return NextResponse.json({ error: 'Unauthorized: admin access required' }, { status: 401 });
     }
     const body = await request.json();
-    const { name, nameCn, address, phone, email, website, description, isActive, imageUrl } = body;
+    const { name, nameCn, address, phone, email, website, description, isActive, imageUrl, jciAccredited } = body;
 
     const existing = await prisma.hospital.findUnique({ where: { id: params.id } });
     if (!existing) {
@@ -34,6 +34,7 @@ export async function PUT(request: NextRequest, { params }: Props) {
         ...(description !== undefined && { description }),
         ...(imageUrl !== undefined && { imageUrl }),
         ...(isActive !== undefined && { isActive }),
+        ...(jciAccredited !== undefined && { jciAccredited: jciAccredited === true }),
       },
     });
     revalidatePublicContent();
