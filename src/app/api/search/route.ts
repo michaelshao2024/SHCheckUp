@@ -107,19 +107,19 @@ export async function GET(request: NextRequest) {
     });
 
     // Hospitals in the response = name-matched hospitals ∪ hospitals of matched packages
-    const hospitalMap = new Map<string, { id: string; name: string; description: string; address: string }>();
+    const hospitalMap = new Map<string, { id: string; name: string; description: string; address: string; jciAccredited: boolean }>();
     for (const h of hospitals) {
-      hospitalMap.set(h.id, { id: h.id, name: h.name, description: h.description, address: h.address });
+      hospitalMap.set(h.id, { id: h.id, name: h.name, description: h.description, address: h.address, jciAccredited: h.jciAccredited });
     }
     for (const p of packages) {
       if (!hospitalMap.has(p.hospital.id)) {
-        hospitalMap.set(p.hospital.id, { id: p.hospital.id, name: p.hospital.name, description: p.hospital.description, address: p.hospital.address });
+        hospitalMap.set(p.hospital.id, { id: p.hospital.id, name: p.hospital.name, description: p.hospital.description, address: p.hospital.address, jciAccredited: p.hospital.jciAccredited });
       }
     }
 
     return NextResponse.json(shape(
       [...hospitalMap.values()],
-      packages.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, avgRating: Number(p.avgRating), tags: p.tags, englishReport: p.englishReport, englishService: p.englishService })),
+      packages.map(p => ({ id: p.id, hospitalId: p.hospitalId, hospitalName: p.hospital.name, name: p.name, price: Number(p.price), currency: p.currency, duration: p.duration, avgRating: Number(p.avgRating), tags: p.tags, englishReport: p.englishReport, englishService: p.englishService, pendingUpdate: p.pendingUpdate })),
       'prisma',
     ));
   } catch {
