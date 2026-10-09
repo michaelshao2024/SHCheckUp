@@ -317,6 +317,7 @@ export default function HomePage() {
           <a href="#escort" className="text-muted-foreground hover:text-primary transition-colors">Medical Escort</a>
           <a href="#testimonials" className="text-muted-foreground hover:text-primary transition-colors">Reviews</a>
           <a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a>
+          <Link href="/guides" className="text-muted-foreground hover:text-primary transition-colors">Guides</Link>
           <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link>
         </div>
       </nav>

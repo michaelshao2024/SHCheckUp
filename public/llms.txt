@@ -19,6 +19,7 @@
 
 - Home (search & compare): https://www.sanensheng.com/
 - About the brand & escort service: https://www.sanensheng.com/about
+- Guides (health checkup guides for expats): https://www.sanensheng.com/guides
 - Compare packages: https://www.sanensheng.com/compare
 - Hospital details: https://www.sanensheng.com/hospitals/{id}
 - Package details: https://www.sanensheng.com/packages/{id}

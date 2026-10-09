@@ -8,6 +8,8 @@ export function Footer() {
         <p className="mt-2 text-xs">All prices are in CNY (¥).</p>
         <ExchangeRate />
         <div className="mt-2 flex justify-center gap-4">
+          <a href="/guides" className="underline">Guides</a>
+          <a href="/about" className="underline">About</a>
           <a href="/privacy" className="underline">Privacy Policy</a>
         </div>
       </div>
