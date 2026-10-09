@@ -60,6 +60,17 @@ export function publicHospital(h: FullHospital) {
   };
 }
 
+/** Display priority: JCI-accredited hospitals first, then Shanghai General IMCC, then the rest. */
+export function hospitalPriority(h: { name?: string; jciAccredited?: boolean }): number {
+  if (h.jciAccredited) return 0;
+  if (h.name && h.name.includes('IMCC')) return 1;
+  return 2;
+}
+
+export function sortHospitals<T extends { name?: string; jciAccredited?: boolean }>(list: T[]): T[] {
+  return [...list].sort((a, b) => hospitalPriority(a) - hospitalPriority(b));
+}
+
 export interface FullPackage {
   id: string;
   name: string;

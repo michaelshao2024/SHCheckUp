@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { meilisearch, PACKAGES_INDEX, HOSPITALS_INDEX } from '@/lib/meilisearch';
 import { prisma } from '@/lib/prisma';
-import { publicHospital, publicPackage } from '@/lib/access';
+import { publicHospital, publicPackage, sortHospitals } from '@/lib/access';
 import { getSessionUser } from '@/lib/auth';
 import { rateLimit, clientKey } from '@/lib/rate-limit';
 
@@ -30,12 +30,13 @@ export async function GET(request: NextRequest) {
   }
 
   // Shape the final payload according to the access policy. Anonymous users
-  // get hospital name + simple address, and package name only.
+  // get hospital name + simple address, and package name only. Hospitals are
+  // always ordered: JCI-accredited first, then Shanghai General IMCC.
   const shape = (hospitals: any[], packages: any[], source: string) =>
     authed
-      ? { hospitals, packages, source }
+      ? { hospitals: sortHospitals(hospitals), packages, source }
       : {
-          hospitals: hospitals.map(publicHospital),
+          hospitals: sortHospitals(hospitals.map(publicHospital)),
           packages: packages.map(publicPackage),
           source,
           authRequired: true,

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { meilisearch, HOSPITALS_INDEX } from '@/lib/meilisearch';
 import { prisma } from '@/lib/prisma';
-import { publicHospital } from '@/lib/access';
+import { publicHospital, sortHospitals } from '@/lib/access';
 import { getSessionUser } from '@/lib/auth';
 import { rateLimit, clientKey } from '@/lib/rate-limit';
 
@@ -26,14 +26,14 @@ export async function GET(request: NextRequest) {
   // Try Meilisearch first
   try {
     const result = await meilisearch.index(HOSPITALS_INDEX).search('', { limit: 50, filter: ['isActive = true'], attributesToRetrieve: ['id', 'name', 'description', 'address', 'jciAccredited'] });
-    return NextResponse.json(shape(result.hits as any[]));
+    return NextResponse.json(sortHospitals(shape(result.hits as any[])));
   } catch { /* fallback */ }
 
   // Prisma fallback
   try {
     if (!prisma) return NextResponse.json([]);
     const hospitals = await prisma.hospital.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } });
-    return NextResponse.json(shape(hospitals as any[]));
+    return NextResponse.json(sortHospitals(shape(hospitals as any[])));
   } catch {
     return NextResponse.json([]);
   }
