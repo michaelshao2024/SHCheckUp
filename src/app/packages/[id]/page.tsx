@@ -143,16 +143,6 @@ export default async function PackageDetailPage({ params }: Props) {
       {/* Description */}
       {pkg.description && <p className="text-muted-foreground mb-6">{pkg.description}</p>}
 
-      {/* Source link */}
-      {pkg.source && (
-        <p className="text-sm mb-6">
-          Source:{' '}
-          <a href={pkg.source} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">
-            {pkg.source}
-          </a>
-        </p>
-      )}
-
       {/* Checkup Items */}
       {items && items.length > 0 && (
         <div className="mb-6">
