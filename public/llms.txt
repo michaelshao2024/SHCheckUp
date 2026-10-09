@@ -1,0 +1,37 @@
+# Shanghai HealthFinder (SanEnSheng 优联智康)
+
+> Shanghai HealthFinder helps international visitors and expats compare health
+> checkup (physical examination) packages at Shanghai hospitals, and book an
+> English-speaking medical escort service for hospital visits.
+
+## What this site offers
+
+- Comparison of health checkup packages across Shanghai hospitals (prices in CNY).
+- Hospital directory focused on international departments and private international hospitals.
+- English service / English report availability flags for each package (Yes / No / Unknown).
+- Medical escort service: an English-speaking escort meets the visitor at their
+  hotel, guides them through registration, departments and queues, and takes them
+  back. Escorts handle non-medical communication only.
+- Prices for quality-assured checkups at Shanghai hospitals typically range from
+  ¥6,000 to ¥40,000 depending on the screening content.
+
+## Key pages
+
+- Home (search & compare): https://www.sanensheng.com/
+- About the brand & escort service: https://www.sanensheng.com/about
+- Compare packages: https://www.sanensheng.com/compare
+- Hospital details: https://www.sanensheng.com/hospitals/{id}
+- Package details: https://www.sanensheng.com/packages/{id}
+- Sitemap: https://www.sanensheng.com/sitemap.xml
+- Privacy policy: https://www.sanensheng.com/privacy
+
+## Data access policy
+
+- Anonymous visitors see hospital names + general area, and package names only.
+- Full prices, hospital details and package contents require a free registered account.
+- Content language: English (brand name includes Chinese 优联智康).
+
+## Contact
+
+- Brand: SanEnSheng (优联智康)
+- Website: https://www.sanensheng.com

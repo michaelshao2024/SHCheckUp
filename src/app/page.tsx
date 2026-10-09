@@ -186,6 +186,27 @@ const TESTIMONIALS = [
   },
 ];
 
+// Review structured data (mirrors the testimonials shown on this page) — helps
+// AI answer engines and search engines understand the service's reputation.
+const REVIEWS_LD = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  name: 'SanEnSheng Medical Escort Service',
+  url: `${SITE_URL}/about`,
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: (TESTIMONIALS.reduce((sum, t) => sum + t.rating, 0) / TESTIMONIALS.length).toFixed(1),
+    reviewCount: TESTIMONIALS.length,
+    bestRating: 5,
+  },
+  review: TESTIMONIALS.map((t) => ({
+    '@type': 'Review',
+    author: { '@type': 'Person', name: t.name },
+    reviewRating: { '@type': 'Rating', ratingValue: t.rating, bestRating: 5 },
+    reviewBody: t.quote,
+  })),
+};
+
 interface SearchResult {
   hospitals: Array<{ id: string; name: string; description?: string; address: string }>;
   packages: Array<{
@@ -283,6 +304,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(REVIEWS_LD) }}
       />
       {/* Homepage section navigation */}
       <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-border">
