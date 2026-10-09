@@ -19,7 +19,7 @@ export function PackageCard({ id, name, price, duration, hospitalName, avgRating
         <span className="text-lg font-bold text-primary shrink-0">¥{price.toLocaleString()}</span>
       </div>
       {pendingUpdate && (
-        <span className="inline-block px-2 py-0.5 mb-2 bg-amber-50 border border-amber-200 text-amber-700 rounded text-xs font-medium">
+        <span className="inline-block px-2 py-0.5 mb-2 bg-blue-50 border border-blue-200 text-blue-700 rounded text-xs font-medium">
           Being updated — details may change
         </span>
       )}

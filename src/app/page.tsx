@@ -405,7 +405,7 @@ export default function HomePage() {
                                   {p.name}
                                 </Link>
                                 {p.pendingUpdate && (
-                                  <span className="inline-block px-1.5 py-0.5 mt-1 bg-amber-50 border border-amber-200 text-amber-700 rounded text-xs font-medium">
+                                  <span className="inline-block px-1.5 py-0.5 mt-1 bg-blue-50 border border-blue-200 text-blue-700 rounded text-xs font-medium">
                                     Being updated
                                   </span>
                                 )}

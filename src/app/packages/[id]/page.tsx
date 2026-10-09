@@ -114,7 +114,7 @@ export default async function PackageDetailPage({ params }: Props) {
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1">{pkg.name}</h1>
           {pkg.pendingUpdate && (
-            <span className="inline-block px-2 py-0.5 mt-2 bg-amber-50 border border-amber-200 text-amber-700 rounded text-xs font-medium">
+            <span className="inline-block px-2 py-0.5 mt-2 bg-blue-50 border border-blue-200 text-blue-700 rounded text-xs font-medium">
               Being updated — details may change
             </span>
           )}
