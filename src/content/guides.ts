@@ -340,6 +340,235 @@ export const GUIDES: Guide[] = [
       },
     ],
   },
+  {
+    slug: 'health-checkup-insurance-claim-shanghai',
+    title: 'How to Claim a Health Checkup on Insurance in Shanghai (2026)',
+    description:
+      'How international insurance covers health checkups in Shanghai: direct billing at private international hospitals, pay-and-claim reimbursement at public international departments, and the exact documents (fapiao, itemized invoice, English report) you need for a successful claim.',
+    excerpt:
+      'Direct billing vs. pay-and-claim, and the exact documents (fapiao, itemized invoice, English report) you need to get your Shanghai checkup reimbursed.',
+    updatedAt: '2026-10-09',
+    sections: [
+      {
+        heading: 'First: does your plan cover checkups at all?',
+        paragraphs: [
+          'Not every international health insurance plan covers preventive health checkups (健康体检). Many cover them only under a "wellness" or "health screening" benefit with an annual cap (commonly a few hundred USD per year). Before booking anything, check your policy or ask your insurer two questions: is preventive screening covered, and is there an annual limit?',
+          'One important nuance: a doctor-ordered examination for a symptom is usually covered as diagnostics, while a self-booked screening package is wellness — the claim category matters.',
+        ],
+      },
+      {
+        heading: 'Route 1: direct billing (no money out of pocket)',
+        paragraphs: [
+          'The smoothest path. Shanghai\u2019s private international hospitals — Jiahui International Hospital, ParkwayHealth, United Family, SinoUnited Health — direct-bill most major international insurers (e.g. Cigna, Allianz, Bupa, MSH, Aetna). The hospital bills your insurer directly; you pay nothing or only any amount above your benefit cap.',
+          'How to use it: before your appointment, give the hospital your insurance card details and ask them to obtain pre-authorization (a guarantee of payment letter) from your insurer. On the day, you sign and walk out. Always confirm direct billing with BOTH the hospital and your insurer before booking.',
+        ],
+      },
+      {
+        heading: 'Route 2: pay and claim (reimbursement)',
+        paragraphs: [
+          'At public hospital international departments (Huashan, Ruijin, Shanghai General IMCC, Changhai) you normally pay upfront — these packages run ¥6,000–¥30,000 — then claim the money back from your insurer. This route is where claims fail, almost always because of missing paperwork. Collect ALL of the following before you leave the hospital:',
+        ],
+        bullets: [
+          'Fapiao (发票) — the official Chinese tax invoice. Insurers increasingly require this specific document, and a hospital receipt alone is not the same thing',
+          'Itemized invoice / price breakdown (费用明细清单) — a line-item list of every test performed',
+          'The checkup report — request the English version if the hospital offers it (we flag English report availability on every package)',
+          'Your insurance claim form, completed and signed',
+          'Proof of payment matching the fapiao amount',
+        ],
+      },
+      {
+        heading: 'The three mistakes that get claims rejected',
+        paragraphs: [
+          'Almost every rejected checkup claim comes down to one of these:',
+        ],
+        bullets: [
+          'No fapiao — only a payment receipt. Always ask for the 发票 specifically.',
+          'Package booked as "wellness" when the plan only covers diagnostics — or the reverse. Match the booking category to your benefit.',
+          'Missing itemized breakdown. A single-line "health checkup package" invoice is often rejected; the itemized list is what insurers audit against.',
+        ],
+      },
+      {
+        heading: 'How we can help',
+        paragraphs: [
+          'When you book through Shanghai HealthFinder, tell us your insurer in the request form — we confirm with the hospital in advance whether direct billing is possible for your plan, and remind you exactly which documents to collect on the day. It costs nothing extra to ask.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Do international insurance plans cover health checkups in Shanghai?',
+        a: 'Many do, but usually only under a wellness/health screening benefit with an annual cap. A doctor-ordered exam for a symptom is often covered as diagnostics instead. Check your policy for "preventive screening" coverage and its annual limit before booking.',
+      },
+      {
+        q: 'Which Shanghai hospitals offer direct billing with international insurers?',
+        a: 'The private international hospitals: Jiahui International Hospital, ParkwayHealth, United Family and SinoUnited Health direct-bill most major international insurers (Cigna, Allianz, Bupa, MSH, Aetna and others) after pre-authorization. Public hospital international departments typically require pay-and-claim.',
+      },
+      {
+        q: 'What documents do I need to claim a checkup reimbursement in China?',
+        a: 'Four things: the fapiao (official tax invoice), an itemized price breakdown of all tests, the checkup report (English version if available), and your insurer\u2019s completed claim form. Missing the fapiao is the most common reason for rejection.',
+      },
+      {
+        q: 'Can I get an English report for my insurance claim?',
+        a: 'Private international hospitals issue English reports by default. At public hospital international departments it varies by hospital — check the English report flag (Yes / No / Unknown) on each package before booking, or request it when booking through us.',
+      },
+    ],
+  },
+  {
+    slug: 'health-checkup-by-age-and-gender-shanghai',
+    title: 'Which Health Checkup Do You Actually Need? Screening by Age and Gender (2026)',
+    description:
+      'Men, women and the over-40s need different screenings. A practical guide to choosing the right checkup package in Shanghai: prostate and cardiovascular for men, breast and cervical for women, and the imaging that matters after 40.',
+    excerpt:
+      'Men, women and the over-40s need different tests. Match your age and risk profile to the right Shanghai checkup package instead of over- or under-buying.',
+    updatedAt: '2026-10-09',
+    sections: [
+      {
+        heading: 'Why one-size-fits-all packages waste money',
+        paragraphs: [
+          'Every hospital sells "standard" packages, but screening value depends on your age, sex and risk profile. A 28-year-old buying a ¥30,000 executive package is mostly paying for tests they do not need; a 48-year-old buying a ¥2,000 basic package is skipping the tests that actually matter. Use the profiles below as your starting point, then compare matching packages.',
+        ],
+      },
+      {
+        heading: 'For men',
+        paragraphs: [
+          'The high-value additions for men, especially from age 40:',
+        ],
+        bullets: [
+          'Prostate: PSA blood test + prostate ultrasound (from 45–50, earlier with family history)',
+          'Cardiovascular: lipid panel every year; add carotid ultrasound and cardiac CT if you smoke, have high blood pressure or high cholesterol',
+          'Liver: liver function + hepatitis B/C screening + abdominal ultrasound (liver disease rates are high in East Asia)',
+          'Colorectal: from 45, a colonoscopy or at minimum a FIT stool test',
+        ],
+      },
+      {
+        heading: 'For women',
+        paragraphs: [
+          'Women-focused packages (妇科/女性专项) should include:',
+        ],
+        bullets: [
+          'Breast: ultrasound (standard for younger women with dense breast tissue) and mammography from 40',
+          'Cervical: HPV test + TCT/Pap smear — recommended every 3 years',
+          'Thyroid: ultrasound + function panel (thyroid nodules are extremely common in women in China)',
+          'Gynecological ultrasound; bone density from perimenopause onwards',
+        ],
+      },
+      {
+        heading: 'For the over-40s (both sexes)',
+        paragraphs: [
+          'This is the age where package depth starts paying for itself. On top of the basics:',
+        ],
+        bullets: [
+          'Tumor marker panels (AFP, CEA, CA19-9 and others) — widely included in Chinese packages',
+          'Low-dose chest CT instead of a plain X-ray if you have any smoking history',
+          'Painless gastroscopy + colonoscopy (无痛胃肠镜) — China has high gastric and colorectal cancer rates, and sedation endoscopy in Shanghai costs a fraction of what it does in the US or Europe',
+          'Cardiac imaging (coronary CTA) if you have hypertension, diabetes, high lipids or family history',
+        ],
+      },
+      {
+        heading: 'If you have high blood lipids (高血脂)',
+        paragraphs: [
+          'Hyperlipidemia is one of the most common findings in expat checkups. If you already know your lipids are high, do not just repeat a basic lipid panel — choose a package that quantifies the actual risk:',
+        ],
+        bullets: [
+          'Full lipid panel including LDL, HDL, triglycerides, ApoB if available',
+          'Carotid artery ultrasound (颈动脉超声) — checks for plaque buildup',
+          'Coronary CTA (冠脉CTA) for a direct look at coronary arteries — packages with CTA run roughly ¥6,000–¥8,000 at public international centers, far below typical US pricing',
+          'Liver ultrasound (fatty liver commonly accompanies high lipids)',
+        ],
+      },
+      {
+        heading: 'Matching profiles to real packages',
+        paragraphs: [
+          'Examples from packages currently listed: IMCC offers a VIP Cardiovascular package (~¥7,800) and a VIP Cancer Screening package (~¥9,000); Jiahui and ParkwayHealth run premium executive packages up to ~¥40,000 that bundle advanced imaging and endoscopy. Create a free account to see the full contents of each package and filter by what you need.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'What health screening should a man over 40 get in Shanghai?',
+        a: 'Core additions: PSA + prostate ultrasound, lipid panel with carotid ultrasound, low-dose chest CT if you have smoked, and colonoscopy or FIT from 45. Packages with cardiac imaging (coronary CTA) are worth it if you have hypertension or high cholesterol.',
+      },
+      {
+        q: 'What should a women-focused checkup package include?',
+        a: 'Breast ultrasound (mammography from 40), HPV + TCT cervical screening, thyroid ultrasound and function panel, and gynecological ultrasound. Women-specific packages (女性专项) bundle these; check the package contents list before booking.',
+      },
+      {
+        q: 'I have high cholesterol — which tests should my checkup include?',
+        a: 'Beyond a standard lipid panel: carotid artery ultrasound to check for plaque, coronary CTA for direct coronary imaging, and a liver ultrasound. In Shanghai, packages including coronary CTA cost roughly ¥6,000–¥8,000 — far less than equivalent imaging abroad.',
+      },
+      {
+        q: 'Is a more expensive package better for my age group?',
+        a: 'Match tests to your risk profile instead of price. Under 35 and healthy: a ¥2,000–¥8,000 package is usually enough. Over 40: prioritize packages including low-dose CT, tumor markers and endoscopy. The premium price mainly buys imaging depth and service level.',
+      },
+    ],
+  },
+  {
+    slug: 'advanced-screenings-shanghai-mri-endoscopy',
+    title: 'Advanced Screenings in Shanghai: MRI, Coronary CTA and Painless Endoscopy (2026)',
+    description:
+      'MRI, coronary CTA, low-dose chest CT and painless gastroscopy/colonoscopy in Shanghai: what they cost inside checkup packages, why they are dramatically cheaper than in the US or Europe, and how to book them as a foreigner.',
+    excerpt:
+      'MRI, coronary CTA and painless endoscopy in Shanghai cost a fraction of US/European prices — and can be bundled into a single-morning checkup package.',
+    updatedAt: '2026-10-09',
+    sections: [
+      {
+        heading: 'Why expats come to Shanghai for advanced screening',
+        paragraphs: [
+          'Advanced imaging and endoscopy are the exams that are expensive, slow to schedule, or simply hard to access abroad: in the US a self-pay MRI can run $1,000–$3,000 and a colonoscopy $2,500+ with weeks of waiting. In Shanghai, the same exams are bundled into checkup packages costing a few hundred dollars equivalent, bookable within days, and finished in one morning.',
+          'For international visitors this makes Shanghai a practical place to do the "big" screenings you have been postponing.',
+        ],
+      },
+      {
+        heading: 'MRI (核磁共振)',
+        paragraphs: [
+          'Magnetic resonance imaging without radiation. In checkup packages it typically appears as brain MRI (头颅MRI), cervical/lumbar spine MRI, or whole-body screening in premium packages. Standalone self-pay MRI at Shanghai international centers is typically a fraction of US pricing; inside packages it is bundled with the rest of the morning\u2019s tests.',
+        ],
+      },
+      {
+        heading: 'Coronary CTA (冠脉CTA)',
+        paragraphs: [
+          'A CT scan of the coronary arteries — the definitive non-invasive check for early coronary disease, recommended if you are over 40 with high lipids, hypertension, diabetes, smoking history or family history. Dedicated cardiovascular packages including coronary CTA are listed from around ¥6,000–¥8,000 at public hospital international centers (e.g. IMCC\u2019s cardiovascular package) — comparable imaging alone often costs more than that in the US.',
+        ],
+      },
+      {
+        heading: 'Painless gastroscopy and colonoscopy (无痛胃肠镜)',
+        paragraphs: [
+          'Sedated endoscopy — you sleep through both procedures, typically done back-to-back in one session. Given high gastric and colorectal cancer rates in East Asia, these are the highest-value screenings for anyone over 40. In Shanghai, painless gastroscopy + colonoscopy is commonly bundled into premium packages or available as an add-on; total package prices with endoscopy typically run ¥10,000–¥25,000 depending on the hospital.',
+          'Note: endoscopy packages require a longer visit (sedation recovery adds 1–2 hours) and someone to accompany you afterwards — our escort service covers exactly this.',
+        ],
+      },
+      {
+        heading: 'Low-dose chest CT (低剂量胸部CT)',
+        paragraphs: [
+          'The modern replacement for chest X-ray in lung screening — detects nodules far earlier, at a fraction of the radiation of a standard CT. Included in most mid-tier and premium Shanghai packages; if you have any smoking history, make sure your package includes CT rather than X-ray.',
+        ],
+      },
+      {
+        heading: 'How to book these as a foreigner',
+        paragraphs: [
+          'Search Shanghai HealthFinder for packages containing the exam you need (try keywords like "MRI", "CTA", "gastroscopy"), create a free account to see full package contents, then submit a booking request. For anything involving sedation (endoscopy) we strongly recommend adding the medical escort service — you should not travel back to your hotel alone after sedation.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'How much does an MRI cost in Shanghai for a foreigner?',
+        a: 'Inside checkup packages, MRI is bundled with other tests; standalone self-pay MRI at international centers typically costs a fraction of US prices (often a few hundred USD equivalent). Premium packages at private hospitals bundle brain or spine MRI into a one-morning executive checkup.',
+      },
+      {
+        q: 'What is a coronary CTA and who should get one?',
+        a: 'Coronary CTA is a CT scan of the heart arteries — the best non-invasive test for early coronary disease. Get one if you are over 40 with high cholesterol, hypertension, diabetes, smoking history or family history. Cardiovascular packages including CTA start around ¥6,000–¥8,000 in Shanghai.',
+      },
+      {
+        q: 'Is painless endoscopy in Shanghai safe and how is it different?',
+        a: 'Painless (sedated) gastroscopy and colonoscopy are routine, high-volume procedures at Shanghai hospitals. You are sedated for both, usually done in one session, and need 1–2 hours of recovery plus someone to accompany you home — our medical escort service covers the accompaniment.',
+      },
+      {
+        q: 'Can I get an English report for advanced imaging in Shanghai?',
+        a: 'Private international hospitals issue English reports by default. Public hospital international departments vary — every package on Shanghai HealthFinder is flagged Yes / No / Unknown for English reports, so filter for that before booking.',
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
