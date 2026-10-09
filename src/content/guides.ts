@@ -183,6 +183,163 @@ export const GUIDES: Guide[] = [
       },
     ],
   },
+  {
+    slug: 'china-work-visa-health-check-shanghai',
+    title: 'Health Check for a China Work Visa in Shanghai: What Foreigners Need to Know (2026)',
+    description:
+      'Applying for a China work visa or residence permit in Shanghai requires a medical examination at a designated International Travel Healthcare Center. What to bring, what is tested, how long it takes, and how it differs from a personal health checkup.',
+    excerpt:
+      'Work visa / residence permit medical exams in Shanghai must be done at the designated International Travel Healthcare Center — not a regular hospital. Here is the full process.',
+    updatedAt: '2026-10-09',
+    sections: [
+      {
+        heading: 'The most important thing to know first',
+        paragraphs: [
+          'The medical examination required for a China work permit (工作许可) and residence permit (居留许可) can ONLY be done at a government-designated International Travel Healthcare Center (国际旅行卫生保健中心). In Shanghai that is the Shanghai International Travel Healthcare Center (上海国际旅行卫生保健中心).',
+          'Regular hospitals — including the private international hospitals listed on this site — CANNOT issue the official visa medical certificate. If your goal is a visa or residence permit, go to the designated center. If your goal is a personal or executive health screening, the hospitals on Shanghai HealthFinder are the right choice.',
+        ],
+      },
+      {
+        heading: 'Where to go in Shanghai',
+        paragraphs: [
+          'Shanghai International Travel Healthcare Center (上海国际旅行卫生保健中心), the designated facility for entry-exit medical examinations. Book an appointment in advance through their official channel (their WeChat official account or website) — walk-ins are limited and morning slots fill quickly.',
+        ],
+      },
+      {
+        heading: 'What to bring',
+        paragraphs: [
+          'Bring the following — missing documents are the most common reason people get turned away:',
+        ],
+        bullets: [
+          'Passport (original) — your identity document for the exam',
+          'Passport-style photos (check the current requirement when booking; usually 2–4)',
+          'Any medical forms provided by your employer or visa agency',
+          'Vaccination records if you have them (not always required, but useful)',
+          'Payment: the exam fee is typically a few hundred RMB; mobile payment (Alipay/WeChat Pay) is standard',
+        ],
+      },
+      {
+        heading: 'What the exam covers',
+        paragraphs: [
+          'The visa medical exam is a standardized public-health screening, not a personalized checkup. It typically includes:',
+        ],
+        bullets: [
+          'Physical examination (height, weight, blood pressure, vision)',
+          'Chest X-ray (tuberculosis screening)',
+          'Blood tests (including infectious disease screening such as HIV and syphilis)',
+          'ECG and abdominal ultrasound',
+        ],
+      },
+      {
+        heading: 'Timing and results',
+        paragraphs: [
+          'Plan for 2–3 hours on site, fasting from the previous evening. The official certificate (健康检查证明 / Health Certificate) is usually ready in 3–5 working days; some centers offer express processing. Your employer or visa agent submits this certificate as part of the work permit and residence permit application.',
+          'Tip: do the medical early in your visa timeline — the certificate has a validity window (commonly 6 months), and delays here block the whole permit chain.',
+        ],
+      },
+      {
+        heading: 'Need a personal checkup instead?',
+        paragraphs: [
+          'If you are not doing this for a visa but want a real health screening while in Shanghai — from a ¥2,000 basic annual check to a ¥40,000 premium executive package — compare hospitals and packages on Shanghai HealthFinder. Our English-speaking medical escort service can also guide you through the visit.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'Can I do my China work visa medical exam at any hospital in Shanghai?',
+        a: 'No. The official medical certificate for a work permit or residence permit is only issued by the designated International Travel Healthcare Center (上海国际旅行卫生保健中心). Private and public hospitals cannot issue it.',
+      },
+      {
+        q: 'How much does the visa medical exam cost in Shanghai?',
+        a: 'The standardized exam at the International Travel Healthcare Center typically costs a few hundred RMB. This is separate from personal health checkup packages (¥6,000–¥40,000), which are for your own health screening, not for visa purposes.',
+      },
+      {
+        q: 'How long does the visa medical certificate take?',
+        a: 'Expect 3–5 working days for the official Health Certificate after the exam; some centers offer express service. Do the exam early — the certificate is typically valid for about 6 months and delays block your work permit application.',
+      },
+      {
+        q: 'What is tested in the China visa medical exam?',
+        a: 'A standardized screening: physical exam, chest X-ray (TB), blood tests including HIV and syphilis, ECG and abdominal ultrasound. It is a public-health requirement, not a personalized health assessment.',
+      },
+    ],
+  },
+  {
+    slug: 'checkup-day-guide-shanghai',
+    title: 'Your Checkup Day in Shanghai: A Step-by-Step Walkthrough (2026)',
+    description:
+      'What actually happens on the day of your health checkup in Shanghai: how to prepare the night before, what to bring, the typical station-by-station flow, how long it takes, and how you receive your report.',
+    excerpt:
+      'From fasting the night before to receiving your report — the complete hour-by-hour walkthrough of a Shanghai hospital checkup day.',
+    updatedAt: '2026-10-09',
+    sections: [
+      {
+        heading: 'The night before',
+        paragraphs: [
+          'Preparation starts the evening before your appointment. Getting this right is what makes the morning fast and smooth:',
+        ],
+        bullets: [
+          'Fast from around 8–10 PM — no food, no alcohol, no sugary drinks. Plain water is fine.',
+          'Get a normal night of sleep; avoid intense exercise the day before (it can skew some results).',
+          'Lay out what you need: passport, appointment confirmation, and any prior medical records you want the physicians to see.',
+          'If you wear contact lenses, bring your glasses — some vision checks are easier without lenses.',
+        ],
+      },
+      {
+        heading: 'Arrival and registration (8:00 – 9:00 AM)',
+        paragraphs: [
+          'Most checkup packages start early. At private international hospitals you check in at a dedicated reception with English-speaking staff. At public hospital international departments you register at the international wing counter — bring your passport, as it is the standard ID.',
+          'If you booked our medical escort service, your escort meets you at your hotel, travels with you, and handles the entire registration process — you just show up.',
+        ],
+      },
+      {
+        heading: 'The station-by-station flow',
+        paragraphs: [
+          'A comprehensive checkup moves you through a series of stations. The typical order (optimized so fasting tests come first):',
+        ],
+        bullets: [
+          '1. Blood draw and urine sample — done first so you can eat afterwards',
+          '2. Abdominal ultrasound — also requires fasting',
+          '3. Breakfast break — premium packages include a meal once fasting tests are done',
+          '4. Measurements — height, weight, blood pressure, vision',
+          '5. ECG and cardiac screening',
+          '6. Imaging — chest X-ray or CT; premium packages may add MRI or coronary CTA',
+          '7. Specialty stations depending on package — endoscopy (painless gastroscopy/colonoscopy), gynecology, dental, ENT',
+          '8. Final physician review — a doctor goes through the day\u2019s findings with you',
+        ],
+      },
+      {
+        heading: 'How long it takes',
+        paragraphs: [
+          'Budget and mid-tier packages at public hospital international departments: typically 2–4 hours. Premium one-stop packages at private international hospitals: usually a single morning, roughly 3–4 hours, in a private wing. Packages including painless endoscopy take longer because of the sedation recovery time.',
+        ],
+      },
+      {
+        heading: 'Getting your results',
+        paragraphs: [
+          'Preliminary findings are often discussed the same day during the final physician review. The complete written report typically takes 3–7 working days. Private international hospitals provide English reports by default; at public hospital international departments, check before booking whether an English report is available — we flag this on every package (Yes / No / Unknown).',
+          'One important boundary: if your report flags something that needs follow-up, that conversation belongs with a physician. Our escorts handle logistics and non-medical communication only — they do not interpret medical results.',
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: 'How long does a health checkup in Shanghai take?',
+        a: 'Most comprehensive packages take one morning: 2–4 hours at public hospital international departments, or about 3–4 hours for premium one-stop packages at private international hospitals. Packages with painless endoscopy take longer due to sedation recovery.',
+      },
+      {
+        q: 'Do I need to fast before a health checkup?',
+        a: 'Yes. Fast from the previous evening (usually 8–10 PM) — blood tests and abdominal ultrasound require an empty stomach. Plain water is allowed. You can eat after the fasting stations; premium packages often include breakfast.',
+      },
+      {
+        q: 'What should I bring to a hospital checkup in Shanghai?',
+        a: 'Your passport (the standard ID for international departments), your appointment confirmation, and any relevant prior medical records. If you wear contact lenses, bring glasses.',
+      },
+      {
+        q: 'When do I get my checkup report, and is it in English?',
+        a: 'Preliminary findings are often reviewed with a physician the same day; the full written report takes about 3–7 working days. Private international hospitals issue English reports by default; at public international departments it varies — check the English report flag on each package before booking.',
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
